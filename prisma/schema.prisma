@@ -1,0 +1,295 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  moduleFormat = "cjs"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "sqlserver"
+
+}
+
+model CapeRole {
+  id        Int      @id @default(autoincrement())
+  roleId    String   @unique @default(cuid()) @map("role_id") @db.NVarChar(50)
+  roleName  String   @unique @map("role_name") @db.NVarChar(100)
+  roleCode String  @unique @map("role_code") @db.NVarChar(50)
+  level String @unique @map("level") @db.NVarChar(50)
+  createdAt DateTime @default(now()) @map("created_at")
+  createdBy String?  @map("created_by") @db.NVarChar(100)
+
+  // relations
+  users     CapeUser[]
+
+  @@map("cape_roles")
+}
+
+model CapeUser {
+  id           Int      @id @default(autoincrement())
+  userId       String   @unique @default(cuid()) @map("user_id") @db.NVarChar(100)
+  learnworldId String?  @map("learnworld_id") @db.VarChar(255)
+  email        String   @unique @db.NVarChar(255)
+  passwordHash String   @map("password_hash") @db.NVarChar(255)
+
+  firstName   String @db.NVarChar(200) @map("first_name")
+  lastName    String @db.NVarChar(200) @map("last_name")
+  userName    String @unique @db.NVarChar(150) @map("user_name")
+
+
+  // relation (many users -> one role)
+  roleId       String   @map("role_id") @db.NVarChar(50)
+  role         CapeRole @relation(fields: [roleId], references: [roleId], onUpdate: Cascade,onDelete: NoAction)
+
+  isActive     Boolean  @default(true) @map("is_active")
+  isAdmin      Boolean  @default(false) @map("is_admin")
+  isFirstTimeLogin Boolean @default(true) @map("is_first_time_login")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdBy    String?  @map("created_by") @db.NVarChar(100)
+  updatedBy    String?  @map("updated_by") @db.NVarChar(100)
+  deletedAt    DateTime? @map("deleted_at")
+  deletedBy    String?   @map("deleted_by") @db.NVarChar(100)
+
+  refreshTokens RefreshToken[]
+  profile       capeLearnerProfiles?
+  userProfile       CapeUserProfiles?
+
+    // ✅ NEW: many-to-many via join table
+  learnworldsEnrollments LearnWorldsUserEnrollmentProgram[]
+
+  @@index([roleId])
+  @@map("cape_users")
+}
+
+model capeLearnerProfiles {
+  id          Int     @id @default(autoincrement())
+  userId      String  @unique @map("user_id") @db.NVarChar(100)
+
+  bio        String? @map("bio")         @db.NVarChar(1000)
+  location    String? @map("location")    @db.NVarChar(255)
+  url         String? @map("url")         @db.NVarChar(500)
+  fb          String? @map("fb")          @db.NVarChar(255)
+  twitter     String? @map("twitter")     @db.NVarChar(255)
+  instagram   String? @map("instagram")   @db.NVarChar(255)
+  linkedin    String? @map("linkedin")    @db.NVarChar(255)
+  skype       String? @map("skype")       @db.NVarChar(255)
+  behance     String? @map("behance")     @db.NVarChar(255)
+  dribbble    String? @map("dribbble")    @db.NVarChar(255)
+  github      String? @map("github")      @db.NVarChar(255)
+  cfCompany   String? @map("cf_company")  @db.NVarChar(255)
+  cfCohort   String? @map("cf_cohort")  @db.NVarChar(255)
+
+  npsScore    Int?    @map("nps_score")
+  npsComment  String? @map("nps_comment") @db.NVarChar(1000)
+
+  tags        String? @map("tags")        @db.NVarChar(255)
+
+  createdAt   DateTime @default(now())    @map("created_at")
+  updatedAt   DateTime @updatedAt         @map("updated_at")
+
+  // child → parent
+  user        CapeUser @relation(fields: [userId], references: [userId])
+
+  @@map("cape_learner_profiles")
+}
+
+model CapeUserProfiles {
+  id  Int     @id @default(autoincrement())
+  userId      String  @unique @map("user_id") @db.NVarChar(100)
+
+  phoneNumber String @map("phone_number") @db.NVarChar(150)
+  jobTitle String @map("job_title") @db.NVarChar(150)
+  currentRole String @map("current_title") @db.NVarChar(150)
+  targetRole String @map("target_title") @db.NVarChar(150)
+  industry String @map("industry") @db.NVarChar(150)
+
+  careerGoals String @map("career_goals") @db.NVarChar(Max)
+  skillsJson String @map("skills_json") @db.NVarChar(Max)
+
+  user        CapeUser @relation(fields: [userId], references: [userId])
+
+  @@map("cape_user_profiles")
+}
+
+
+model RefreshToken {
+  id          String   @id @default(uuid())
+  userId String @map("user_id") @db.NVarChar(100)
+  tokenHash   String    @map("token_hash") @db.VarChar(255)
+  userAgent   String?   @map("user_agent")@db.Text
+  ipAddress   String?   @map("ip_address")@db.Text
+  isRevoked   Boolean   @map("is_revoked")@default(false)
+  createdAt   DateTime  @map("created_at")@default(now())
+  expiresAt   DateTime @map("expires_at")
+
+  user CapeUser @relation(fields: [userId], references: [userId]) // (1 to many relation)
+
+// @@map("refresh_tokens") tells Prisma: “Use this exact table name in the database.”
+  @@map("cape_refresh_tokens")  // maps Prisma model to SQL table name
+}
+
+model PasswordSetupToken {
+  id        String   @id @default(cuid())
+  email     String @db.NVarChar(255)
+  tokenHash String   @unique @map("token_hash") @db.NVarChar(100)
+  // expiresAt DateTime
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([email])
+
+  @@map("cape_password_setup_token")
+}
+
+// ===============================
+// LEARNWORLDS USER PROGRAM ENROLLMENT
+// ===============================
+
+model LearnWorldsProgram {
+  id Int @id @default(autoincrement())
+
+  productId     String?  @map("product_id") @db.NVarChar(128)
+  productTitle  String?  @map("product_title") @db.NVarChar(255)
+  productType   String?  @map("product_type") @db.NVarChar(50) // course | learning_program | bundle
+  productCurrency      String? @map("product_currency") @db.NVarChar(10)
+  productDescription   String? @map("product_description") @db.NVarChar(2000)
+  productPrice         Int?    @map("product_price")
+  productUrl    String? @map("product_url") @db.NVarChar(500)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // relations
+  enrollments LearnWorldsUserEnrollmentProgram[]
+
+  @@unique([productId])
+  @@index([productId])
+
+  @@map("learnworlds_programs")
+}
+
+// ===============================
+// JOIN TABLE: CapeUser <-> LearnWorldsProgram
+// Many users can enroll many programs
+// ===============================
+
+model LearnWorldsUserEnrollmentProgram {
+  id Int @id @default(autoincrement())
+
+  // FK -> CapeUser.userId (String cuid)
+  userId String @map("user_id") @db.NVarChar(100)
+  user   CapeUser @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+
+  // FK -> LearnWorldsProgram.productId (String)
+  productId String @map("product_id") @db.NVarChar(128)
+  program   LearnWorldsProgram @relation(fields: [productId], references: [productId], onUpdate: Cascade, onDelete: Cascade)
+
+  // (optional but recommended) enrollment metadata
+  enrolledAt DateTime? @default(now()) @map("enrolled_at")
+  status     String?  @map("status") @db.NVarChar(50) // active | completed | expired | etc
+  progress   Int?     @map("progress") // 0-100 if you want cached progress
+
+  @@unique([userId, productId]) // prevent duplicate enrollment rows
+  @@index([userId])
+  @@index([productId])
+
+  @@map("learnworlds_user_enrollment_program")
+}
+
+// ===============================
+// LEARNWORLDS USER PROGRAM ENROLLMENT
+// ===============================
+
+
+// ===============================
+// LEARNWORLDS TABLES
+// ===============================
+
+// model LearnWorldsUser {
+//   id            Int      @id @default(autoincrement())
+//   // business key from LearnWorlds
+//   learnworldsId String   @unique @map("learnworlds_id") @db.NVarChar(64)
+//   email         String   @unique @db.NVarChar(255)
+//   // your field name: who/what created the user (optional)
+//   // could be: "api-sync", "admin", "import", "learnworlds", etc.
+//   userCreated   String?  @map("user_created") @db.NVarChar(80)
+//   username      String?  @map("username") @db.NVarChar(120)
+//   status        String?  @map("status") @db.NVarChar(50) // ACTIVE / INACTIVE / BANNED (your app decides)
+//   isActive      Boolean  @default(true) @map("is_active")
+//   createdAt     DateTime @default(now()) @map("created_at")
+//   updatedAt     DateTime @updatedAt @map("updated_at")
+//   deletedAt     DateTime? @map("deleted_at")
+//   deletedBy     String?   @map("deleted_by") @db.NVarChar(100)
+
+//   // relations
+//   groupMemberships LearnWorldsUserGroupMembership[]
+//   programEnrollments LearnWorldsProgramEnrollment[]
+
+//   @@map("learnworlds_user")
+// }
+
+// model LearnWorldsUserGroupMembership {
+//   id                    Int      @id @default(autoincrement())
+//   learnworldsUserGroupId String  @map("learnworlds_user_group_id") @db.NVarChar(64)
+//   learnworldsUserId      String  @map("learnworlds_user_id") @db.NVarChar(64)
+//   learnworldsUserGroupTitle String? @map("learnworlds_user_group_title") @db.NVarChar(255)
+//   createdAt             DateTime @default(now()) @map("created_at")
+//   updatedAt             DateTime @updatedAt @map("updated_at")
+//   deletedAt             DateTime? @map("deleted_at")
+
+//   // relations (safe FK because LearnWorldsUser.learnworldsId is unique)
+//   user LearnWorldsUser @relation(fields: [learnworldsUserId], references: [learnworldsId], onUpdate: Cascade, onDelete: NoAction)
+
+//   // constraints/indexes
+//   @@unique([learnworldsUserGroupId, learnworldsUserId])
+//   @@index([learnworldsUserId])
+//   @@index([learnworldsUserGroupId])
+
+//   @@map("learnworlds_user_group_membership")
+// }
+
+// model LearnWorldsProgramEnrollment {
+//   id                     Int      @id @default(autoincrement())
+//   // program business id from LearnWorlds
+//   learnworldsProgramId   String   @map("learnworlds_program_id") @db.NVarChar(64)
+//   // the user enrolled (LearnWorlds user id)
+//   learnworldsUserId      String   @map("learnworlds_user_id") @db.NVarChar(64)
+//   learnworldsProgramTitle String? @map("learnworlds_program_title") @db.NVarChar(255)
+//   // your field name
+//   learnworldsUserEnrolledAt DateTime? @map("learnworlds_user_enrolled_at")
+
+//   createdAt              DateTime @default(now()) @map("created_at")
+//   updatedAt              DateTime @updatedAt @map("updated_at")
+//   deletedAt              DateTime? @map("deleted_at")
+
+//   // relations
+//   user LearnWorldsUser @relation(fields: [learnworldsUserId], references: [learnworldsId], onUpdate: Cascade, onDelete: NoAction)
+
+//   // constraints/indexes
+//   @@unique([learnworldsProgramId, learnworldsUserId])
+//   @@index([learnworldsUserId])
+//   @@index([learnworldsProgramId])
+
+//   @@map("learnworlds_program")
+// }
+
+// model LearnWorldsCohortProgramMap {
+//   id                   Int      @id @default(autoincrement())
+//   learnworldsProgramId  String  @map("learnworlds_program_id") @db.NVarChar(64)
+//   learnworldsUserGroupId String @map("learnworlds_user_group_id") @db.NVarChar(64)
+//   createdAt            DateTime @default(now()) @map("created_at")
+//   updatedAt            DateTime @updatedAt @map("updated_at")
+//   deletedAt            DateTime? @map("deleted_at")
+
+//   // constraints/indexes
+//   @@unique([learnworldsProgramId, learnworldsUserGroupId])
+//   @@index([learnworldsProgramId])
+//   @@index([learnworldsUserGroupId])
+
+//   @@map("learnworlds_cohort_program_map")
+// }

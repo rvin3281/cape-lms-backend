@@ -1,0 +1,36 @@
+// shared/constants/error-codes.ts (or @app/shared)
+export const EMAIL_PASSWORD_REQUIRED = 'EMAIL_PASSWORD_REQUIRED';
+export const EMAIL_NOT_FOUND = 'EMAIL_NOT_FOUND';
+
+// ✅ login-specific
+export const PASSWORD_HASH_MISSING = 'PASSWORD_HASH_MISSING';
+export const PASSWORD_INVALID = 'PASSWORD_INVALID';
+
+// ✅ auth/session
+export const UNAUTHENTICATED = 'UNAUTHENTICATED';
+export const UNAUTHENTICATED_NO_ACCESS_TOKEN =
+  'Unauthenticated No Access Token';
+
+export const UNAUTHENTICATED_PAYLOAD = 'Unauthenticated Payload Issue';
+
+export const UNAUTHENTICATED_NOROLE = 'UNAUTHENTICATED NO ROLE FOUND';
+
+export const UNAUTHENTICATED_NO_USER_FOUND = 'UNAUTHENTICATED NO USER FOUND';
+
+// ✅ refresh token
+export const REFRESH_TOKEN_MISSING = 'REFRESH_TOKEN_MISSING';
+export const REFRESH_TOKEN_INVALID = 'REFRESH_TOKEN_INVALID';
+
+// ✅ server/config (still useful for FE logging / fallback screen)
+export const JWT_SECRET_NOT_CONFIGURED = 'JWT_SECRET_NOT_CONFIGURED';
+export const ACCESS_TOKEN_INVALID = 'ACCESS_TOKEN_INVALID';
+
+export const EMAIL_FIELD_REQUIRED = 'EMAIL_FIELD_REQUIRED';
+export const PASSWORD_FIELD_REQUIRED = 'PASSWORD_FIELD_REQUIRED';
+export const CONFIRM_PASSWORD_FIELD_REQUIRED =
+  'CONFIRM_PASSWORD_FIELD_REQUIRED';
+export const PASSWORDS_DO_NOT_MATCH = 'PASSWORDS_DO_NOT_MATCH';
+export const USER_NOT_FOUND = 'USER_NOT_FOUND';
+
+export const LOGIN_USER_NOT_FOUND = 'LOGIN_USER_NOT_FOUND';
+export const VALIDATE_YOUR_EMAIL = 'VALIDATE_YOUR_EMAIL';

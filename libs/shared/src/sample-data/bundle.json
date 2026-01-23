@@ -1,0 +1,1258 @@
+{
+  "data": [
+    {
+      "id": "full-stack-foundations",
+      "title": "Full Stack Foundations",
+      "products": {
+        "courses": [
+          "html-css-basics",
+          "javascript-fundamentals",
+          "typescript-for-beginners",
+          "react-essentials",
+          "nextjs-app-router",
+          "nodejs-api-basics",
+          "rest-api-design",
+          "sql-fundamentals",
+          "git-and-github",
+          "deploying-to-cloud"
+        ]
+      },
+      "image": null,
+      "description": "A structured learning path to build strong full stack foundations from frontend to backend and deployment.",
+      "access": "public",
+      "created": 1765351123.214,
+      "modified": 1765359821.774,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "backend-mastery-node-nest",
+      "title": "Backend Mastery: Node & Nest",
+      "products": {
+        "courses": [
+          "nodejs-runtime-deep-dive",
+          "nestjs-fundamentals",
+          "nestjs-modules-and-di",
+          "rest-api-with-nestjs",
+          "auth-jwt-basics",
+          "prisma-with-sql",
+          "database-indexing",
+          "redis-caching",
+          "testing-with-jest",
+          "api-observability"
+        ]
+      },
+      "image": null,
+      "description": "Backend-focused program to master Node.js and NestJS with real API patterns, caching, testing, and observability.",
+      "access": "private",
+      "created": 1765284412.509,
+      "modified": 1765290044.091,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "frontend-pro-nextjs",
+      "title": "Frontend Pro: Next.js",
+      "products": {
+        "courses": [
+          "react-hooks-in-practice",
+          "typescript-advanced",
+          "nextjs-routing-layouts",
+          "nextjs-server-actions",
+          "nextjs-auth-patterns",
+          "tailwind-ui-systems",
+          "shadcn-ui-components",
+          "state-management",
+          "frontend-testing",
+          "performance-optimization"
+        ]
+      },
+      "image": null,
+      "description": "Become a confident Next.js developer with production-ready routing, UI systems, auth patterns, and performance skills.",
+      "access": "public",
+      "created": 1765412033.118,
+      "modified": 1765418460.663,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "devops-for-developers",
+      "title": "DevOps for Developers",
+      "products": {
+        "courses": [
+          "linux-cli-basics",
+          "docker-fundamentals",
+          "docker-compose-workflows",
+          "ci-cd-pipelines",
+          "jenkins-basics",
+          "gitlab-ci-basics",
+          "kubernetes-essentials",
+          "deployment-strategies",
+          "logging-and-monitoring",
+          "cloud-basics-aws"
+        ]
+      },
+      "image": null,
+      "description": "A practical DevOps program covering containers, CI/CD, Kubernetes basics, and reliable deployment workflows.",
+      "access": "public",
+      "created": 1765209932.807,
+      "modified": 1765213411.559,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "data-sql-analytics-track",
+      "title": "Data & SQL Analytics Track",
+      "products": {
+        "courses": [
+          "sql-fundamentals",
+          "sql-joins-masterclass",
+          "sql-window-functions",
+          "data-modeling-basics",
+          "postgresql-performance",
+          "reporting-dashboards",
+          "etl-basics",
+          "data-quality-checks",
+          "analytics-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Learn SQL analytics end-to-end: joins, windows, modeling, performance tuning, and practical reporting workflows.",
+      "access": "public",
+      "created": 1765124031.445,
+      "modified": 1765131022.983,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "java-spring-boot-career-path",
+      "title": "Java Spring Boot Career Path",
+      "products": {
+        "courses": [
+          "java-11-fundamentals",
+          "oop-in-java",
+          "spring-boot-basics",
+          "spring-rest-apis",
+          "spring-security-jwt",
+          "jpa-hibernate",
+          "testing-junit-mockito",
+          "microservices-patterns",
+          "system-design-basics",
+          "deploying-java-apps"
+        ]
+      },
+      "image": null,
+      "description": "A career path for Java developers covering Java 11, Spring Boot APIs, security, persistence, testing, and deployment.",
+      "access": "public",
+      "created": 1765382201.692,
+      "modified": 1765389920.214,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 199,
+      "paymentPlans": []
+    },
+    {
+      "id": "cloud-aws-starter-pack",
+      "title": "Cloud AWS Starter Pack",
+      "products": {
+        "courses": [
+          "cloud-basics-aws",
+          "iam-and-security",
+          "vpc-networking",
+          "ec2-and-storage",
+          "load-balancers",
+          "route-53-dns",
+          "s3-and-cloudfront",
+          "ecr-and-containers",
+          "monitoring-cloudwatch"
+        ]
+      },
+      "image": null,
+      "description": "Start building on AWS with core services: security, networking, compute, storage, and container fundamentals.",
+      "access": "public",
+      "created": 1765317702.083,
+      "modified": 1765321019.442,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "kubernetes-in-practice",
+      "title": "Kubernetes in Practice",
+      "products": {
+        "courses": [
+          "kubernetes-essentials",
+          "pods-and-deployments",
+          "services-and-ingress",
+          "configmaps-and-secrets",
+          "helm-basics",
+          "k8s-observability",
+          "k8s-security-basics",
+          "autoscaling-strategies",
+          "blue-green-deployments"
+        ]
+      },
+      "image": null,
+      "description": "Hands-on Kubernetes learning path from deployments and networking to Helm, scaling, and safe releases.",
+      "access": "private",
+      "created": 1765191120.337,
+      "modified": 1765199905.605,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "software-testing-qa-bootcamp",
+      "title": "Software Testing & QA Bootcamp",
+      "products": {
+        "courses": [
+          "testing-fundamentals",
+          "unit-testing-javascript",
+          "jest-and-mocking",
+          "api-testing-postman",
+          "integration-testing",
+          "e2e-testing-playwright",
+          "test-strategy",
+          "bug-triage-and-reporting",
+          "ci-testing-pipelines"
+        ]
+      },
+      "image": null,
+      "description": "A QA-focused program covering unit, integration, and E2E testing with practical tooling and CI best practices.",
+      "access": "public",
+      "created": 1765248804.911,
+      "modified": 1765251042.227,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "api-design-and-architecture",
+      "title": "API Design & Architecture",
+      "products": {
+        "courses": [
+          "rest-api-design",
+          "api-versioning",
+          "openapi-and-swagger",
+          "auth-jwt-basics",
+          "rate-limiting",
+          "pagination-patterns",
+          "error-handling-standards",
+          "distributed-systems-basics",
+          "api-gateway-patterns"
+        ]
+      },
+      "image": null,
+      "description": "Design reliable APIs with consistent patterns: versioning, docs, auth, pagination, rate limits, and architecture.",
+      "access": "public",
+      "created": 1765400102.408,
+      "modified": 1765405529.119,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "mobile-app-starter-react-native",
+      "title": "Mobile App Starter: React Native",
+      "products": {
+        "courses": [
+          "react-native-basics",
+          "navigation-and-routing",
+          "mobile-ui-components",
+          "state-management-mobile",
+          "api-integration-mobile",
+          "push-notifications",
+          "offline-storage",
+          "mobile-testing",
+          "app-store-deployment"
+        ]
+      },
+      "image": null,
+      "description": "Build and ship a React Native app with navigation, API integration, offline support, testing, and deployment basics.",
+      "access": "public",
+      "created": 1765137709.062,
+      "modified": 1765142201.43,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "ui-ux-for-developers",
+      "title": "UI/UX for Developers",
+      "products": {
+        "courses": [
+          "ux-foundations",
+          "design-systems-basics",
+          "color-and-typography",
+          "responsive-layouts",
+          "component-driven-ui",
+          "accessibility-basics",
+          "interaction-design",
+          "figma-handoff",
+          "ui-polish-techniques"
+        ]
+      },
+      "image": null,
+      "description": "A practical UI/UX program for developers focusing on responsive layouts, design systems, accessibility, and polish.",
+      "access": "public",
+      "created": 1765334020.256,
+      "modified": 1765339901.681,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "system-design-interview-prep",
+      "title": "System Design Interview Prep",
+      "products": {
+        "courses": [
+          "system-design-basics",
+          "scalability-patterns",
+          "caching-strategies",
+          "database-sharding",
+          "message-queues",
+          "distributed-tracing",
+          "load-balancing",
+          "designing-apis",
+          "case-study-url-shortener",
+          "case-study-feed-system"
+        ]
+      },
+      "image": null,
+      "description": "Prepare for system design interviews with real scalability patterns, case studies, and clear architecture tradeoffs.",
+      "access": "public",
+      "created": 1765261122.999,
+      "modified": 1765268450.32,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "enterprise-auth-security",
+      "title": "Enterprise Auth & Security",
+      "products": {
+        "courses": [
+          "security-basics",
+          "auth-jwt-basics",
+          "oauth2-and-oidc",
+          "session-management",
+          "rbac-and-permissions",
+          "secure-coding-practices",
+          "api-security",
+          "secrets-management",
+          "security-testing"
+        ]
+      },
+      "image": null,
+      "description": "A security-focused program covering authentication, OAuth/OIDC, RBAC, secure coding, and API protection patterns.",
+      "access": "public",
+      "created": 1765178801.124,
+      "modified": 1765182212.906,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "product-management-for-tech",
+      "title": "Product Management for Tech",
+      "products": {
+        "courses": [
+          "product-thinking",
+          "user-research-basics",
+          "writing-user-stories",
+          "prioritization-frameworks",
+          "roadmap-planning",
+          "agile-scrum-basics",
+          "stakeholder-management",
+          "metrics-and-kpis",
+          "product-launch-playbook"
+        ]
+      },
+      "image": null,
+      "description": "A product program for tech teams covering discovery, prioritization, agile delivery, and measurable launch outcomes.",
+      "access": "public",
+      "created": 1765361009.803,
+      "modified": 1765365532.271,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "career-ready-interview-pack",
+      "title": "Career Ready Interview Pack",
+      "products": {
+        "courses": [
+          "resume-optimization",
+          "behavioral-interview-star",
+          "sql-interview-practice",
+          "javascript-coding-drills",
+          "java-coding-drills",
+          "system-design-basics",
+          "take-home-assessments",
+          "mock-interviews",
+          "negotiation-basics"
+        ]
+      },
+      "image": null,
+      "description": "A career-focused program to strengthen resumes, interview storytelling, coding drills, and overall hiring readiness.",
+      "access": "public",
+      "created": 1765302280.17,
+      "modified": 1765309999.744,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "analytics-engineering-track",
+      "title": "Analytics Engineering Track",
+      "products": {
+        "courses": [
+          "data-warehouse-basics",
+          "dimensional-modeling",
+          "dbt-fundamentals",
+          "sql-window-functions",
+          "incremental-models",
+          "data-testing",
+          "orchestration-basics",
+          "bi-semantic-layer",
+          "analytics-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Build analytics-ready data models with modern practices like dbt, testing, incremental pipelines, and semantic layers.",
+      "access": "public",
+      "created": 1765226642.612,
+      "modified": 1765232011.055,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "open-source-contributor-path",
+      "title": "Open Source Contributor Path",
+      "products": {
+        "courses": [
+          "git-and-github",
+          "open-source-workflows",
+          "issues-and-prs",
+          "code-review-best-practices",
+          "writing-documentation",
+          "semantic-versioning",
+          "release-management",
+          "community-collaboration"
+        ]
+      },
+      "image": null,
+      "description": "Learn how to contribute to open source with practical GitHub workflows, PR etiquette, releases, and collaboration.",
+      "access": "public",
+      "created": 1765153321.901,
+      "modified": 1765159000.218,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "ai-for-software-engineers",
+      "title": "AI for Software Engineers",
+      "products": {
+        "courses": [
+          "ai-foundations",
+          "prompt-engineering",
+          "llm-integration-basics",
+          "vector-search-basics",
+          "rag-architecture",
+          "ai-evaluation",
+          "ai-safety-basics",
+          "building-ai-features"
+        ]
+      },
+      "image": null,
+      "description": "An AI-focused program to help engineers integrate LLM features, RAG, evaluation, and safe AI practices into products.",
+      "access": "public",
+      "created": 1765391102.43,
+      "modified": 1765397720.889,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 149,
+      "paymentPlans": []
+    },
+    {
+      "id": "microservices-and-event-driven",
+      "title": "Microservices & Event-Driven Systems",
+      "products": {
+        "courses": [
+          "microservices-patterns",
+          "api-gateway-patterns",
+          "event-driven-basics",
+          "message-queues",
+          "saga-pattern",
+          "outbox-pattern",
+          "distributed-tracing",
+          "service-resilience",
+          "deployment-strategies",
+          "observability-stack"
+        ]
+      },
+      "image": null,
+      "description": "A deep-dive program into microservices and event-driven architecture with patterns for resilience and observability.",
+      "access": "public",
+      "created": 1765279010.712,
+      "modified": 1765285503.166,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": {
+          "url": null,
+          "page": null
+        }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "cohort-01-oil-gas-foundations",
+      "title": "Cohort 1: Oil & Gas Foundations",
+      "products": {
+        "courses": [
+          "oil-and-gas-industry-overview",
+          "upstream-midstream-downstream",
+          "drilling-basics",
+          "reservoir-engineering-intro",
+          "hse-safety-basics",
+          "oil-and-gas-economics",
+          "production-operations",
+          "regulatory-compliance",
+          "case-studies-oil-gas"
+        ]
+      },
+      "image": null,
+      "description": "Cohort-based introduction to oil & gas industry covering operations, safety, economics, and real-world case studies.",
+      "access": "public",
+      "created": 1765501001.101,
+      "modified": 1765501001.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "cohort-02-industry-4-0-manufacturing",
+      "title": "Cohort 2: Industry 4.0 & Smart Manufacturing",
+      "products": {
+        "courses": [
+          "industry-4-0-overview",
+          "iot-in-manufacturing",
+          "digital-twins-basics",
+          "smart-factories",
+          "robotics-process-automation",
+          "predictive-maintenance",
+          "manufacturing-analytics",
+          "cybersecurity-ot",
+          "industry-4-0-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Learn how smart factories leverage IoT, automation, analytics, and digital twins in Industry 4.0 environments.",
+      "access": "public",
+      "created": 1765501101.101,
+      "modified": 1765501101.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "cohort-03-renewable-energy",
+      "title": "Cohort 3: Renewable Energy & Sustainability",
+      "products": {
+        "courses": [
+          "renewable-energy-basics",
+          "solar-energy-systems",
+          "wind-energy-fundamentals",
+          "energy-storage-systems",
+          "grid-integration",
+          "carbon-accounting",
+          "esg-fundamentals",
+          "energy-policy-regulation",
+          "renewable-project-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Explore renewable energy systems, ESG principles, and sustainability-driven energy projects.",
+      "access": "public",
+      "created": 1765501201.101,
+      "modified": 1765501201.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "cohort-04-supply-chain-operations",
+      "title": "Cohort 4: Supply Chain & Operations Excellence",
+      "products": {
+        "courses": [
+          "supply-chain-basics",
+          "procurement-management",
+          "inventory-optimization",
+          "logistics-and-distribution",
+          "lean-six-sigma-basics",
+          "demand-forecasting",
+          "supply-chain-analytics",
+          "risk-management",
+          "operations-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A cohort program focused on modern supply chain operations, analytics, and optimization strategies.",
+      "access": "public",
+      "created": 1765501301.101,
+      "modified": 1765501301.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "cohort-05-fintech-and-banking",
+      "title": "Cohort 5: FinTech & Digital Banking",
+      "products": {
+        "courses": [
+          "financial-systems-basics",
+          "banking-operations",
+          "payments-and-settlement",
+          "fintech-landscape",
+          "digital-wallets",
+          "fraud-detection-basics",
+          "regulatory-compliance-finance",
+          "risk-and-controls",
+          "fintech-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Understand digital banking, fintech platforms, payments, compliance, and financial innovation.",
+      "access": "public",
+      "created": 1765501401.101,
+      "modified": 1765501401.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "cohort-06-healthcare-operations",
+      "title": "Cohort 6: Healthcare Operations & Digital Health",
+      "products": {
+        "courses": [
+          "healthcare-industry-overview",
+          "hospital-operations",
+          "electronic-health-records",
+          "healthcare-data-privacy",
+          "telemedicine-systems",
+          "healthcare-analytics",
+          "process-improvement-healthcare",
+          "regulatory-compliance-health",
+          "healthcare-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Cohort-based learning on healthcare systems, operations, compliance, and digital health innovation.",
+      "access": "public",
+      "created": 1765501501.101,
+      "modified": 1765501501.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "cohort-07-project-management",
+      "title": "Cohort 7: Project & Program Management",
+      "products": {
+        "courses": [
+          "project-management-basics",
+          "pmp-frameworks",
+          "agile-scrum-basics",
+          "stakeholder-management",
+          "risk-and-issue-management",
+          "program-management",
+          "delivery-governance",
+          "project-financials",
+          "project-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Learn structured project and program management frameworks used across industries.",
+      "access": "public",
+      "created": 1765501601.101,
+      "modified": 1765501601.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "cohort-08-business-analytics",
+      "title": "Cohort 8: Business Analytics & Decision Making",
+      "products": {
+        "courses": [
+          "business-analytics-basics",
+          "excel-for-analytics",
+          "sql-fundamentals",
+          "data-visualization",
+          "kpis-and-metrics",
+          "forecasting-techniques",
+          "decision-modeling",
+          "analytics-storytelling",
+          "business-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A cohort program focused on data-driven decision-making using analytics and business metrics.",
+      "access": "public",
+      "created": 1765501701.101,
+      "modified": 1765501701.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "cohort-09-esg-and-sustainability",
+      "title": "Cohort 9: ESG, Climate & Corporate Sustainability",
+      "products": {
+        "courses": [
+          "esg-fundamentals",
+          "climate-risk-basics",
+          "sustainability-reporting",
+          "carbon-footprint-management",
+          "green-finance",
+          "regulatory-standards-esg",
+          "supply-chain-sustainability",
+          "impact-measurement",
+          "esg-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Learn ESG frameworks, sustainability metrics, and climate-related risk management.",
+      "access": "public",
+      "created": 1765501801.101,
+      "modified": 1765501801.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "cohort-10-smart-cities",
+      "title": "Cohort 10: Smart Cities & Urban Innovation",
+      "products": {
+        "courses": [
+          "smart-cities-overview",
+          "urban-infrastructure",
+          "iot-for-smart-cities",
+          "transportation-systems",
+          "energy-and-utilities",
+          "public-safety-tech",
+          "data-driven-urban-planning",
+          "policy-and-governance",
+          "smart-city-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Explore how technology, data, and policy enable smart and sustainable urban environments.",
+      "access": "public",
+      "created": 1765501901.101,
+      "modified": 1765501901.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "energy-transition-leadership",
+      "title": "Energy Transition Leadership Program",
+      "products": {
+        "courses": [
+          "energy-transition-basics",
+          "renewable-energy-basics",
+          "carbon-accounting",
+          "grid-modernization",
+          "energy-storage-systems",
+          "climate-policy",
+          "sustainable-investment",
+          "energy-economics",
+          "transition-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A leadership-focused cohort on navigating the global transition from fossil fuels to clean energy systems.",
+      "access": "public",
+      "created": 1765502001.101,
+      "modified": 1765502001.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "industrial-automation-bootcamp",
+      "title": "Industrial Automation Bootcamp",
+      "products": {
+        "courses": [
+          "industrial-automation-basics",
+          "plc-fundamentals",
+          "scada-systems",
+          "robotics-process-automation",
+          "iot-in-manufacturing",
+          "control-systems",
+          "predictive-maintenance",
+          "industrial-safety",
+          "automation-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Hands-on cohort covering PLCs, SCADA, robotics, and automation systems used in modern industries.",
+      "access": "public",
+      "created": 1765502101.101,
+      "modified": 1765502101.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "oil-gas-digital-transformation",
+      "title": "Oil & Gas Digital Transformation",
+      "products": {
+        "courses": [
+          "oil-and-gas-industry-overview",
+          "digital-oilfield",
+          "iot-in-energy",
+          "data-analytics-for-energy",
+          "asset-management",
+          "predictive-maintenance",
+          "cybersecurity-ot",
+          "change-management",
+          "digital-oil-gas-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Learn how digital technologies are transforming exploration, production, and operations in oil & gas.",
+      "access": "public",
+      "created": 1765502201.101,
+      "modified": 1765502201.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "corporate-strategy-and-ops",
+      "title": "Corporate Strategy & Operations Program",
+      "products": {
+        "courses": [
+          "business-strategy-basics",
+          "competitive-analysis",
+          "operating-models",
+          "process-optimization",
+          "cost-management",
+          "kpis-and-metrics",
+          "change-management",
+          "strategy-execution",
+          "corporate-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A cohort program for professionals focused on strategy formulation and operational excellence.",
+      "access": "public",
+      "created": 1765502301.101,
+      "modified": 1765502301.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "manufacturing-quality-excellence",
+      "title": "Manufacturing Quality & Excellence",
+      "products": {
+        "courses": [
+          "quality-management-basics",
+          "lean-six-sigma-basics",
+          "process-control",
+          "root-cause-analysis",
+          "continuous-improvement",
+          "manufacturing-analytics",
+          "audit-and-compliance",
+          "supplier-quality",
+          "quality-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Focus on quality systems, continuous improvement, and operational excellence in manufacturing.",
+      "access": "public",
+      "created": 1765502401.101,
+      "modified": 1765502401.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "logistics-and-global-trade",
+      "title": "Logistics & Global Trade Program",
+      "products": {
+        "courses": [
+          "logistics-basics",
+          "international-trade",
+          "customs-and-compliance",
+          "warehouse-management",
+          "transportation-systems",
+          "supply-chain-risk",
+          "trade-finance",
+          "global-distribution",
+          "logistics-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Understand global logistics, trade compliance, and cross-border supply chain operations.",
+      "access": "public",
+      "created": 1765502501.101,
+      "modified": 1765502501.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "financial-risk-and-compliance",
+      "title": "Financial Risk & Compliance Program",
+      "products": {
+        "courses": [
+          "financial-risk-basics",
+          "credit-risk",
+          "market-risk",
+          "operational-risk",
+          "regulatory-compliance-finance",
+          "internal-controls",
+          "audit-management",
+          "governance-frameworks",
+          "risk-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A cohort covering financial risk management, compliance, governance, and regulatory frameworks.",
+      "access": "public",
+      "created": 1765502601.101,
+      "modified": 1765502601.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "health-safety-environment",
+      "title": "Health, Safety & Environment (HSE)",
+      "products": {
+        "courses": [
+          "hse-foundations",
+          "workplace-safety",
+          "environmental-management",
+          "risk-assessment",
+          "incident-investigation",
+          "emergency-response",
+          "regulatory-standards-hse",
+          "safety-culture",
+          "hse-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A critical cohort program on HSE practices across industrial and corporate environments.",
+      "access": "public",
+      "created": 1765502701.101,
+      "modified": 1765502701.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "digital-procurement",
+      "title": "Digital Procurement & Sourcing",
+      "products": {
+        "courses": [
+          "procurement-management",
+          "strategic-sourcing",
+          "supplier-relationship-management",
+          "digital-procurement-tools",
+          "contract-management",
+          "cost-analysis",
+          "risk-and-compliance",
+          "procurement-analytics",
+          "procurement-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Modern procurement cohort focusing on digital tools, sourcing strategy, and supplier management.",
+      "access": "public",
+      "created": 1765502801.101,
+      "modified": 1765502801.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+    {
+      "id": "operations-leadership-program",
+      "title": "Operations Leadership Program",
+      "products": {
+        "courses": [
+          "operations-management",
+          "lean-operations",
+          "capacity-planning",
+          "process-optimization",
+          "performance-management",
+          "people-leadership",
+          "change-management",
+          "operational-risk",
+          "leadership-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Leadership-focused cohort for managing large-scale operations and teams.",
+      "access": "public",
+      "created": 1765502901.101,
+      "modified": 1765502901.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "ai-in-business-operations",
+      "title": "AI in Business & Operations",
+      "products": {
+        "courses": [
+          "ai-foundations",
+          "ai-for-business",
+          "process-automation",
+          "predictive-analytics",
+          "decision-support-systems",
+          "ai-ethics",
+          "change-management",
+          "ai-governance",
+          "ai-business-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "A non-technical cohort focused on applying AI to business operations and decision-making.",
+      "access": "public",
+      "created": 1765503001.101,
+      "modified": 1765503001.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    },
+
+    {
+      "id": "smart-infrastructure-program",
+      "title": "Smart Infrastructure Program",
+      "products": {
+        "courses": [
+          "infrastructure-basics",
+          "iot-for-infrastructure",
+          "asset-lifecycle-management",
+          "predictive-maintenance",
+          "energy-efficient-design",
+          "urban-mobility",
+          "public-private-partnerships",
+          "infrastructure-finance",
+          "infrastructure-case-studies"
+        ]
+      },
+      "image": null,
+      "description": "Explore smart infrastructure systems combining technology, finance, and urban planning.",
+      "access": "public",
+      "created": 1765503101.101,
+      "modified": 1765503101.101,
+      "afterPurchase": {
+        "type": "afterlogin",
+        "settings": { "url": null, "page": null }
+      },
+      "price": 0,
+      "paymentPlans": []
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "totalItems": 50,
+    "totalPages": 3,
+    "itemsPerPage": 20
+  }
+}

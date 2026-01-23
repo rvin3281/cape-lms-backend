@@ -1,0 +1,11 @@
+1. Create a new module
+nest g module services/webhook-services --no-spec
+- This will create a webhook-service folder inside services folder with webhook-service.module.This
+
+2. Create controller
+nest g controller services/webhook-services --no-spec
+- This wil create webhook-services.controller.ts on the webhook-services folder
+
+3. Create services
+ nest g service services/webhook-services --no-spec
+- This wil create webhook-services.services.ts on the webhook-services folder
