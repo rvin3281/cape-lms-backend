@@ -36,6 +36,7 @@ import {
   EMAIL_NOT_FOUND_QUERY,
   PASSWORD_FIELD_REQUIRED,
 } from '@app/shared/constant/error-item.constants';
+import { LearnworldsGateway } from '@app/shared/learnworlds/learnworlds.gateway';
 import { HttpService } from '@nestjs/axios';
 import {
   BadGatewayException,
@@ -78,6 +79,7 @@ export class AuthServiceService {
     private readonly refreshTokenRepo: RefreshTokenRepository,
     private readonly http: HttpService,
     private readonly capePasswordSetupTokenRepo: CapePasswordSetupTokenRepository,
+    private readonly learnworldsGateway: LearnworldsGateway,
   ) {}
 
   async onBoardingUser(dto: CapeOnboardingProfileDto): Promise<any> {
@@ -159,38 +161,60 @@ export class AuthServiceService {
           },
         };
 
-        const lwConfig = this.config.get<any>('learnworls');
+        // const lwConfig = this.config.get<any>('learnworls');
 
-        const res = await firstValueFrom(
-          this.http.put(url, updateData, {
-            headers: {
-              Authorization: `Bearer ${lwConfig.learnworld_bearer_token}`,
-              'Lw-Client': lwConfig.learnworld_lw_client_id,
-              Accept: 'application/json',
-            },
-            baseURL: lwConfig.learnworld_api_base_url,
-          }),
+        const res = await this.learnworldsGateway.updateUserByEmail(
+          url,
+          updateData,
         );
+        // const res = await firstValueFrom(
+        //   this.http.put(url, updateData, {
+        //     headers: {
+        //       Authorization: `Bearer ${lwConfig.learnworld_bearer_token}`,
+        //       'Lw-Client': lwConfig.learnworld_lw_client_id,
+        //       Accept: 'application/json',
+        //     },
+        //     baseURL: lwConfig.learnworld_api_base_url,
+        //   }),
+        // );
 
-        if (!res || res.status !== 200) {
-          throw new BadGatewayException(
-            errorResponseBuilder(
-              'ONBOARDING_ERROR',
-              [
-                {
-                  code: 'ONBOARDING_LEARNWORLDS_UPDATE_FAILED',
-                },
-              ],
-              'Unable to update user profile on learning platform. Please try again later.',
-            ),
+        // if (!res || res?.response.status !== 200) {
+        //   throw new BadGatewayException(
+        //     errorResponseBuilder(
+        //       'ONBOARDING_ERROR',
+        //       [
+        //         {
+        //           code: 'ONBOARDING_LEARNWORLDS_UPDATE_FAILED',
+        //         },
+        //       ],
+        //       'Unable to update user profile on learning platform. Please try again later.',
+        //     ),
+        //   );
+        // }
+
+        // If LW is disabled, treat it as success (skip external call)
+        if (res.skipped) {
+          // Optional We can throw an error
+          this.logger.warn(
+            `[LW DISABLED] Proceeding without LW update for ${dto.email}. User Data not Updated on LW`,
           );
+        } else {
+          if (res.response.status !== 200) {
+            throw new BadGatewayException(
+              errorResponseBuilder(
+                'ONBOARDING_ERROR',
+                [{ code: 'ONBOARDING_LEARNWORLDS_UPDATE_FAILED' }],
+                'Unable to update user profile on learning platform. Please try again later.',
+              ),
+            );
+          }
         }
       }
 
       // 5) Persist to DB in ONE transaction (custom db must reflect LW changes)
       //    - If LW update succeeded, we update CapeUser first/last + learner profile cf_company
-      //    - Always upsert/create CapeUserProfiles (v2)
-      //    - Finally set isFirstTimeLogin = false
+      //    - upsert/create CapeUserProfiles (v2)
+      //    - set isFirstTimeLogin = false
       const result = await this.capeUserRepo['prisma'].$transaction(
         async (tx: Prisma.TransactionClient) => {
           // 5a) If name/org changed -> update custom db to match

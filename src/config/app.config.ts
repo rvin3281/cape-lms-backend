@@ -40,5 +40,6 @@ export default () => ({
     learnworld_lw_client_id: process.env.LEARNWORLD_LW_CLIENT_ID,
     learnworld_bearer_token: process.env.LEARNWORLD_BEARER_TOKEN,
     learnworld_sso_path: process.env.LEARNWORLDS_SSO_PATH,
+    learnworlds_enable: process.env.LEARNWORLDS_ENABLE === 'true',
   },
 });
