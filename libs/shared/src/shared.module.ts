@@ -1,9 +1,13 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { SharedService } from './shared.service';
+import { ConfigModule } from '@nestjs/config';
+import { LearnworldsGateway } from './learnworlds/learnworlds.gateway';
 import { MockDataService } from './mock-data.service';
+import { SharedService } from './shared.service';
 
 @Module({
-  providers: [SharedService, MockDataService],
-  exports: [SharedService, MockDataService],
+  imports: [HttpModule, ConfigModule],
+  providers: [SharedService, MockDataService, LearnworldsGateway],
+  exports: [SharedService, MockDataService, LearnworldsGateway],
 })
 export class SharedModule {}
