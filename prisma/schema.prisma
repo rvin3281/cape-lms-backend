@@ -201,6 +201,19 @@ model LearnWorldsUserEnrollmentProgram {
   @@map("learnworlds_user_enrollment_program")
 }
 
+model AzureRedisTestRecord {
+  id          String   @id @default(cuid())
+  externalId  String   @unique // from excel row: e.g. "EMP001"
+  email       String?
+  fullName    String?
+  status      String   @default("pending") // pending | processed | updated | failed
+  attempts    Int      @default(0)
+  lastMessage String?
+  payload     String?  @db.NVarChar(Max) // store JSON as string (MSSQL)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 // ===============================
 // LEARNWORLDS USER PROGRAM ENROLLMENT
 // ===============================

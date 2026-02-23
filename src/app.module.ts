@@ -29,12 +29,16 @@ import { WebhookServicesModule } from './services/webhook-services/webhook-servi
           throw new Error('Missing redis config');
         }
 
+        const isProduction = process.env.NODE_ENV === 'production';
+
         const res = {
           connection: {
             host: redis.host,
             port: redis.port,
             password: redis.password,
             db: redis.db,
+            tls: isProduction ? { rejectUnauthorized: false } : undefined,
+            maxRetriesPerRequest: null,
           },
           defaultJobOptions: {
             attempts: 5,

@@ -18,6 +18,7 @@ export default () => ({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     name: process.env.DB_NAME,
+    trustServerCertificate: process.env.DB_TRUST_SERVER_CERTIFICATE === 'true',
   },
 
   /** Redis (BullMQ) */

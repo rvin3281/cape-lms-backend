@@ -58,7 +58,8 @@ export const ModelName = {
   RefreshToken: 'RefreshToken',
   PasswordSetupToken: 'PasswordSetupToken',
   LearnWorldsProgram: 'LearnWorldsProgram',
-  LearnWorldsUserEnrollmentProgram: 'LearnWorldsUserEnrollmentProgram'
+  LearnWorldsUserEnrollmentProgram: 'LearnWorldsUserEnrollmentProgram',
+  AzureRedisTestRecord: 'AzureRedisTestRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -207,6 +208,22 @@ export const LearnWorldsUserEnrollmentProgramScalarFieldEnum = {
 } as const
 
 export type LearnWorldsUserEnrollmentProgramScalarFieldEnum = (typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum)[keyof typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum]
+
+
+export const AzureRedisTestRecordScalarFieldEnum = {
+  id: 'id',
+  externalId: 'externalId',
+  email: 'email',
+  fullName: 'fullName',
+  status: 'status',
+  attempts: 'attempts',
+  lastMessage: 'lastMessage',
+  payload: 'payload',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AzureRedisTestRecordScalarFieldEnum = (typeof AzureRedisTestRecordScalarFieldEnum)[keyof typeof AzureRedisTestRecordScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -13,6 +13,7 @@ interface DatabaseConfig {
   user: string;
   password: string;
   name: string;
+  trustServerCertificate: boolean;
 }
 
 @Injectable()
@@ -35,7 +36,7 @@ export class PrismaService
       database: dbConfig.name,
       options: {
         encrypt: true,
-        trustServerCertificate: true,
+        trustServerCertificate: dbConfig.trustServerCertificate,
       },
       pool: {
         max: 10,

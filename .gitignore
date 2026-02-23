@@ -62,3 +62,9 @@ commands-arvend/
 learnworlds-api/
 ngrok/
 webhook-response/
+
+dockercommand.txt
+docker-compose.yml
+cape-backend
+
+.env.production

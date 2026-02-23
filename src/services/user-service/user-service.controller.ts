@@ -1,4 +1,8 @@
-import { UserIdParamDto } from '@app/shared';
+import {
+  IUpdateCareerProfile,
+  UpdateOnboardingUserDto,
+  UserIdParamDto,
+} from '@app/shared';
 import { ApiSuccess } from '@app/shared/decorator/api-success.decorator';
 import { LearnWorldsSsoDto } from '@app/shared/dto/learnworlds-sso.dto';
 import {
@@ -7,6 +11,7 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -47,5 +52,18 @@ export class UserServiceController {
   async getUserProfileData(@Query() query: { email: string }) {
     const { email } = query;
     return this.userService.getUserProfileData(email);
+  }
+
+  @Patch('/user-profile/career')
+  @ApiSuccess({
+    code: 'UPDATE_USER_PROFILE_DATA',
+    message: 'success',
+  })
+  async updateUserProfileData(
+    @Query() query: UpdateOnboardingUserDto,
+    @Body() body: IUpdateCareerProfile,
+  ) {
+    const { email, type } = query;
+    return this.userService.updateUserProfileData(email, type, body);
   }
 }

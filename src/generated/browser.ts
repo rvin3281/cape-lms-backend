@@ -57,3 +57,8 @@ export type LearnWorldsProgram = Prisma.LearnWorldsProgramModel
  * 
  */
 export type LearnWorldsUserEnrollmentProgram = Prisma.LearnWorldsUserEnrollmentProgramModel
+/**
+ * Model AzureRedisTestRecord
+ * 
+ */
+export type AzureRedisTestRecord = Prisma.AzureRedisTestRecordModel

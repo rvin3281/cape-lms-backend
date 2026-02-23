@@ -15,4 +15,12 @@ export class CapeUserProfileV2Repository {
     const client = tx ?? this.prisma;
     return client.capeUserProfiles.create(data);
   }
+
+  updateUserProfile(
+    data: Prisma.CapeUserProfilesUpdateArgs,
+    tx?: PrismaTx,
+  ): Promise<CapeUserProfiles> {
+    const client = tx ?? this.prisma;
+    return client.capeUserProfiles.update(data);
+  }
 }

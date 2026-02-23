@@ -2,9 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { CapeUserRepository } from '@app/database';
+import { CapeUserProfileV2Repository, CapeUserRepository } from '@app/database';
 import { LearnWorldsUserEnrollmentProgramRepo } from '@app/database/repository/learnworlds-user-enrollment-program.repo';
-import { IGetUserOnBoardingProfile } from '@app/shared';
+import {
+  IGetUserOnBoardingProfile,
+  IUpdateCareerProfile,
+  OnboardingUpdateType,
+} from '@app/shared';
 import { HttpService } from '@nestjs/axios';
 import {
   BadGatewayException,
@@ -16,6 +20,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
+import { Prisma } from 'src/generated/client';
 import { errorResponseBuilder } from 'utils/errorResponseBuilder';
 import { handleServiceCatchError } from 'utils/handleServiceCatchError';
 
@@ -25,6 +30,7 @@ export class UserServiceService {
 
   constructor(
     private readonly capeUserRepo: CapeUserRepository,
+    private readonly capeUserProfileRepo: CapeUserProfileV2Repository,
     private readonly enrollmentRepo: LearnWorldsUserEnrollmentProgramRepo,
     private readonly http: HttpService,
     private readonly config: ConfigService,
@@ -162,6 +168,84 @@ export class UserServiceService {
       };
 
       return { userData };
+    } catch (error) {
+      handleServiceCatchError(error, this.logger);
+    }
+  }
+
+  async updateUserProfileData(
+    email: string,
+    type: OnboardingUpdateType,
+    dto: IUpdateCareerProfile,
+  ) {
+    try {
+      // Find User exist or not an get user id
+      const user = await this.capeUserRepo.getUserProfileData(email);
+
+      // UPDATE USER ACCOUNT PROILE
+      // if (type === 'ACCOUNT') {
+
+      // }
+
+      // get userId
+      const userId =
+        user?.userId ?? user?.profile?.userId ?? user?.userProfile?.userId;
+
+      // If not exist throw error
+      if (!user || !userId) {
+        throw new NotFoundException(errorResponseBuilder('USER_NOT_FOUND'));
+      }
+
+      // Ensure profile row exists if your system requires it
+      // If profile might not exist, consider upsert instead of update.
+      const profileExists = !!user?.profile || !!user?.userProfile; // adapt to your return structure
+
+      if (!profileExists) {
+        throw new NotFoundException(
+          errorResponseBuilder('USER_PROFILE_NOT_FOUND'),
+        );
+      }
+
+      // Map DTO to Prisma update input
+      const updateData: Prisma.CapeUserProfilesUpdateInput = {};
+
+      if (dto.currentRole !== undefined)
+        updateData.currentRole = dto.currentRole;
+      if (dto.targetRole !== undefined) updateData.targetRole = dto.targetRole;
+      if (dto.industry !== undefined) updateData.industry = dto.industry;
+      if (dto.careerGoals !== undefined)
+        updateData.careerGoals = dto.careerGoals;
+      if (dto.skills !== undefined) {
+        updateData.skillsJson = JSON.stringify(dto.skills);
+      }
+
+      // If client sends nothing return success
+      if (Object.keys(updateData).length === 0) {
+        return {
+          code: 'UPDATE_USER_PROFILE_DATA',
+          message: 'success',
+          data: user,
+        };
+      }
+
+      // Update user career profile
+      const updateProfile = await this.capeUserRepo['prisma'].$transaction(
+        async (tx: Prisma.TransactionClient) => {
+          return this.capeUserProfileRepo.updateUserProfile(
+            {
+              where: { userId },
+              data: updateData,
+            },
+            tx,
+          );
+        },
+      );
+
+      return {
+        code: 'UPDATE_USER_PROFILE_DATA',
+        message: 'success',
+        data: updateProfile,
+      };
     } catch (error) {
       handleServiceCatchError(error, this.logger);
     }

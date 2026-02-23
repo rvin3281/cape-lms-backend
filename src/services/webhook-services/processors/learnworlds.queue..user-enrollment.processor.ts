@@ -17,6 +17,7 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
 
   async process(job: Job<any, any, string>): Promise<any> {
     this.logger.log(`PROCESS() hit: ${job.name} | id=${job.id}`);
+
     switch (job.name) {
       case LW_QUEUE.jobs.USER_ENROLLMENT:
         return this.handleUserEnrollment(job);

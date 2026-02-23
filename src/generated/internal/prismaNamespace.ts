@@ -391,7 +391,8 @@ export const ModelName = {
   RefreshToken: 'RefreshToken',
   PasswordSetupToken: 'PasswordSetupToken',
   LearnWorldsProgram: 'LearnWorldsProgram',
-  LearnWorldsUserEnrollmentProgram: 'LearnWorldsUserEnrollmentProgram'
+  LearnWorldsUserEnrollmentProgram: 'LearnWorldsUserEnrollmentProgram',
+  AzureRedisTestRecord: 'AzureRedisTestRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "capeRole" | "capeUser" | "capeLearnerProfiles" | "capeUserProfiles" | "refreshToken" | "passwordSetupToken" | "learnWorldsProgram" | "learnWorldsUserEnrollmentProgram"
+    modelProps: "capeRole" | "capeUser" | "capeLearnerProfiles" | "capeUserProfiles" | "refreshToken" | "passwordSetupToken" | "learnWorldsProgram" | "learnWorldsUserEnrollmentProgram" | "azureRedisTestRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -939,6 +940,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AzureRedisTestRecord: {
+      payload: Prisma.$AzureRedisTestRecordPayload<ExtArgs>
+      fields: Prisma.AzureRedisTestRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AzureRedisTestRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AzureRedisTestRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.AzureRedisTestRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AzureRedisTestRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>
+        }
+        findMany: {
+          args: Prisma.AzureRedisTestRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>[]
+        }
+        create: {
+          args: Prisma.AzureRedisTestRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>
+        }
+        createMany: {
+          args: Prisma.AzureRedisTestRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AzureRedisTestRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>
+        }
+        update: {
+          args: Prisma.AzureRedisTestRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.AzureRedisTestRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AzureRedisTestRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AzureRedisTestRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureRedisTestRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.AzureRedisTestRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAzureRedisTestRecord>
+        }
+        groupBy: {
+          args: Prisma.AzureRedisTestRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AzureRedisTestRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AzureRedisTestRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AzureRedisTestRecordCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1110,6 +1177,22 @@ export const LearnWorldsUserEnrollmentProgramScalarFieldEnum = {
 export type LearnWorldsUserEnrollmentProgramScalarFieldEnum = (typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum)[keyof typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum]
 
 
+export const AzureRedisTestRecordScalarFieldEnum = {
+  id: 'id',
+  externalId: 'externalId',
+  email: 'email',
+  fullName: 'fullName',
+  status: 'status',
+  attempts: 'attempts',
+  lastMessage: 'lastMessage',
+  payload: 'payload',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AzureRedisTestRecordScalarFieldEnum = (typeof AzureRedisTestRecordScalarFieldEnum)[keyof typeof AzureRedisTestRecordScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1269,6 +1352,7 @@ export type GlobalOmitConfig = {
   passwordSetupToken?: Prisma.PasswordSetupTokenOmit
   learnWorldsProgram?: Prisma.LearnWorldsProgramOmit
   learnWorldsUserEnrollmentProgram?: Prisma.LearnWorldsUserEnrollmentProgramOmit
+  azureRedisTestRecord?: Prisma.AzureRedisTestRecordOmit
 }
 
 /* Types for Logging */
