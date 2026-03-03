@@ -129,7 +129,10 @@ export class CapeUserRepository {
       lastName?: string;
       company?: string;
     },
+    tx?: PrismaTx,
   ) {
+    const client = tx ?? this.prisma;
+
     const data: any = {};
 
     // ✅ Parent table updates (only if present)
@@ -147,7 +150,7 @@ export class CapeUserRepository {
       };
     }
 
-    return this.prisma.capeUser.update({
+    return client.capeUser.update({
       where: { email },
       data,
       include: {

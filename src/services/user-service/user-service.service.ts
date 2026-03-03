@@ -6,8 +6,8 @@ import { CapeUserProfileV2Repository, CapeUserRepository } from '@app/database';
 import { LearnWorldsUserEnrollmentProgramRepo } from '@app/database/repository/learnworlds-user-enrollment-program.repo';
 import {
   IGetUserOnBoardingProfile,
+  IUpdateAccountProfile,
   IUpdateCareerProfile,
-  OnboardingUpdateType,
 } from '@app/shared';
 import { HttpService } from '@nestjs/axios';
 import {
@@ -173,11 +173,7 @@ export class UserServiceService {
     }
   }
 
-  async updateUserProfileData(
-    email: string,
-    type: OnboardingUpdateType,
-    dto: IUpdateCareerProfile,
-  ) {
+  async updateUserProfileCareerData(email: string, dto: IUpdateCareerProfile) {
     try {
       // Find User exist or not an get user id
       const user = await this.capeUserRepo.getUserProfileData(email);
@@ -245,6 +241,94 @@ export class UserServiceService {
         code: 'UPDATE_USER_PROFILE_DATA',
         message: 'success',
         data: updateProfile,
+      };
+    } catch (error) {
+      handleServiceCatchError(error, this.logger);
+    }
+  }
+
+  async updateUserProfileAccountData(
+    email: string,
+    dto: IUpdateAccountProfile,
+  ) {
+    try {
+      // Find User exist or not an get user id
+      const user = await this.capeUserRepo.getUserProfileData(email);
+
+      // get userId
+      const userId =
+        user?.userId ?? user?.profile?.userId ?? user?.userProfile?.userId;
+
+      if (!user || !userId) {
+        throw new NotFoundException(errorResponseBuilder('USER_NOT_FOUND'));
+      }
+
+      // Ensure profile row exists if your system requires it
+      // If profile might not exist, consider upsert instead of update.
+      const profileExists = !!user?.profile || !!user?.userProfile; // adapt to your return structure
+
+      if (!profileExists) {
+        throw new NotFoundException(
+          errorResponseBuilder('USER_PROFILE_NOT_FOUND'),
+        );
+      }
+
+      // Map DTO to Prisma update input
+      const updateAccountData: Prisma.CapeUserUpdateInput = {};
+      const updateCareerData: Prisma.CapeUserProfilesUpdateInput = {};
+
+      if (dto.firstName !== undefined)
+        updateAccountData.firstName = dto.firstName;
+      if (dto.lastName !== undefined) updateAccountData.lastName = dto.lastName;
+      if (dto.jobTitle !== undefined) updateCareerData.jobTitle = dto.jobTitle;
+      if (dto.phoneNumber !== undefined)
+        updateCareerData.phoneNumber = dto.phoneNumber;
+
+      // If client sends nothing return success
+      if (
+        Object.keys(updateAccountData).length === 0 &&
+        Object.keys(updateCareerData).length === 0
+      ) {
+        return {
+          code: 'UPDATE_USER_PROFILE_DATA',
+          message: 'success',
+          data: user,
+        };
+      }
+
+      await this.capeUserRepo['prisma'].$transaction(
+        async (tx: Prisma.TransactionClient) => {
+          if (Object.keys(updateAccountData).length > 0) {
+            await this.capeUserRepo.updateUserData(
+              email,
+              {
+                firstName: dto.firstName,
+                lastName: dto.lastName,
+              },
+              tx,
+            );
+          }
+
+          if (Object.keys(updateCareerData).length > 0) {
+            await this.capeUserProfileRepo.updateUserProfile(
+              {
+                where: { userId: userId ?? undefined },
+                data: updateCareerData,
+              },
+              tx,
+            );
+          }
+        },
+      );
+
+      const userUpdateData = await this.capeUserRepo.getUserProfileData(email);
+
+      // Transaction to update both user and profile data atomically
+
+      return {
+        code: 'UPDATE_USER_PROFILE_DATA',
+        message: 'success',
+        data: userUpdateData,
       };
     } catch (error) {
       handleServiceCatchError(error, this.logger);

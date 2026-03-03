@@ -1,4 +1,5 @@
 import {
+  IUpdateAccountProfile,
   IUpdateCareerProfile,
   UpdateOnboardingUserDto,
   UserIdParamDto,
@@ -56,14 +57,27 @@ export class UserServiceController {
 
   @Patch('/user-profile/career')
   @ApiSuccess({
-    code: 'UPDATE_USER_PROFILE_DATA',
+    code: 'UPDATE_USER_PROFILE_CAREER_DATA',
     message: 'success',
   })
-  async updateUserProfileData(
+  async updateUserProfileCareerData(
     @Query() query: UpdateOnboardingUserDto,
     @Body() body: IUpdateCareerProfile,
   ) {
-    const { email, type } = query;
-    return this.userService.updateUserProfileData(email, type, body);
+    const { email } = query;
+    return this.userService.updateUserProfileCareerData(email, body);
+  }
+
+  @Patch('/user-profile/account')
+  @ApiSuccess({
+    code: 'UPDATE_USER_PROFILE_CAREER_DATA',
+    message: 'success',
+  })
+  async updateUserProfileAccountData(
+    @Query() query: UpdateOnboardingUserDto,
+    @Body() body: IUpdateAccountProfile,
+  ) {
+    const { email } = query;
+    return this.userService.updateUserProfileAccountData(email, body);
   }
 }

@@ -32,6 +32,7 @@ import { WebhookServicesModule } from './services/webhook-services/webhook-servi
         const isProduction = process.env.NODE_ENV === 'production';
 
         const res = {
+          prefix: 'bull:{cape}', // works in dev + required in prod
           connection: {
             host: redis.host,
             port: redis.port,

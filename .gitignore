@@ -68,3 +68,7 @@ docker-compose.yml
 cape-backend
 
 .env.production
+
+vm-instance-prepare.txt
+
+default
