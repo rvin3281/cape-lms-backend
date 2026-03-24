@@ -20,7 +20,7 @@ model CapeRole {
   roleId    String   @unique @default(cuid()) @map("role_id") @db.NVarChar(50)
   roleName  String   @unique @map("role_name") @db.NVarChar(100)
   roleCode String  @unique @map("role_code") @db.NVarChar(50)
-  level String @unique @map("level") @db.NVarChar(50)
+  level String @map("level") @db.NVarChar(50)
   createdAt DateTime @default(now()) @map("created_at")
   createdBy String?  @map("created_by") @db.NVarChar(100)
 
@@ -59,9 +59,9 @@ model CapeUser {
   refreshTokens RefreshToken[]
   profile       capeLearnerProfiles?
   userProfile       CapeUserProfiles?
-
-    // ✅ NEW: many-to-many via join table
   learnworldsEnrollments LearnWorldsUserEnrollmentProgram[]
+  programEnrollments     ProgramCapeUserEnrollment[]
+  programUserFacilitators ProgramCapeUserFacilitator[]
 
   @@index([roleId])
   @@map("cape_users")
@@ -199,6 +199,117 @@ model LearnWorldsUserEnrollmentProgram {
   @@index([productId])
 
   @@map("learnworlds_user_enrollment_program")
+}
+
+model Facilitator {
+  id           Int      @id @default(autoincrement())
+  facilitatorId       String   @unique @default(cuid()) @map("facilitator_id") @db.NVarChar(100)
+
+  facilitatorName   String @db.NVarChar(255) @map("facilitator_name")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdBy    String?  @map("created_by") @db.NVarChar(100)
+  updatedBy    String?  @map("updated_by") @db.NVarChar(100)
+  deletedAt    DateTime? @map("deleted_at")
+  deletedBy    String?   @map("deleted_by") @db.NVarChar(100)
+
+  programs       ProgramFacilitator[]
+  programUserFacilitators ProgramCapeUserFacilitator[]
+
+  @@map("facilitator")
+}
+
+model Program {
+  id           Int      @id @default(autoincrement())
+  programId      String    @unique @default(cuid()) @map("program_id") @db.NVarChar(100)
+
+  programName    String    @map("program_name") @db.NVarChar(255)
+  programDate    DateTime  @map("program_date") @db.Date
+  programCohort  String    @map("program_cohort") @db.NVarChar(100)
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdBy    String?  @map("created_by") @db.NVarChar(100)
+  updatedBy    String?  @map("updated_by") @db.NVarChar(100)
+  deletedAt    DateTime? @map("deleted_at")
+  deletedBy    String?   @map("deleted_by") @db.NVarChar(100)
+
+  facilitators ProgramFacilitator[]
+   enrollments   ProgramCapeUserEnrollment[]
+   programUserFacilitators ProgramCapeUserFacilitator[]
+
+  @@map("cape_program")
+}
+
+model ProgramFacilitator {
+  id            Int      @id @default(autoincrement())
+
+  programId     String      @map("program_id") @db.NVarChar(100)
+  facilitatorId String      @map("facilitator_id") @db.NVarChar(100)
+
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  program       Program     @relation(fields: [programId], references: [programId])
+  facilitator   Facilitator @relation(fields: [facilitatorId], references: [facilitatorId])
+
+  @@unique([programId, facilitatorId])
+  @@map("program_facilitator")
+}
+
+
+model ProgramCapeUserEnrollment {
+  id                        Int                     @id @default(autoincrement())
+  enrollmentId              String                  @unique @default(cuid()) @map("enrollment_id") @db.NVarChar(100)
+
+  programId                 String                     @map("program_id") @db.NVarChar(100)
+  userId                    String                     @map("user_id") @db.NVarChar(100)
+
+  status                    String   @default("ACTIVE") @db.NVarChar(50)
+  isReviewFeedbackCompleted Boolean                 @default(false) @map("is_review_feedback_completed")
+
+
+  createdAt                 DateTime                @default(now()) @map("created_at")
+  updatedAt                 DateTime                @updatedAt @map("updated_at")
+  createdBy                 String?                 @map("created_by") @db.NVarChar(100)
+  updatedBy                 String?                 @map("updated_by") @db.NVarChar(100)
+  deletedAt                 DateTime?               @map("deleted_at")
+  deletedBy                 String?                 @map("deleted_by") @db.NVarChar(100)
+
+  program                   Program                 @relation(fields: [programId], references: [programId], onUpdate: Cascade, onDelete: NoAction)
+  user                      CapeUser                @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: NoAction)
+
+  @@unique([programId, userId])
+  @@index([programId])
+  @@index([userId])
+  @@index([status])
+  @@map("program_cape_user_enrollment")
+}
+
+model ProgramCapeUserFacilitator {
+  id               Int       @id @default(autoincrement())
+  assignmentId     String    @unique @default(cuid()) @map("assignment_id") @db.NVarChar(100)
+
+  programId     String       @map("program_id") @db.NVarChar(100)
+  facilitatorId String       @map("facilitator_id") @db.NVarChar(100)
+  userId        String       @map("user_id") @db.NVarChar(100)
+
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  createdBy        String?   @map("created_by") @db.NVarChar(100)
+  updatedBy        String?   @map("updated_by") @db.NVarChar(100)
+  deletedAt        DateTime? @map("deleted_at")
+  deletedBy        String?   @map("deleted_by") @db.NVarChar(100)
+
+  program          Program      @relation(fields: [programId], references: [programId], onUpdate: Cascade, onDelete: NoAction)
+  facilitator      Facilitator  @relation(fields: [facilitatorId], references: [facilitatorId], onUpdate: Cascade, onDelete: NoAction)
+  user             CapeUser     @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: NoAction)
+
+  @@unique([programId, facilitatorId, userId])
+  @@index([programId])
+  @@index([facilitatorId])
+  @@index([userId])
+  @@map("program_cape_user_facilitator")
 }
 
 model AzureRedisTestRecord {

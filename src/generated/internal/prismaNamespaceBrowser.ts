@@ -59,6 +59,11 @@ export const ModelName = {
   PasswordSetupToken: 'PasswordSetupToken',
   LearnWorldsProgram: 'LearnWorldsProgram',
   LearnWorldsUserEnrollmentProgram: 'LearnWorldsUserEnrollmentProgram',
+  Facilitator: 'Facilitator',
+  Program: 'Program',
+  ProgramFacilitator: 'ProgramFacilitator',
+  ProgramCapeUserEnrollment: 'ProgramCapeUserEnrollment',
+  ProgramCapeUserFacilitator: 'ProgramCapeUserFacilitator',
   AzureRedisTestRecord: 'AzureRedisTestRecord'
 } as const
 
@@ -208,6 +213,83 @@ export const LearnWorldsUserEnrollmentProgramScalarFieldEnum = {
 } as const
 
 export type LearnWorldsUserEnrollmentProgramScalarFieldEnum = (typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum)[keyof typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum]
+
+
+export const FacilitatorScalarFieldEnum = {
+  id: 'id',
+  facilitatorId: 'facilitatorId',
+  facilitatorName: 'facilitatorName',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type FacilitatorScalarFieldEnum = (typeof FacilitatorScalarFieldEnum)[keyof typeof FacilitatorScalarFieldEnum]
+
+
+export const ProgramScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  programName: 'programName',
+  programDate: 'programDate',
+  programCohort: 'programCohort',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const ProgramFacilitatorScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  facilitatorId: 'facilitatorId',
+  createdAt: 'createdAt'
+} as const
+
+export type ProgramFacilitatorScalarFieldEnum = (typeof ProgramFacilitatorScalarFieldEnum)[keyof typeof ProgramFacilitatorScalarFieldEnum]
+
+
+export const ProgramCapeUserEnrollmentScalarFieldEnum = {
+  id: 'id',
+  enrollmentId: 'enrollmentId',
+  programId: 'programId',
+  userId: 'userId',
+  status: 'status',
+  isReviewFeedbackCompleted: 'isReviewFeedbackCompleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type ProgramCapeUserEnrollmentScalarFieldEnum = (typeof ProgramCapeUserEnrollmentScalarFieldEnum)[keyof typeof ProgramCapeUserEnrollmentScalarFieldEnum]
+
+
+export const ProgramCapeUserFacilitatorScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  programId: 'programId',
+  facilitatorId: 'facilitatorId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type ProgramCapeUserFacilitatorScalarFieldEnum = (typeof ProgramCapeUserFacilitatorScalarFieldEnum)[keyof typeof ProgramCapeUserFacilitatorScalarFieldEnum]
 
 
 export const AzureRedisTestRecordScalarFieldEnum = {

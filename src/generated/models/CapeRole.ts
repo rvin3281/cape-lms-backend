@@ -251,14 +251,14 @@ export type CapeRoleWhereUniqueInput = Prisma.AtLeast<{
   roleId?: string
   roleName?: string
   roleCode?: string
-  level?: string
   AND?: Prisma.CapeRoleWhereInput | Prisma.CapeRoleWhereInput[]
   OR?: Prisma.CapeRoleWhereInput[]
   NOT?: Prisma.CapeRoleWhereInput | Prisma.CapeRoleWhereInput[]
+  level?: Prisma.StringFilter<"CapeRole"> | string
   createdAt?: Prisma.DateTimeFilter<"CapeRole"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"CapeRole"> | string | null
   users?: Prisma.CapeUserListRelationFilter
-}, "id" | "roleId" | "roleName" | "roleCode" | "level">
+}, "id" | "roleId" | "roleName" | "roleCode">
 
 export type CapeRoleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

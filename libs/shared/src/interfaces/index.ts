@@ -1,5 +1,4 @@
 export * from './IGetUserOnboardingProfile.interface';
-export * from './ILoginResult';
 export * from './IPaginatedResult';
 export * from './IUpdateUserAccountProfile.interface';
 export * from './IUpdateUserCareerProfile.interface';

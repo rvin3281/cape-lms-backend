@@ -7,19 +7,25 @@ export type AuthUser = {
   isFirstTimeLogin: boolean;
   roleId: string;
   roleName: string;
-  role?: string;
+  roleCode: string;
   company?: string;
+  authScope: 'admin' | 'learner';
 };
 
-export type MeResult = {
+export type AuthSession = {
   user: AuthUser;
 };
 
-export type RefreshResult = {
-  user: AuthUser;
+export type RefreshResult = AuthSession & {
   accessToken: string;
-  // optional: if you want refresh rotation later
-  // refreshToken?: { rawToken: string; expiresAt: Date };
+};
+
+export type LoginResult = AuthSession & {
+  accessToken: string;
+  refreshToken: {
+    rawToken: string;
+    expiresAt: Date;
+  };
 };
 
 export type LogoutResult = {

@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ApiSuccess } from '@app/shared/decorator/api-success.decorator';
 
 import {
   AUTH_COOKIES,
   CapeOnboardingProfileDto,
+  LoginDto,
   LoginResult,
 } from '@app/shared';
 import {
@@ -14,6 +16,7 @@ import {
   Ip,
   Logger,
   Post,
+  Query,
   Req,
   Res,
 } from '@nestjs/common';
@@ -38,8 +41,22 @@ export class AuthServiceController {
    * @param body
    * @returns
    */
+  @Post('/learnworlds/validate-email')
+  @ApiSuccess({
+    code: 'LEARNWORLDS_VALIDATE_EMAIL_SUCCESS',
+    message: 'Email is valid',
+  })
+  @HttpCode(200)
+  async validateLearnworldsEmail(@Body() body: { email: string }) {
+    const { email } = body;
+    return this.authService.validateLearnworldsEmail(email);
+  }
+
   @Post('/validate-email')
-  @ApiSuccess({ code: 'VALIDATE_EMAIL_SUCCESS', message: 'Email is valid' })
+  @ApiSuccess({
+    code: 'VALIDATE_EMAIL_SUCCESS',
+    message: 'Email is valid',
+  })
   @HttpCode(200)
   async validateEmail(@Body() body: { email: string }) {
     const { email } = body;
@@ -53,21 +70,34 @@ export class AuthServiceController {
   })
   @HttpCode(200)
   async setPassword(
-    @Body() body: { email: string; password: string; confirmPassword: string },
+    @Body()
+    body: {
+      email: string;
+      password: string;
+      confirmPassword: string;
+      token: string;
+    },
   ) {
-    const { email, password, confirmPassword } = body;
-    return this.authService.setPassword(email, password, confirmPassword);
+    const { email, password, confirmPassword, token } = body;
+    return this.authService.setPassword(
+      email,
+      password,
+      confirmPassword,
+      token,
+    );
   }
 
   // NOTE: MUST IMPLEMENT VALIDATION FOR  BODY
-  @Post('validate-password-token')
+  @Get('validate-password-token')
   @ApiSuccess({
     code: 'VALIDATE_PASSWORD_SUCCESS',
     message: 'Password token validated',
   })
   @HttpCode(200)
-  async validatePasswordToken(@Body() body: { token: string; email: string }) {
-    const { token, email } = body;
+  async validatePasswordToken(
+    @Query('token') token: string,
+    @Query('email') email: string,
+  ) {
     return this.authService.validatePasswordToken(token, email);
   }
 
@@ -164,6 +194,14 @@ export class AuthServiceController {
       maxAge: 0,
     });
 
+    res.cookie(AUTH_COOKIES.authScope, '', {
+      httpOnly: true,
+      secure,
+      sameSite,
+      domain,
+      maxAge: 0,
+    });
+
     return { ok: true };
   }
 
@@ -184,7 +222,7 @@ export class AuthServiceController {
   // })
   @HttpCode(200)
   async login(
-    @Body() body: { email: string; password: string },
+    @Body() body: LoginDto,
     @Ip() ip: string,
     @Headers('user-agent') userAgent: string,
     @Res({ passthrough: true }) res: Response,
@@ -219,11 +257,18 @@ export class AuthServiceController {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    res.cookie('auth_scope', result.user.authScope, {
+      httpOnly: true,
+      secure,
+      sameSite,
+      domain,
+      // path: "/",
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
+
     // return body (don’t return raw refresh token)
     return {
       user: result.user,
-      // optionally return accessToken too (some apps do), but if cookie-based, you can omit it:
-      // accessToken: result.accessToken,
     };
   }
 }

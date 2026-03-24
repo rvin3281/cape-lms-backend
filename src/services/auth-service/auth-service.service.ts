@@ -8,7 +8,9 @@ import {
 } from '@app/database';
 import { RefreshTokenRepository } from '@app/database/repository/refresh-token.repository';
 import {
+  AuthSession,
   CapeOnboardingProfileDto,
+  CapeUserWithRole,
   CONFIRM_PASSWORD_FIELD_REQUIRED,
   DEFAULTS,
   EMAIL_FIELD_REQUIRED,
@@ -16,15 +18,16 @@ import {
   JWT_SECRET_NOT_CONFIGURED,
   LearnWorldsUser,
   LOGIN_USER_NOT_FOUND,
+  LoginDto,
   LoginResult,
   LogoutResult,
   LW_GET_USER,
-  MeResult,
   PASSWORD_HASH_MISSING,
   PASSWORD_INVALID,
   REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_MISSING,
   RefreshResult,
+  ROLE_CODE,
   UNAUTHENTICATED,
   UNAUTHENTICATED_NO_ACCESS_TOKEN,
   UNAUTHENTICATED_NO_USER_FOUND,
@@ -35,6 +38,7 @@ import {
 import {
   EMAIL_NOT_FOUND_QUERY,
   PASSWORD_FIELD_REQUIRED,
+  ROLE_CODE_FIELD_REQUIRED,
 } from '@app/shared/constant/error-item.constants';
 import { LearnworldsGateway } from '@app/shared/learnworlds/learnworlds.gateway';
 import { HttpService } from '@nestjs/axios';
@@ -298,21 +302,29 @@ export class AuthServiceService {
     email: string,
   ): Promise<{ valid: boolean }> {
     try {
-      // 1. normalize token
+      // 1. normalize email/token
+      const normalizedEmail = email?.trim().toLowerCase();
       const normalizeToken = token.trim();
       // 2. If token empty then return error
+
+      if (!normalizedEmail) {
+        throw new UnauthorizedException(
+          errorResponseBuilder('SET_PASSWORD_EMAIL_MISSING'),
+        );
+      }
+
       if (!normalizeToken) {
         throw new UnauthorizedException(
           errorResponseBuilder('SET_PASSWORD_NOT_VALIDATED'),
         );
       }
 
-      const hashTokenNew = hashToken(normalizeToken);
+      const tokenHash = hashToken(normalizeToken);
 
       // 3. find token in table
       const tokenExist = await this.capePasswordSetupTokenRepo.findToken(
-        hashTokenNew,
-        email,
+        tokenHash,
+        normalizedEmail,
       );
 
       // 4. If token not exist return error
@@ -335,11 +347,85 @@ export class AuthServiceService {
     }
   }
 
+  async validateEmail(email: string): Promise<any> {
+    try {
+      const normalizedEmail = email.trim().toLowerCase();
+
+      const user: CapeUserWithRole | null =
+        await this.capeUserRepo.findUserByEmailAndRole(normalizedEmail);
+
+      if (!user) {
+        throw new NotFoundException(
+          errorResponseBuilder(
+            'USER_NOT_FOUND',
+            undefined,
+            'No account found for the provided email.',
+          ),
+        );
+      }
+
+      if (user.role.roleCode !== 'CLASSROOM_LEARNER') {
+        console.log('NOT CLASSSROOL LEANER');
+        throw new BadRequestException(
+          errorResponseBuilder(
+            'INVALID_USER_ROLE',
+            undefined,
+            'This email is not registered as a classroom learner account.',
+          ),
+        );
+      }
+
+      if (user.isActive) {
+        throw new BadRequestException(
+          errorResponseBuilder(
+            'USER_EXIST_ACTIVE',
+            undefined,
+            'Your account is already activated. Please login using your email and password.',
+          ),
+        );
+      }
+
+      if (!user.isFirstTimeLogin) {
+        throw new BadRequestException(
+          errorResponseBuilder(
+            'USER_EXIST_ACTIVE',
+            undefined,
+            'Your account is already activated. Please login using your email and password.',
+          ),
+        );
+      }
+
+      const rawToken = createRawToken();
+      const tokenHash = hashToken(rawToken);
+
+      await this.capePasswordSetupTokenRepo.deleteTokensByEmail(
+        normalizedEmail,
+      );
+      await this.capePasswordSetupTokenRepo.createPasswordSetupToken({
+        data: {
+          email: normalizedEmail,
+          tokenHash,
+        },
+      });
+
+      return { email: normalizedEmail, token: rawToken };
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(
+        message,
+        error instanceof Error ? error.stack : undefined,
+      );
+      throw new InternalServerErrorException('An unexpected error occurs');
+    }
+  }
+
   /**
    *
    * @param email
    */
-  async validateEmail(
+  async validateLearnworldsEmail(
     email: string,
   ): Promise<{ email: string; token?: string }> {
     const encoded = encodeURIComponent(email);
@@ -566,15 +652,24 @@ export class AuthServiceService {
     email: string,
     password: string,
     confirmPassword: string,
+    token: string,
   ): Promise<{ success: boolean }> {
     try {
       // 1) Check email, password, confirmPassword not empty
-      if (!email || !password || !confirmPassword) {
+      if (!email || !token || !password || !confirmPassword) {
         throw new BadRequestException(
           errorResponseBuilder('FORM_FIELD_ERROR', [
             ...(email
               ? []
               : [{ code: EMAIL_NOT_FOUND_QUERY, meta: { field: 'email' } }]),
+            ...(token
+              ? []
+              : [
+                  {
+                    code: 'SET_PASSWORD_NOT_VALIDATED',
+                    meta: { field: 'token' },
+                  },
+                ]),
             ...(password
               ? []
               : [
@@ -597,6 +692,26 @@ export class AuthServiceService {
 
       // 1.1) Normalize & validate email
       const normalizedEmail = email?.trim().toLowerCase();
+      const normalizedToken = token.trim();
+
+      if (!normalizedToken) {
+        throw new UnauthorizedException(
+          errorResponseBuilder('SET_PASSWORD_NOT_VALIDATED'),
+        );
+      }
+
+      const tokenHash = hashToken(normalizedToken);
+
+      const tokenExist = await this.capePasswordSetupTokenRepo.findToken(
+        tokenHash,
+        normalizedEmail,
+      );
+
+      if (!tokenExist) {
+        throw new UnauthorizedException(
+          errorResponseBuilder('SET_PASSWORD_TOKEN_NOT_EXIST'),
+        );
+      }
 
       PasswordConsistentCheck(password, confirmPassword);
       PasswordLengthChecks(password);
@@ -604,44 +719,46 @@ export class AuthServiceService {
       PasswordNumberCheck(password);
       PasswordSpecialCharCheck(password);
 
-      // 2) Find user by email
-      const user = await this.capeUserRepo.findUserByEmail(normalizedEmail);
-
-      // 3) If user not found => return valid message
-      if (!user) {
-        throw new NotFoundException(
-          errorResponseBuilder('USER_NOT_FOUND', [
-            {
-              code: 'USER_NOT_FOUND',
-              meta: { field: 'email', value: normalizedEmail },
-            },
-          ]),
-        );
-      }
-
-      // 4) If user found and isActive=true => return valid message
-      if (user.isActive) {
-        throw new ConflictException(
-          errorResponseBuilder('USER_ALREADY_ACTIVE', [
-            {
-              code: 'USER_ALREADY_ACTIVE',
-              meta: { field: 'email', value: normalizedEmail },
-            },
-          ]),
-        );
-      }
-
-      // 5) User exist and isActive=false => continue
-
-      // 6) Hash new password
       const hashedPassword = await hashPassword(password);
 
-      // 7) Update user record:
-      //    - set passwordHash
-      //    - set isActive = true
-      await this.capeUserRepo.updateUserPasswordAndActivate(normalizedEmail, {
-        passwordHash: hashedPassword,
-        updatedBy: normalizedEmail,
+      await this.capeUserRepo['prisma'].$transaction(async (tx) => {
+        const user = await this.capeUserRepo.findUserByEmail(normalizedEmail);
+
+        if (!user) {
+          throw new NotFoundException(
+            errorResponseBuilder('USER_NOT_FOUND', [
+              {
+                code: 'USER_NOT_FOUND',
+                meta: { field: 'email', value: normalizedEmail },
+              },
+            ]),
+          );
+        }
+
+        if (user.isActive) {
+          throw new ConflictException(
+            errorResponseBuilder('USER_ALREADY_ACTIVE', [
+              {
+                code: 'USER_ALREADY_ACTIVE',
+                meta: { field: 'email', value: normalizedEmail },
+              },
+            ]),
+          );
+        }
+
+        await this.capeUserRepo.updateUserPasswordAndActivate(
+          normalizedEmail,
+          {
+            passwordHash: hashedPassword,
+            updatedBy: normalizedEmail,
+          },
+          tx,
+        );
+
+        await this.capePasswordSetupTokenRepo.deleteTokensByEmail(
+          normalizedEmail,
+          tx,
+        );
       });
 
       // 8) Return success
@@ -664,7 +781,7 @@ export class AuthServiceService {
   // - Only validates access_token cookie
   // - If expired/invalid => 401
   // =========================================================
-  async me(accessToken: string | undefined): Promise<MeResult> {
+  async me(accessToken: string | undefined): Promise<AuthSession> {
     try {
       if (!accessToken)
         throw new UnauthorizedException(
@@ -702,6 +819,12 @@ export class AuthServiceService {
           errorResponseBuilder(UNAUTHENTICATED_NOROLE),
         );
 
+      const scope =
+        role.roleCode === ROLE_CODE.CAPE_ADMIN ||
+        role.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
+          ? 'admin'
+          : 'learner';
+
       return {
         user: {
           id: user.userId,
@@ -712,7 +835,9 @@ export class AuthServiceService {
           isFirstTimeLogin: user.isFirstTimeLogin,
           roleId: role.roleId,
           roleName: role.roleName,
+          roleCode: role.roleCode,
           company: user?.profile?.cfCompany || '',
+          authScope: scope,
         },
       };
     } catch (error) {
@@ -758,6 +883,12 @@ export class AuthServiceService {
           errorResponseBuilder(UNAUTHENTICATED_NOROLE),
         );
 
+      const scope: 'admin' | 'learner' =
+        role.roleCode === ROLE_CODE.CAPE_ADMIN ||
+        role.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
+          ? 'admin'
+          : 'learner';
+
       const jwtSecret = this.config.get<string>('JWT_ACCESS_SECRET');
       if (!jwtSecret)
         throw new InternalServerErrorException(
@@ -771,8 +902,13 @@ export class AuthServiceService {
         ) || DEFAULTS.accessTtlSeconds;
 
       const accessToken = await signAccessToken({
-        payload: { email: user.email, roleId: role.roleId },
-        subject: user.userId,
+        payload: {
+          email: String(user.email),
+          roleId: String(role.roleId),
+          roleCode: String(role.roleCode),
+          authScope: scope,
+        },
+        subject: String(user.userId),
         secret: jwtSecret,
         expiresInSeconds,
       });
@@ -784,11 +920,15 @@ export class AuthServiceService {
       return {
         user: {
           id: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
           name: user.userName,
           email: user.email,
           isFirstTimeLogin: user.isFirstTimeLogin,
           roleName: role.roleName,
           roleId: role.roleId,
+          roleCode: role.roleCode,
+          authScope: scope,
         },
         accessToken,
       };
@@ -805,7 +945,7 @@ export class AuthServiceService {
   }
 
   async login(
-    data: { email: string; password: string },
+    data: LoginDto,
     meta?: { ip?: string; userAgent?: string },
   ): Promise<LoginResult> {
     try {
@@ -814,8 +954,9 @@ export class AuthServiceService {
       // =========================================================
       const email = data.email?.trim().toLowerCase();
       const password = data.password;
+      const roleCode = data.roleCode;
 
-      if (!email || !password) {
+      if (!email || !password || !roleCode) {
         throw new BadRequestException(
           errorResponseBuilder(EMAIL_PASSWORD_REQUIRED, [
             ...(email
@@ -827,6 +968,14 @@ export class AuthServiceService {
                   {
                     code: PASSWORD_FIELD_REQUIRED,
                     meta: { field: 'password' },
+                  },
+                ]),
+            ...(roleCode
+              ? []
+              : [
+                  {
+                    code: ROLE_CODE_FIELD_REQUIRED,
+                    meta: { field: 'roleCode' },
                   },
                 ]),
           ]),
@@ -873,6 +1022,18 @@ export class AuthServiceService {
           errorResponseBuilder(UNAUTHENTICATED_NOROLE),
         );
 
+      if (role.roleCode !== roleCode) {
+        throw new UnauthorizedException(
+          errorResponseBuilder('ROLE_NOT_MATCH', [
+            {
+              code: 'ROLE_NOT_MATCH',
+              meta: {
+                field: 'roleCode',
+              },
+            },
+          ]),
+        );
+      }
       // =========================================================
       // STEP 2) Verify password (bcrypt compare)
       // =========================================================
@@ -918,10 +1079,18 @@ export class AuthServiceService {
         Number(this.config.get<string>('ACCESS_TOKEN_TTL_SECONDS') ?? 900) ||
         900;
 
+      const scope =
+        role.roleCode === ROLE_CODE.CAPE_ADMIN ||
+        role.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
+          ? 'admin'
+          : 'learner';
+
       const accessToken = await signAccessToken({
         payload: {
           email: String(user.email),
           roleId: String(role.roleId),
+          roleCode: String(role.roleCode),
+          authScope: scope,
         },
         subject: String(user.userId),
         secret: jwtSecret,
@@ -958,10 +1127,16 @@ export class AuthServiceService {
       return {
         user: {
           id: String(user.userId),
+          firstName: String(user.firstName),
+          lastName: String(user.lastName),
+          name: String(user.userName),
           email: String(user.email),
-          roleName: String(role.roleName),
           roleId: String(role.roleId),
+          roleCode: String(role.roleCode),
+          roleName: String(role.roleName),
           isFirstTimeLogin: user.isFirstTimeLogin,
+          authScope: scope,
+          // permissions,
         },
         accessToken,
         refreshToken: {

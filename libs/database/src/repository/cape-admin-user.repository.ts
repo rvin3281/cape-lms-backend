@@ -8,6 +8,7 @@ import {
   Prisma,
 } from 'src/generated/client';
 import { PrismaService } from '../prisma.service';
+import { CapeUserWithRole } from '@app/shared';
 
 type PrismaTx = Prisma.TransactionClient;
 
@@ -20,7 +21,16 @@ export class CapeUserRepository {
     return user;
   }
 
-  // ✅ Used by /auth/me and /auth/refresh
+  findUserByEmailAndRole(email: string): Promise<CapeUserWithRole | null> {
+    const user = this.prisma.capeUser.findUnique({
+      where: { email, deletedAt: null },
+      include: {
+        role: true,
+      },
+    });
+    return user;
+  }
+
   findUserByUserId(userId: string): Promise<CapeUser | null> {
     return this.prisma.capeUser.findUnique({ where: { userId } });
   }

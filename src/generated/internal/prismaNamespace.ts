@@ -392,6 +392,11 @@ export const ModelName = {
   PasswordSetupToken: 'PasswordSetupToken',
   LearnWorldsProgram: 'LearnWorldsProgram',
   LearnWorldsUserEnrollmentProgram: 'LearnWorldsUserEnrollmentProgram',
+  Facilitator: 'Facilitator',
+  Program: 'Program',
+  ProgramFacilitator: 'ProgramFacilitator',
+  ProgramCapeUserEnrollment: 'ProgramCapeUserEnrollment',
+  ProgramCapeUserFacilitator: 'ProgramCapeUserFacilitator',
   AzureRedisTestRecord: 'AzureRedisTestRecord'
 } as const
 
@@ -408,7 +413,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "capeRole" | "capeUser" | "capeLearnerProfiles" | "capeUserProfiles" | "refreshToken" | "passwordSetupToken" | "learnWorldsProgram" | "learnWorldsUserEnrollmentProgram" | "azureRedisTestRecord"
+    modelProps: "capeRole" | "capeUser" | "capeLearnerProfiles" | "capeUserProfiles" | "refreshToken" | "passwordSetupToken" | "learnWorldsProgram" | "learnWorldsUserEnrollmentProgram" | "facilitator" | "program" | "programFacilitator" | "programCapeUserEnrollment" | "programCapeUserFacilitator" | "azureRedisTestRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -940,6 +945,336 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Facilitator: {
+      payload: Prisma.$FacilitatorPayload<ExtArgs>
+      fields: Prisma.FacilitatorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FacilitatorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FacilitatorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>
+        }
+        findFirst: {
+          args: Prisma.FacilitatorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FacilitatorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>
+        }
+        findMany: {
+          args: Prisma.FacilitatorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>[]
+        }
+        create: {
+          args: Prisma.FacilitatorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>
+        }
+        createMany: {
+          args: Prisma.FacilitatorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.FacilitatorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>
+        }
+        update: {
+          args: Prisma.FacilitatorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>
+        }
+        deleteMany: {
+          args: Prisma.FacilitatorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FacilitatorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.FacilitatorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FacilitatorPayload>
+        }
+        aggregate: {
+          args: Prisma.FacilitatorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFacilitator>
+        }
+        groupBy: {
+          args: Prisma.FacilitatorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FacilitatorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FacilitatorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FacilitatorCountAggregateOutputType> | number
+        }
+      }
+    }
+    Program: {
+      payload: Prisma.$ProgramPayload<ExtArgs>
+      fields: Prisma.ProgramFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ProgramDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>
+        }
+        update: {
+          args: Prisma.ProgramUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ProgramUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgram>
+        }
+        groupBy: {
+          args: Prisma.ProgramGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramFacilitator: {
+      payload: Prisma.$ProgramFacilitatorPayload<ExtArgs>
+      fields: Prisma.ProgramFacilitatorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramFacilitatorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramFacilitatorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramFacilitatorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramFacilitatorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramFacilitatorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramFacilitatorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramFacilitatorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ProgramFacilitatorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>
+        }
+        update: {
+          args: Prisma.ProgramFacilitatorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramFacilitatorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramFacilitatorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ProgramFacilitatorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramFacilitatorPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramFacilitatorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramFacilitator>
+        }
+        groupBy: {
+          args: Prisma.ProgramFacilitatorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramFacilitatorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramFacilitatorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramFacilitatorCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramCapeUserEnrollment: {
+      payload: Prisma.$ProgramCapeUserEnrollmentPayload<ExtArgs>
+      fields: Prisma.ProgramCapeUserEnrollmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramCapeUserEnrollmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramCapeUserEnrollmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramCapeUserEnrollmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramCapeUserEnrollmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramCapeUserEnrollmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramCapeUserEnrollmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramCapeUserEnrollmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ProgramCapeUserEnrollmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>
+        }
+        update: {
+          args: Prisma.ProgramCapeUserEnrollmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramCapeUserEnrollmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramCapeUserEnrollmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ProgramCapeUserEnrollmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserEnrollmentPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramCapeUserEnrollmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramCapeUserEnrollment>
+        }
+        groupBy: {
+          args: Prisma.ProgramCapeUserEnrollmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCapeUserEnrollmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramCapeUserEnrollmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCapeUserEnrollmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramCapeUserFacilitator: {
+      payload: Prisma.$ProgramCapeUserFacilitatorPayload<ExtArgs>
+      fields: Prisma.ProgramCapeUserFacilitatorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramCapeUserFacilitatorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramCapeUserFacilitatorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramCapeUserFacilitatorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramCapeUserFacilitatorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramCapeUserFacilitatorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramCapeUserFacilitatorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramCapeUserFacilitatorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ProgramCapeUserFacilitatorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>
+        }
+        update: {
+          args: Prisma.ProgramCapeUserFacilitatorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramCapeUserFacilitatorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramCapeUserFacilitatorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ProgramCapeUserFacilitatorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCapeUserFacilitatorPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramCapeUserFacilitatorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramCapeUserFacilitator>
+        }
+        groupBy: {
+          args: Prisma.ProgramCapeUserFacilitatorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCapeUserFacilitatorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramCapeUserFacilitatorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCapeUserFacilitatorCountAggregateOutputType> | number
+        }
+      }
+    }
     AzureRedisTestRecord: {
       payload: Prisma.$AzureRedisTestRecordPayload<ExtArgs>
       fields: Prisma.AzureRedisTestRecordFieldRefs
@@ -1177,6 +1512,83 @@ export const LearnWorldsUserEnrollmentProgramScalarFieldEnum = {
 export type LearnWorldsUserEnrollmentProgramScalarFieldEnum = (typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum)[keyof typeof LearnWorldsUserEnrollmentProgramScalarFieldEnum]
 
 
+export const FacilitatorScalarFieldEnum = {
+  id: 'id',
+  facilitatorId: 'facilitatorId',
+  facilitatorName: 'facilitatorName',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type FacilitatorScalarFieldEnum = (typeof FacilitatorScalarFieldEnum)[keyof typeof FacilitatorScalarFieldEnum]
+
+
+export const ProgramScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  programName: 'programName',
+  programDate: 'programDate',
+  programCohort: 'programCohort',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const ProgramFacilitatorScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  facilitatorId: 'facilitatorId',
+  createdAt: 'createdAt'
+} as const
+
+export type ProgramFacilitatorScalarFieldEnum = (typeof ProgramFacilitatorScalarFieldEnum)[keyof typeof ProgramFacilitatorScalarFieldEnum]
+
+
+export const ProgramCapeUserEnrollmentScalarFieldEnum = {
+  id: 'id',
+  enrollmentId: 'enrollmentId',
+  programId: 'programId',
+  userId: 'userId',
+  status: 'status',
+  isReviewFeedbackCompleted: 'isReviewFeedbackCompleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type ProgramCapeUserEnrollmentScalarFieldEnum = (typeof ProgramCapeUserEnrollmentScalarFieldEnum)[keyof typeof ProgramCapeUserEnrollmentScalarFieldEnum]
+
+
+export const ProgramCapeUserFacilitatorScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  programId: 'programId',
+  facilitatorId: 'facilitatorId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
+} as const
+
+export type ProgramCapeUserFacilitatorScalarFieldEnum = (typeof ProgramCapeUserFacilitatorScalarFieldEnum)[keyof typeof ProgramCapeUserFacilitatorScalarFieldEnum]
+
+
 export const AzureRedisTestRecordScalarFieldEnum = {
   id: 'id',
   externalId: 'externalId',
@@ -1352,6 +1764,11 @@ export type GlobalOmitConfig = {
   passwordSetupToken?: Prisma.PasswordSetupTokenOmit
   learnWorldsProgram?: Prisma.LearnWorldsProgramOmit
   learnWorldsUserEnrollmentProgram?: Prisma.LearnWorldsUserEnrollmentProgramOmit
+  facilitator?: Prisma.FacilitatorOmit
+  program?: Prisma.ProgramOmit
+  programFacilitator?: Prisma.ProgramFacilitatorOmit
+  programCapeUserEnrollment?: Prisma.ProgramCapeUserEnrollmentOmit
+  programCapeUserFacilitator?: Prisma.ProgramCapeUserFacilitatorOmit
   azureRedisTestRecord?: Prisma.AzureRedisTestRecordOmit
 }
 

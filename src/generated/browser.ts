@@ -58,6 +58,31 @@ export type LearnWorldsProgram = Prisma.LearnWorldsProgramModel
  */
 export type LearnWorldsUserEnrollmentProgram = Prisma.LearnWorldsUserEnrollmentProgramModel
 /**
+ * Model Facilitator
+ * 
+ */
+export type Facilitator = Prisma.FacilitatorModel
+/**
+ * Model Program
+ * 
+ */
+export type Program = Prisma.ProgramModel
+/**
+ * Model ProgramFacilitator
+ * 
+ */
+export type ProgramFacilitator = Prisma.ProgramFacilitatorModel
+/**
+ * Model ProgramCapeUserEnrollment
+ * 
+ */
+export type ProgramCapeUserEnrollment = Prisma.ProgramCapeUserEnrollmentModel
+/**
+ * Model ProgramCapeUserFacilitator
+ * 
+ */
+export type ProgramCapeUserFacilitator = Prisma.ProgramCapeUserFacilitatorModel
+/**
  * Model AzureRedisTestRecord
  * 
  */

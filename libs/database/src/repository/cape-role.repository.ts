@@ -7,6 +7,6 @@ export class CapeRoleRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   findRoleByLevel(roleLevel: string): Promise<CapeRole | null> {
-    return this.prisma.capeRole.findUnique({ where: { level: roleLevel } });
+    return this.prisma.capeRole.findFirst({ where: { level: roleLevel } });
   }
 }

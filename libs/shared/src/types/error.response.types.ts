@@ -5,4 +5,5 @@ export type AppErrorPayLoad = {
     meta?: Record<string, any>;
   }[];
   message?: string;
+  data?: any;
 };

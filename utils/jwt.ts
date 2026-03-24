@@ -1,8 +1,11 @@
 import { JWTPayload, jwtVerify, SignJWT } from 'jose';
 
 export interface AccessTokenPayload extends JWTPayload {
+  sub: string; // userId
   email: string;
-  role: string;
+  roleId: string;
+  roleCode: string;
+  authScope: 'admin' | 'learner';
 }
 
 export async function signAccessToken(params: {

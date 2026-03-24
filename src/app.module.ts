@@ -9,6 +9,7 @@ import { CourseServicesModule } from './services/course-services/course-services
 import { ReportingServiceModule } from './services/reporting-service/reporting-service.module';
 import { UserServiceModule } from './services/user-service/user-service.module';
 import { WebhookServicesModule } from './services/webhook-services/webhook-services.module';
+import { ProgramServiceModule } from './services/program-service/program-service.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { WebhookServicesModule } from './services/webhook-services/webhook-servi
         return res;
       },
     }),
+    ProgramServiceModule,
   ],
   controllers: [],
   providers: [],
