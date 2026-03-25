@@ -3,9 +3,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { PrismaService } from '@app/database';
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
-import { BadRequestException, Logger } from '@nestjs/common';
+import { BadRequestException, Logger, NotFoundException } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { LW_QUEUE } from '../learnworlds.queue';
+import { errorResponseBuilder } from 'utils/errorResponseBuilder';
 
 @Processor(LW_QUEUE.name)
 export class LearnWorldsQueueProcessor extends WorkerHost {
@@ -46,8 +47,17 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
     // ✅ transaction: user + program + enrollment
     await this.prisma.$transaction(async (tx) => {
       // 1) role
-      const role = await tx.capeRole.findFirst({ where: { level: 'user' } });
-      if (!role) throw new BadRequestException('Role level=user not found');
+      const role = await tx.capeRole.findFirst({
+        where: { roleCode: 'HYBRID_LEARNER' },
+      });
+      if (!role)
+        throw new NotFoundException(
+          errorResponseBuilder(
+            'HYBRID_LEARNER_ROLE_NOT_FOUND',
+            undefined,
+            'Please run data seeding to create roles on cape_roles table',
+          ),
+        );
 
       // 2) upsert user (by email)
       let user = await tx.capeUser.findUnique({ where: { email } });
@@ -59,11 +69,12 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
             email,
             userName: username,
             passwordHash: '',
-            firstName: '',
-            lastName: '',
+            firstName: dto?.user?.first_name,
+            lastName: dto?.user?.last_name,
             roleId: role.roleId,
             isActive: false,
             isAdmin: false,
+            isFirstTimeLogin: true,
           },
         });
       } else {

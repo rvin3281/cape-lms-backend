@@ -7,6 +7,7 @@ import { WebhookServicesService } from './webhook-services.service';
 export class WebhookServicesController {
   constructor(private readonly webHookService: WebhookServicesService) {}
 
+  // This is only to test webhook and to console.log the header data and body data from learnworlds
   @Post('bulk-import-user')
   async bulkImportUserWebhook(
     @Body() body: any,

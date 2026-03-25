@@ -7,6 +7,14 @@ export class LearnWorldsUserDto {
   id?: string;
 
   @IsOptional()
+  @IsString()
+  first_name?: string;
+
+  @IsOptional()
+  @IsString()
+  last_name?: string;
+
+  @IsOptional()
   @IsEmail()
   email?: string;
 
@@ -20,5 +28,5 @@ export class LearnWorldsUserDto {
 
   @IsOptional()
   @IsString()
-  cf_company?: string;
+  cf_organization?: string;
 }
