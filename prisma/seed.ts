@@ -1,25 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import 'dotenv/config';
 import { PrismaClient } from 'src/generated/client';
-
-// Driver adapter
 import { ROLE_CODE } from '@app/shared';
 import { PrismaMssql } from '@prisma/adapter-mssql';
 
 const url = process.env.DATABASE_URL;
 if (!url) throw new Error('DATABASE_URL is missing');
 
-const adapter = new PrismaMssql(url); // ✅ pass STRING directly
+const adapter = new PrismaMssql(url);
 const prisma = new PrismaClient({ adapter });
 
-// ✅ hash for abc123456 (keep exactly same for all seeded users)
+// hash for abc123456
 const PASSWORD_HASH =
   '$2b$12$IBppY2e8mEk6l5CCx26uCeYyyZQIuDpg/kyCl2OEu.2W26dZnZ98a';
 
 async function main() {
-  // 1) Upsert roles (safe to run many times)
+  // =========================
+  // 1) Upsert roles
+  // =========================
   const superAdminRole = await prisma.capeRole.upsert({
-    where: { roleName: 'Super Admin' }, // roleName is unique ✅
-    update: {}, // keep as-is if already exists
+    where: { roleName: 'Super Admin' },
+    update: {},
     create: {
       roleName: 'Super Admin',
       level: 'super_admin',
@@ -29,7 +31,7 @@ async function main() {
   });
 
   const adminRole = await prisma.capeRole.upsert({
-    where: { roleName: 'CAPE Admin' }, // you requested exactly "admin"
+    where: { roleName: 'CAPE Admin' },
     update: {},
     create: {
       roleName: 'CAPE Admin',
@@ -40,7 +42,7 @@ async function main() {
   });
 
   const hrFocalRole = await prisma.capeRole.upsert({
-    where: { roleName: 'HR Focal Admin' }, // you requested exactly "admin"
+    where: { roleName: 'HR Focal Admin' },
     update: {},
     create: {
       roleName: 'HR Focal Admin',
@@ -50,8 +52,8 @@ async function main() {
     },
   });
 
-  const individualLearner = await prisma.capeRole.upsert({
-    where: { roleName: 'Individual Learner' }, // you requested exactly "admin"
+  const individualLearnerRole = await prisma.capeRole.upsert({
+    where: { roleName: 'Individual Learner' },
     update: {},
     create: {
       roleName: 'Individual Learner',
@@ -61,8 +63,8 @@ async function main() {
     },
   });
 
-  const hybridLearner = await prisma.capeRole.upsert({
-    where: { roleName: 'Hybrid Learner' }, // you requested exactly "admin"
+  const hybridLearnerRole = await prisma.capeRole.upsert({
+    where: { roleName: 'Hybrid Learner' },
     update: {},
     create: {
       roleName: 'Hybrid Learner',
@@ -72,8 +74,8 @@ async function main() {
     },
   });
 
-  const classroomLearner = await prisma.capeRole.upsert({
-    where: { roleName: 'Classroom Learner' }, // you requested exactly "admin"
+  const classroomLearnerRole = await prisma.capeRole.upsert({
+    where: { roleName: 'Classroom Learner' },
     update: {},
     create: {
       roleName: 'Classroom Learner',
@@ -83,14 +85,14 @@ async function main() {
     },
   });
 
-  // helper for consistent upsert
+  // =========================
+  // 2) Upsert users only
+  // =========================
   const upsertUser = async (args: {
     email: string;
     firstName: string;
     lastName: string;
     userName: string;
-    companyName?: string | null;
-    roleId: string;
     isAdmin?: boolean;
     isActive?: boolean;
     learnworldId?: string | null;
@@ -100,14 +102,13 @@ async function main() {
       firstName,
       lastName,
       userName,
-      roleId,
       isAdmin = false,
       isActive = true,
       learnworldId = null,
     } = args;
 
     return prisma.capeUser.upsert({
-      where: { userName },
+      where: { email },
       update: {
         email,
         firstName,
@@ -115,7 +116,6 @@ async function main() {
         userName,
         learnworldId,
         passwordHash: PASSWORD_HASH,
-        roleId,
         isAdmin,
         isActive,
         updatedBy: 'seed',
@@ -127,7 +127,6 @@ async function main() {
         userName,
         learnworldId,
         passwordHash: PASSWORD_HASH,
-        roleId,
         isAdmin,
         isActive,
         createdBy: 'seed',
@@ -136,93 +135,138 @@ async function main() {
   };
 
   // =========================
-  // 2) Users (idempotent)
+  // 3) Assign role to user via CapeUserRole
   // =========================
+  const assignRoleToUser = async (userId: string, roleId: string) => {
+    await prisma.capeUserRole.upsert({
+      where: {
+        userId_roleId: {
+          userId,
+          roleId,
+        },
+      },
+      update: {
+        assignedBy: 'seed',
+      },
+      create: {
+        userId,
+        roleId,
+        assignedBy: 'seed',
+      },
+    });
+  };
 
-  // CAPE Super Admin (internal)
-  await upsertUser({
+  // =========================
+  // 4) Seed users
+  // =========================
+  const superAdminUser = await upsertUser({
     email: 'super-admin@utp.edu.my',
     firstName: 'Nur',
     lastName: 'Aisyah',
     userName: 'nur.aisyah.superadmin',
-    companyName: 'UTP CAPE',
-    roleId: superAdminRole.roleId,
     isAdmin: true,
   });
 
-  // CAPE Admin (internal)
-  await upsertUser({
+  const adminUser = await upsertUser({
     email: 'admin@utp.edu.my',
     firstName: 'Muhammad',
     lastName: 'Haziq',
     userName: 'muhammad.haziq.admin',
-    companyName: 'UTP CAPE',
-    roleId: adminRole.roleId,
     isAdmin: true,
   });
 
-  // HR Focal Admin (enterprise)
-  await upsertUser({
+  const hrFocalUser = await upsertUser({
     email: 'hr-focal@petronas.com',
     firstName: 'Siti',
     lastName: 'Nurul',
     userName: 'siti.nurul.hrfocal',
-    companyName: 'PETRONAS',
-    roleId: hrFocalRole.roleId, // ✅ correct role
     isAdmin: true,
   });
 
-  // Individual Learner (self sign-up)
-  await upsertUser({
+  const individualLearnerUser = await upsertUser({
     email: 'individual_learner@gmail.com',
     firstName: 'Arif',
     lastName: 'Hakim',
     userName: 'arif.hakim',
-    companyName: null,
-    roleId: individualLearner.roleId,
     isAdmin: false,
   });
 
-  await upsertUser({
+  const hybridLearnerUser = await upsertUser({
     email: 'hybrid_learner@gmail.com',
     firstName: 'Hybrid',
     lastName: 'Learner',
     userName: 'hybrid.learner',
-    companyName: null,
-    roleId: hybridLearner.roleId,
     isAdmin: false,
   });
 
-  await upsertUser({
+  const classroomLearnerUser = await upsertUser({
     email: 'classroom_learner@gmail.com',
     firstName: 'Classroom',
     lastName: 'Learner',
     userName: 'classroom.learner',
-    companyName: null,
-    roleId: classroomLearner.roleId,
+    isAdmin: false,
+  });
+
+  // optional: one user with multiple roles example
+  const multiRoleLearnerUser = await upsertUser({
+    email: 'student.dev@gmail.com',
+    firstName: 'Student',
+    lastName: 'Dev',
+    userName: 'student.dev',
     isAdmin: false,
   });
 
   // =========================
-  // 3) Learner Profiles (only for role = User)
+  // 5) Assign roles
   // =========================
+  await assignRoleToUser(superAdminUser.userId, superAdminRole.roleId);
+  await assignRoleToUser(adminUser.userId, adminRole.roleId);
+  await assignRoleToUser(hrFocalUser.userId, hrFocalRole.roleId);
+  await assignRoleToUser(
+    individualLearnerUser.userId,
+    individualLearnerRole.roleId,
+  );
+  await assignRoleToUser(hybridLearnerUser.userId, hybridLearnerRole.roleId);
+  await assignRoleToUser(
+    classroomLearnerUser.userId,
+    classroomLearnerRole.roleId,
+  );
 
-  // Find all users with role "User"
-  const hybridUsers = await prisma.capeUser.findMany({
+  // example multi-role assignment
+  await assignRoleToUser(multiRoleLearnerUser.userId, hybridLearnerRole.roleId);
+  await assignRoleToUser(
+    multiRoleLearnerUser.userId,
+    classroomLearnerRole.roleId,
+  );
+
+  // =========================
+  // 6) Learner profiles
+  // =========================
+  const learnerRoleIds = [
+    individualLearnerRole.roleId,
+    hybridLearnerRole.roleId,
+    classroomLearnerRole.roleId,
+  ];
+
+  const learnerUsers = await prisma.capeUser.findMany({
     where: {
-      roleId: hybridLearner.roleId, // ✅ only users with "User" role
+      userRoles: {
+        some: {
+          roleId: {
+            in: learnerRoleIds,
+          },
+        },
+      },
     },
     select: {
-      userId: true, // ✅ this is what capeLearnerProfiles.userId references
+      userId: true,
     },
   });
 
-  // Upsert profile for each learner user (idempotent)
-  for (const u of hybridUsers) {
+  for (const u of learnerUsers) {
     await prisma.capeLearnerProfiles.upsert({
-      where: { userId: u.userId }, // userId is unique in profile ✅
+      where: { userId: u.userId },
       update: {
-        // keep all optional fields null, but still touch updatedAt via Prisma @updatedAt
         bio: null,
         location: null,
         url: null,
@@ -263,7 +307,7 @@ async function main() {
   }
 
   console.log(
-    `Hybrid Learner profiles ensured for ${hybridUsers.length} User-role users`,
+    `Learner profiles ensured for ${learnerUsers.length} learner users`,
   );
 
   console.log('✅ Seed complete:', {
@@ -271,9 +315,9 @@ async function main() {
       superAdminRole.roleName,
       adminRole.roleName,
       hrFocalRole.roleName,
-      individualLearner.roleName,
-      hybridLearner.roleName,
-      classroomLearner.roleName,
+      individualLearnerRole.roleName,
+      hybridLearnerRole.roleName,
+      classroomLearnerRole.roleName,
     ],
     users: [
       'super-admin@utp.edu.my',
@@ -282,7 +326,7 @@ async function main() {
       'individual_learner@gmail.com',
       'hybrid_learner@gmail.com',
       'classroom_learner@gmail.com',
-      'enterprise-learner@petronas.com',
+      'student.dev@gmail.com',
     ],
     defaultPassword: 'abc123456',
   });
@@ -290,7 +334,6 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.log(process.env.DATABASE_URL);
     console.error('❌ Seed failed:', e);
     process.exit(1);
   })

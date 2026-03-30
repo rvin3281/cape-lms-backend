@@ -10,7 +10,7 @@ import { RefreshTokenRepository } from '@app/database/repository/refresh-token.r
 import {
   AuthSession,
   CapeOnboardingProfileDto,
-  CapeUserWithRole,
+  CapeUserWithRoles,
   CONFIRM_PASSWORD_FIELD_REQUIRED,
   DEFAULTS,
   EMAIL_FIELD_REQUIRED,
@@ -58,7 +58,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
-import { CapeUser, Prisma } from 'src/generated/client';
+import { Prisma } from 'src/generated/client';
 import { errorResponseBuilder } from 'utils/errorResponseBuilder';
 import { handleServiceCatchError } from 'utils/handleServiceCatchError';
 import { signAccessToken, verifyAccessToken } from 'utils/jwt';
@@ -351,7 +351,7 @@ export class AuthServiceService {
     try {
       const normalizedEmail = email.trim().toLowerCase();
 
-      const user: CapeUserWithRole | null =
+      const user: CapeUserWithRoles | null =
         await this.capeUserRepo.findUserByEmailAndRole(normalizedEmail);
 
       if (!user) {
@@ -364,8 +364,11 @@ export class AuthServiceService {
         );
       }
 
-      if (user.role.roleCode !== 'CLASSROOM_LEARNER') {
-        console.log('NOT CLASSSROOL LEANER');
+      const hasClassroomLearnerRole = user.userRoles.some(
+        (userRole) => userRole.role.roleCode === 'CLASSROOM_LEARNER',
+      );
+
+      if (!hasClassroomLearnerRole) {
         throw new BadRequestException(
           errorResponseBuilder(
             'INVALID_USER_ROLE',
@@ -451,20 +454,43 @@ export class AuthServiceService {
       // 1) Check if user already exists in OUR database
       // - If exists and isActive=true: return { valid: true } (user should go to normal login)
       // - If exists and isActive=false: continue (resume onboarding)
-      const isExistingUser: CapeUser | null =
-        await this.capeUserRepo.findUserByEmail(normalizedEmail);
+      const isExistingUser: CapeUserWithRoles | null =
+        await this.capeUserRepo.findUserByEmailAndRole(normalizedEmail);
 
-      // ✅ NEW RULE: if user not exist locally => not enrolled
+      // user data must be pre-created on the database by webhook
       if (!isExistingUser) {
         throw new ForbiddenException(
-          errorResponseBuilder('NO_PROGRAM_ENROLLED', [
-            { code: 'NO_PROGRAM_ENROLLED', meta: { email: normalizedEmail } },
+          errorResponseBuilder('NO_PROGRAM_ENROLLED_HYBRID', [
+            {
+              code: 'NO_PROGRAM_ENROLLED_HYBRID',
+              meta: { email: normalizedEmail },
+            },
           ]),
+        );
+      }
+
+      const hasClassroomLearnerRole = isExistingUser.userRoles.some(
+        (userRole) => userRole.role.roleCode === 'HYBRID_LEARNER',
+      );
+
+      if (!hasClassroomLearnerRole) {
+        throw new BadRequestException(
+          errorResponseBuilder(
+            'INVALID_USER_ROLE_HYBRID',
+            undefined,
+            'This email is not registered as a classroom learner account.',
+          ),
         );
       }
 
       if (isExistingUser?.isActive) {
         throw new ConflictException(errorResponseBuilder('USER_EXIST_ACTIVE'));
+      }
+
+      if (!isExistingUser?.isFirstTimeLogin) {
+        throw new BadRequestException(
+          errorResponseBuilder('LW_USER_EXIST_COMPLETED_ONBOARDING'),
+        );
       }
 
       // 2) Call LearnWorlds API: Get user by email (encoded)
@@ -510,19 +536,6 @@ export class AuthServiceService {
         );
       }
 
-      // 4) Role mapping for YOUR system (not LearnWorlds role)
-      // - Determine local role: LEARNER, HR, ADMIN, etc.
-      // - If cannot map: return { valid: false }
-      const existRole = await this.capeRoleRepo.findRoleByLevel(
-        lwUser.role.level,
-      );
-
-      if (!existRole) {
-        throw new ForbiddenException(
-          errorResponseBuilder('ROLE_DOES_NOT_EXIST'),
-        );
-      }
-
       /** DB transaction for user + profile creation **/
 
       // 5) Create or update local user (inactive, no password yet)
@@ -540,59 +553,56 @@ export class AuthServiceService {
       await this.capeUserRepo['prisma'].$transaction(
         async (tx: Prisma.TransactionClient) => {
           // Create User
-          await this.capeUserRepo.updateUserFromLearnWorlds(
-            normalizedEmail,
+          // await this.capeUserRepo.updateUserFromLearnWorlds(
+          //   normalizedEmail,
+          //   {
+          //     firstName: lwUser.first_name || undefined,
+          //     lastName: lwUser.last_name || undefined,
+          //     userName: lwUser.username || undefined,
+          //     roleId: existRole.roleId,
+          //     updatedBy: 'system',
+          //   },
+          //   tx,
+          // );
+
+          const profilePayload = {
+            bio: lwUser.fields?.bio ?? null,
+            location: lwUser.fields?.location ?? null,
+            url: lwUser.fields?.url ?? null,
+            fb: lwUser.fields?.fb ?? null,
+            twitter: lwUser.fields?.twitter ?? null,
+            instagram: lwUser.fields?.instagram ?? null,
+            linkedin: lwUser.fields?.linkedin ?? null,
+            skype: lwUser.fields?.skype ?? null,
+            behance: lwUser.fields?.behance ?? null,
+            dribbble: lwUser.fields?.dribbble ?? null,
+            github: lwUser.fields?.github ?? null,
+            cfCompany: (lwUser.fields as any)?.cf_organization ?? null,
+            cfCohort: (lwUser.fields as any)?.cf_cohort ?? null,
+            npsScore:
+              typeof lwUser.nps_score === 'number' ? lwUser.nps_score : null,
+            npsComment:
+              typeof lwUser.nps_comment === 'string'
+                ? lwUser.nps_comment
+                : null,
+            tags: lwUser.tags?.join(',') ?? null,
+          };
+
+          await this.capeUserProfileRepo.upsertUserProfile(
             {
-              firstName: lwUser.first_name || undefined,
-              lastName: lwUser.last_name || undefined,
-              userName: lwUser.username || undefined,
-              roleId: existRole.roleId,
-              updatedBy: 'system',
+              where: {
+                userId: isExistingUser.userId,
+              },
+              create: {
+                userId: isExistingUser.userId,
+                ...profilePayload,
+              },
+              update: {
+                ...profilePayload,
+              },
             },
             tx,
           );
-
-          const profile = await this.capeUserProfileRepo.findUserProfileById(
-            isExistingUser.userId,
-          );
-
-          if (!profile) {
-            await this.capeUserProfileRepo.createUserProfile(
-              {
-                data: {
-                  userId: isExistingUser.userId,
-
-                  bio: lwUser.fields?.bio ?? null,
-                  location: lwUser.fields?.location ?? null,
-                  url: lwUser.fields?.url ?? null,
-                  fb: lwUser.fields?.fb ?? null,
-                  twitter: lwUser.fields?.twitter ?? null,
-                  instagram: lwUser.fields?.instagram ?? null,
-                  linkedin: lwUser.fields?.linkedin ?? null,
-                  skype: lwUser.fields?.skype ?? null,
-                  behance: lwUser.fields?.behance ?? null,
-                  dribbble: lwUser.fields?.dribbble ?? null,
-                  github: lwUser.fields?.github ?? null,
-
-                  cfCompany: (lwUser.fields as any)?.cf_company ?? null,
-                  cfCohort: (lwUser.fields as any)?.cf_cohort ?? null,
-
-                  npsScore:
-                    typeof lwUser.nps_score === 'number'
-                      ? lwUser.nps_score
-                      : null,
-                  npsComment:
-                    typeof lwUser.nps_comment === 'string'
-                      ? lwUser.nps_comment
-                      : null,
-
-                  // if your column exists / required:
-                  tags: lwUser.tags?.join(',') ?? null,
-                },
-              },
-              tx,
-            );
-          }
 
           // (c) Replace token (delete old tokens -> create new)
           await this.capePasswordSetupTokenRepo.deleteTokensByEmail(
@@ -617,7 +627,7 @@ export class AuthServiceService {
       if (error instanceof AxiosError) {
         const status = error.response?.status;
 
-        // ✅ Any LearnWorlds rejection becomes ONE business error
+        // Any LearnWorlds rejection becomes ONE business error
         if (status === 404 || status === 401 || status === 403) {
           throw new ForbiddenException(
             errorResponseBuilder('LW_USER_NOT_ELIGIBLE', [
@@ -805,7 +815,7 @@ export class AuthServiceService {
         );
 
       // Enterprise: confirm user still existws / not deleted
-      const user = await this.capeUserRepo.findUserByUserIdWithProfile(
+      const user = await this.capeUserRepo.findUserByUserIdWithProfileAndRoles(
         payload.sub,
       );
       if (!user || user.deletedAt)
@@ -813,17 +823,23 @@ export class AuthServiceService {
           errorResponseBuilder(UNAUTHENTICATED_NO_USER_FOUND),
         );
 
-      const role = await this.capeUserRepo.findUserRole(user.roleId);
-      if (!role)
+      if (!user.userRoles || user.userRoles.length === 0) {
         throw new UnauthorizedException(
           errorResponseBuilder(UNAUTHENTICATED_NOROLE),
         );
+      }
 
-      const scope =
-        role.roleCode === ROLE_CODE.CAPE_ADMIN ||
-        role.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
-          ? 'admin'
-          : 'learner';
+      const matchedUserRole = user.userRoles.find(
+        (userRole) => userRole.role.roleId === payload.roleId,
+      );
+
+      if (!matchedUserRole) {
+        throw new UnauthorizedException(
+          errorResponseBuilder('SESSION_ROLE_NOT_FOUND'),
+        );
+      }
+
+      const selectedRole = matchedUserRole.role;
 
       return {
         user: {
@@ -833,11 +849,11 @@ export class AuthServiceService {
           name: user.userName,
           email: user.email,
           isFirstTimeLogin: user.isFirstTimeLogin,
-          roleId: role.roleId,
-          roleName: role.roleName,
-          roleCode: role.roleCode,
-          company: user?.profile?.cfCompany || '',
-          authScope: scope,
+          roleId: selectedRole.roleId,
+          roleName: selectedRole.roleName,
+          roleCode: selectedRole.roleCode,
+          company: user.profile?.cfCompany || '',
+          authScope: payload.authScope,
         },
       };
     } catch (error) {
@@ -873,19 +889,34 @@ export class AuthServiceService {
           errorResponseBuilder(REFRESH_TOKEN_INVALID),
         );
 
-      const user = await this.capeUserRepo.findUserByUserId(tokenRow.userId);
+      const user = await this.capeUserRepo.findUserByUserIdWithProfileAndRoles(
+        tokenRow.userId,
+      );
+
       if (!user || user.deletedAt)
         throw new UnauthorizedException(errorResponseBuilder(UNAUTHENTICATED));
 
-      const role = await this.capeUserRepo.findUserRole(user.roleId);
-      if (!role)
+      if (!user.userRoles || user.userRoles.length === 0) {
         throw new UnauthorizedException(
           errorResponseBuilder(UNAUTHENTICATED_NOROLE),
         );
+      }
+
+      const matchedUserRole = user.userRoles.find(
+        (userRole) => userRole.role.roleId === tokenRow.selectedRoleId,
+      );
+
+      if (!matchedUserRole) {
+        throw new UnauthorizedException(
+          errorResponseBuilder('SESSION_ROLE_NOT_FOUND'),
+        );
+      }
+
+      const selectedRole = matchedUserRole.role;
 
       const scope: 'admin' | 'learner' =
-        role.roleCode === ROLE_CODE.CAPE_ADMIN ||
-        role.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
+        selectedRole.roleCode === ROLE_CODE.CAPE_ADMIN ||
+        selectedRole.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
           ? 'admin'
           : 'learner';
 
@@ -904,8 +935,8 @@ export class AuthServiceService {
       const accessToken = await signAccessToken({
         payload: {
           email: String(user.email),
-          roleId: String(role.roleId),
-          roleCode: String(role.roleCode),
+          roleId: String(selectedRole.roleId),
+          roleCode: String(selectedRole.roleCode),
           authScope: scope,
         },
         subject: String(user.userId),
@@ -925,9 +956,9 @@ export class AuthServiceService {
           name: user.userName,
           email: user.email,
           isFirstTimeLogin: user.isFirstTimeLogin,
-          roleName: role.roleName,
-          roleId: role.roleId,
-          roleCode: role.roleCode,
+          roleName: selectedRole.roleName,
+          roleId: selectedRole.roleId,
+          roleCode: selectedRole.roleCode,
           authScope: scope,
         },
         accessToken,
@@ -985,7 +1016,7 @@ export class AuthServiceService {
       // =========================================================
       // STEP 1) Find admin user by email
       // =========================================================
-      const user = await this.capeUserRepo.findUserByEmail(email);
+      const user = await this.capeUserRepo.findUserByEmailAndRole(email);
 
       // IMPORTANT (enterprise): do NOT reveal whether email exists
       // Return same error for "email not found" and "wrong password"
@@ -1002,7 +1033,7 @@ export class AuthServiceService {
         );
       }
 
-      if (user && !user.isActive) {
+      if (!user.isActive) {
         throw new UnauthorizedException(
           errorResponseBuilder(VALIDATE_YOUR_EMAIL, [
             {
@@ -1015,14 +1046,19 @@ export class AuthServiceService {
         );
       }
 
-      const role = await this.capeUserRepo.findUserRole(user.roleId);
-
-      if (!role)
+      if (!user.userRoles || user.userRoles.length === 0) {
         throw new UnauthorizedException(
           errorResponseBuilder(UNAUTHENTICATED_NOROLE),
         );
+      }
 
-      if (role.roleCode !== roleCode) {
+      const matchedUserRole = user.userRoles.find(
+        (userRole) => userRole.role.roleCode === roleCode,
+      );
+
+      console.log('Matched User Role:', matchedUserRole);
+
+      if (!matchedUserRole) {
         throw new UnauthorizedException(
           errorResponseBuilder('ROLE_NOT_MATCH', [
             {
@@ -1034,6 +1070,10 @@ export class AuthServiceService {
           ]),
         );
       }
+
+      const selectedRole = matchedUserRole.role;
+
+      console.log('Selected Role:', selectedRole);
       // =========================================================
       // STEP 2) Verify password (bcrypt compare)
       // =========================================================
@@ -1079,17 +1119,17 @@ export class AuthServiceService {
         Number(this.config.get<string>('ACCESS_TOKEN_TTL_SECONDS') ?? 900) ||
         900;
 
-      const scope =
-        role.roleCode === ROLE_CODE.CAPE_ADMIN ||
-        role.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
+      const scope: 'admin' | 'learner' =
+        selectedRole.roleCode === ROLE_CODE.CAPE_ADMIN ||
+        selectedRole.roleCode === ROLE_CODE.HR_FOCAL_ADMIN
           ? 'admin'
           : 'learner';
 
       const accessToken = await signAccessToken({
         payload: {
           email: String(user.email),
-          roleId: String(role.roleId),
-          roleCode: String(role.roleCode),
+          roleId: String(selectedRole.roleId),
+          roleCode: String(selectedRole.roleCode),
           authScope: scope,
         },
         subject: String(user.userId),
@@ -1118,6 +1158,9 @@ export class AuthServiceService {
         expiresAt: refreshExpiresAt,
         ipAddress: meta?.ip,
         userAgent: meta?.userAgent,
+        selectedRoleId: String(selectedRole.roleId),
+        selectedRoleCode: String(selectedRole.roleCode),
+        authScope: scope,
       });
 
       // =========================================================
@@ -1131,9 +1174,9 @@ export class AuthServiceService {
           lastName: String(user.lastName),
           name: String(user.userName),
           email: String(user.email),
-          roleId: String(role.roleId),
-          roleCode: String(role.roleCode),
-          roleName: String(role.roleName),
+          roleId: String(selectedRole.roleId),
+          roleCode: String(selectedRole.roleCode),
+          roleName: String(selectedRole.roleName),
           isFirstTimeLogin: user.isFirstTimeLogin,
           authScope: scope,
           // permissions,

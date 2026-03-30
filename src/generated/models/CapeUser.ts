@@ -43,7 +43,6 @@ export type CapeUserMinAggregateOutputType = {
   firstName: string | null
   lastName: string | null
   userName: string | null
-  roleId: string | null
   isActive: boolean | null
   isAdmin: boolean | null
   isFirstTimeLogin: boolean | null
@@ -64,7 +63,6 @@ export type CapeUserMaxAggregateOutputType = {
   firstName: string | null
   lastName: string | null
   userName: string | null
-  roleId: string | null
   isActive: boolean | null
   isAdmin: boolean | null
   isFirstTimeLogin: boolean | null
@@ -85,7 +83,6 @@ export type CapeUserCountAggregateOutputType = {
   firstName: number
   lastName: number
   userName: number
-  roleId: number
   isActive: number
   isAdmin: number
   isFirstTimeLogin: number
@@ -116,7 +113,6 @@ export type CapeUserMinAggregateInputType = {
   firstName?: true
   lastName?: true
   userName?: true
-  roleId?: true
   isActive?: true
   isAdmin?: true
   isFirstTimeLogin?: true
@@ -137,7 +133,6 @@ export type CapeUserMaxAggregateInputType = {
   firstName?: true
   lastName?: true
   userName?: true
-  roleId?: true
   isActive?: true
   isAdmin?: true
   isFirstTimeLogin?: true
@@ -158,7 +153,6 @@ export type CapeUserCountAggregateInputType = {
   firstName?: true
   lastName?: true
   userName?: true
-  roleId?: true
   isActive?: true
   isAdmin?: true
   isFirstTimeLogin?: true
@@ -266,7 +260,6 @@ export type CapeUserGroupByOutputType = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive: boolean
   isAdmin: boolean
   isFirstTimeLogin: boolean
@@ -310,7 +303,6 @@ export type CapeUserWhereInput = {
   firstName?: Prisma.StringFilter<"CapeUser"> | string
   lastName?: Prisma.StringFilter<"CapeUser"> | string
   userName?: Prisma.StringFilter<"CapeUser"> | string
-  roleId?: Prisma.StringFilter<"CapeUser"> | string
   isActive?: Prisma.BoolFilter<"CapeUser"> | boolean
   isAdmin?: Prisma.BoolFilter<"CapeUser"> | boolean
   isFirstTimeLogin?: Prisma.BoolFilter<"CapeUser"> | boolean
@@ -320,13 +312,13 @@ export type CapeUserWhereInput = {
   updatedBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"CapeUser"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
-  role?: Prisma.XOR<Prisma.CapeRoleScalarRelationFilter, Prisma.CapeRoleWhereInput>
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   profile?: Prisma.XOR<Prisma.CapeLearnerProfilesNullableScalarRelationFilter, Prisma.capeLearnerProfilesWhereInput> | null
   userProfile?: Prisma.XOR<Prisma.CapeUserProfilesNullableScalarRelationFilter, Prisma.CapeUserProfilesWhereInput> | null
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramListRelationFilter
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentListRelationFilter
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorListRelationFilter
+  userRoles?: Prisma.CapeUserRoleListRelationFilter
 }
 
 export type CapeUserOrderByWithRelationInput = {
@@ -338,7 +330,6 @@ export type CapeUserOrderByWithRelationInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   userName?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   isFirstTimeLogin?: Prisma.SortOrder
@@ -348,13 +339,13 @@ export type CapeUserOrderByWithRelationInput = {
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.CapeRoleOrderByWithRelationInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   profile?: Prisma.capeLearnerProfilesOrderByWithRelationInput
   userProfile?: Prisma.CapeUserProfilesOrderByWithRelationInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramOrderByRelationAggregateInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentOrderByRelationAggregateInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorOrderByRelationAggregateInput
+  userRoles?: Prisma.CapeUserRoleOrderByRelationAggregateInput
 }
 
 export type CapeUserWhereUniqueInput = Prisma.AtLeast<{
@@ -369,7 +360,6 @@ export type CapeUserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"CapeUser"> | string
   firstName?: Prisma.StringFilter<"CapeUser"> | string
   lastName?: Prisma.StringFilter<"CapeUser"> | string
-  roleId?: Prisma.StringFilter<"CapeUser"> | string
   isActive?: Prisma.BoolFilter<"CapeUser"> | boolean
   isAdmin?: Prisma.BoolFilter<"CapeUser"> | boolean
   isFirstTimeLogin?: Prisma.BoolFilter<"CapeUser"> | boolean
@@ -379,13 +369,13 @@ export type CapeUserWhereUniqueInput = Prisma.AtLeast<{
   updatedBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"CapeUser"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
-  role?: Prisma.XOR<Prisma.CapeRoleScalarRelationFilter, Prisma.CapeRoleWhereInput>
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   profile?: Prisma.XOR<Prisma.CapeLearnerProfilesNullableScalarRelationFilter, Prisma.capeLearnerProfilesWhereInput> | null
   userProfile?: Prisma.XOR<Prisma.CapeUserProfilesNullableScalarRelationFilter, Prisma.CapeUserProfilesWhereInput> | null
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramListRelationFilter
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentListRelationFilter
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorListRelationFilter
+  userRoles?: Prisma.CapeUserRoleListRelationFilter
 }, "id" | "userId" | "email" | "userName">
 
 export type CapeUserOrderByWithAggregationInput = {
@@ -397,7 +387,6 @@ export type CapeUserOrderByWithAggregationInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   userName?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   isFirstTimeLogin?: Prisma.SortOrder
@@ -426,7 +415,6 @@ export type CapeUserScalarWhereWithAggregatesInput = {
   firstName?: Prisma.StringWithAggregatesFilter<"CapeUser"> | string
   lastName?: Prisma.StringWithAggregatesFilter<"CapeUser"> | string
   userName?: Prisma.StringWithAggregatesFilter<"CapeUser"> | string
-  roleId?: Prisma.StringWithAggregatesFilter<"CapeUser"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"CapeUser"> | boolean
   isAdmin?: Prisma.BoolWithAggregatesFilter<"CapeUser"> | boolean
   isFirstTimeLogin?: Prisma.BoolWithAggregatesFilter<"CapeUser"> | boolean
@@ -455,13 +443,13 @@ export type CapeUserCreateInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   profile?: Prisma.capeLearnerProfilesCreateNestedOneWithoutUserInput
   userProfile?: Prisma.CapeUserProfilesCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateInput = {
@@ -473,7 +461,6 @@ export type CapeUserUncheckedCreateInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -489,6 +476,7 @@ export type CapeUserUncheckedCreateInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUpdateInput = {
@@ -508,13 +496,13 @@ export type CapeUserUpdateInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
   userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateInput = {
@@ -526,7 +514,6 @@ export type CapeUserUncheckedUpdateInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -542,6 +529,7 @@ export type CapeUserUncheckedUpdateInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateManyInput = {
@@ -552,7 +540,6 @@ export type CapeUserCreateManyInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -592,7 +579,6 @@ export type CapeUserUncheckedUpdateManyInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -604,16 +590,6 @@ export type CapeUserUncheckedUpdateManyInput = {
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type CapeUserListRelationFilter = {
-  every?: Prisma.CapeUserWhereInput
-  some?: Prisma.CapeUserWhereInput
-  none?: Prisma.CapeUserWhereInput
-}
-
-export type CapeUserOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type CapeUserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -623,7 +599,6 @@ export type CapeUserCountOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   userName?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   isFirstTimeLogin?: Prisma.SortOrder
@@ -648,7 +623,6 @@ export type CapeUserMaxOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   userName?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   isFirstTimeLogin?: Prisma.SortOrder
@@ -669,7 +643,6 @@ export type CapeUserMinOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   userName?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   isFirstTimeLogin?: Prisma.SortOrder
@@ -690,54 +663,26 @@ export type CapeUserScalarRelationFilter = {
   isNot?: Prisma.CapeUserWhereInput
 }
 
-export type CapeUserCreateNestedManyWithoutRoleInput = {
-  create?: Prisma.XOR<Prisma.CapeUserCreateWithoutRoleInput, Prisma.CapeUserUncheckedCreateWithoutRoleInput> | Prisma.CapeUserCreateWithoutRoleInput[] | Prisma.CapeUserUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.CapeUserCreateOrConnectWithoutRoleInput | Prisma.CapeUserCreateOrConnectWithoutRoleInput[]
-  createMany?: Prisma.CapeUserCreateManyRoleInputEnvelope
-  connect?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-}
-
-export type CapeUserUncheckedCreateNestedManyWithoutRoleInput = {
-  create?: Prisma.XOR<Prisma.CapeUserCreateWithoutRoleInput, Prisma.CapeUserUncheckedCreateWithoutRoleInput> | Prisma.CapeUserCreateWithoutRoleInput[] | Prisma.CapeUserUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.CapeUserCreateOrConnectWithoutRoleInput | Prisma.CapeUserCreateOrConnectWithoutRoleInput[]
-  createMany?: Prisma.CapeUserCreateManyRoleInputEnvelope
-  connect?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-}
-
-export type CapeUserUpdateManyWithoutRoleNestedInput = {
-  create?: Prisma.XOR<Prisma.CapeUserCreateWithoutRoleInput, Prisma.CapeUserUncheckedCreateWithoutRoleInput> | Prisma.CapeUserCreateWithoutRoleInput[] | Prisma.CapeUserUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.CapeUserCreateOrConnectWithoutRoleInput | Prisma.CapeUserCreateOrConnectWithoutRoleInput[]
-  upsert?: Prisma.CapeUserUpsertWithWhereUniqueWithoutRoleInput | Prisma.CapeUserUpsertWithWhereUniqueWithoutRoleInput[]
-  createMany?: Prisma.CapeUserCreateManyRoleInputEnvelope
-  set?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  disconnect?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  delete?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  connect?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  update?: Prisma.CapeUserUpdateWithWhereUniqueWithoutRoleInput | Prisma.CapeUserUpdateWithWhereUniqueWithoutRoleInput[]
-  updateMany?: Prisma.CapeUserUpdateManyWithWhereWithoutRoleInput | Prisma.CapeUserUpdateManyWithWhereWithoutRoleInput[]
-  deleteMany?: Prisma.CapeUserScalarWhereInput | Prisma.CapeUserScalarWhereInput[]
-}
-
-export type CapeUserUncheckedUpdateManyWithoutRoleNestedInput = {
-  create?: Prisma.XOR<Prisma.CapeUserCreateWithoutRoleInput, Prisma.CapeUserUncheckedCreateWithoutRoleInput> | Prisma.CapeUserCreateWithoutRoleInput[] | Prisma.CapeUserUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.CapeUserCreateOrConnectWithoutRoleInput | Prisma.CapeUserCreateOrConnectWithoutRoleInput[]
-  upsert?: Prisma.CapeUserUpsertWithWhereUniqueWithoutRoleInput | Prisma.CapeUserUpsertWithWhereUniqueWithoutRoleInput[]
-  createMany?: Prisma.CapeUserCreateManyRoleInputEnvelope
-  set?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  disconnect?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  delete?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  connect?: Prisma.CapeUserWhereUniqueInput | Prisma.CapeUserWhereUniqueInput[]
-  update?: Prisma.CapeUserUpdateWithWhereUniqueWithoutRoleInput | Prisma.CapeUserUpdateWithWhereUniqueWithoutRoleInput[]
-  updateMany?: Prisma.CapeUserUpdateManyWithWhereWithoutRoleInput | Prisma.CapeUserUpdateManyWithWhereWithoutRoleInput[]
-  deleteMany?: Prisma.CapeUserScalarWhereInput | Prisma.CapeUserScalarWhereInput[]
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type CapeUserCreateNestedOneWithoutUserRolesInput = {
+  create?: Prisma.XOR<Prisma.CapeUserCreateWithoutUserRolesInput, Prisma.CapeUserUncheckedCreateWithoutUserRolesInput>
+  connectOrCreate?: Prisma.CapeUserCreateOrConnectWithoutUserRolesInput
+  connect?: Prisma.CapeUserWhereUniqueInput
+}
+
+export type CapeUserUpdateOneRequiredWithoutUserRolesNestedInput = {
+  create?: Prisma.XOR<Prisma.CapeUserCreateWithoutUserRolesInput, Prisma.CapeUserUncheckedCreateWithoutUserRolesInput>
+  connectOrCreate?: Prisma.CapeUserCreateOrConnectWithoutUserRolesInput
+  upsert?: Prisma.CapeUserUpsertWithoutUserRolesInput
+  connect?: Prisma.CapeUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapeUserUpdateToOneWithWhereWithoutUserRolesInput, Prisma.CapeUserUpdateWithoutUserRolesInput>, Prisma.CapeUserUncheckedUpdateWithoutUserRolesInput>
 }
 
 export type CapeUserCreateNestedOneWithoutProfileInput = {
@@ -824,7 +769,7 @@ export type CapeUserUpdateOneRequiredWithoutProgramUserFacilitatorsNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.CapeUserUpdateToOneWithWhereWithoutProgramUserFacilitatorsInput, Prisma.CapeUserUpdateWithoutProgramUserFacilitatorsInput>, Prisma.CapeUserUncheckedUpdateWithoutProgramUserFacilitatorsInput>
 }
 
-export type CapeUserCreateWithoutRoleInput = {
+export type CapeUserCreateWithoutUserRolesInput = {
   userId?: string
   learnworldId?: string | null
   email: string
@@ -849,7 +794,7 @@ export type CapeUserCreateWithoutRoleInput = {
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
 }
 
-export type CapeUserUncheckedCreateWithoutRoleInput = {
+export type CapeUserUncheckedCreateWithoutUserRolesInput = {
   id?: number
   userId?: string
   learnworldId?: string | null
@@ -875,53 +820,71 @@ export type CapeUserUncheckedCreateWithoutRoleInput = {
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type CapeUserCreateOrConnectWithoutRoleInput = {
+export type CapeUserCreateOrConnectWithoutUserRolesInput = {
   where: Prisma.CapeUserWhereUniqueInput
-  create: Prisma.XOR<Prisma.CapeUserCreateWithoutRoleInput, Prisma.CapeUserUncheckedCreateWithoutRoleInput>
+  create: Prisma.XOR<Prisma.CapeUserCreateWithoutUserRolesInput, Prisma.CapeUserUncheckedCreateWithoutUserRolesInput>
 }
 
-export type CapeUserCreateManyRoleInputEnvelope = {
-  data: Prisma.CapeUserCreateManyRoleInput | Prisma.CapeUserCreateManyRoleInput[]
+export type CapeUserUpsertWithoutUserRolesInput = {
+  update: Prisma.XOR<Prisma.CapeUserUpdateWithoutUserRolesInput, Prisma.CapeUserUncheckedUpdateWithoutUserRolesInput>
+  create: Prisma.XOR<Prisma.CapeUserCreateWithoutUserRolesInput, Prisma.CapeUserUncheckedCreateWithoutUserRolesInput>
+  where?: Prisma.CapeUserWhereInput
 }
 
-export type CapeUserUpsertWithWhereUniqueWithoutRoleInput = {
-  where: Prisma.CapeUserWhereUniqueInput
-  update: Prisma.XOR<Prisma.CapeUserUpdateWithoutRoleInput, Prisma.CapeUserUncheckedUpdateWithoutRoleInput>
-  create: Prisma.XOR<Prisma.CapeUserCreateWithoutRoleInput, Prisma.CapeUserUncheckedCreateWithoutRoleInput>
+export type CapeUserUpdateToOneWithWhereWithoutUserRolesInput = {
+  where?: Prisma.CapeUserWhereInput
+  data: Prisma.XOR<Prisma.CapeUserUpdateWithoutUserRolesInput, Prisma.CapeUserUncheckedUpdateWithoutUserRolesInput>
 }
 
-export type CapeUserUpdateWithWhereUniqueWithoutRoleInput = {
-  where: Prisma.CapeUserWhereUniqueInput
-  data: Prisma.XOR<Prisma.CapeUserUpdateWithoutRoleInput, Prisma.CapeUserUncheckedUpdateWithoutRoleInput>
+export type CapeUserUpdateWithoutUserRolesInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  learnworldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
+  userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
+  learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
+  programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
+  programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
 }
 
-export type CapeUserUpdateManyWithWhereWithoutRoleInput = {
-  where: Prisma.CapeUserScalarWhereInput
-  data: Prisma.XOR<Prisma.CapeUserUpdateManyMutationInput, Prisma.CapeUserUncheckedUpdateManyWithoutRoleInput>
-}
-
-export type CapeUserScalarWhereInput = {
-  AND?: Prisma.CapeUserScalarWhereInput | Prisma.CapeUserScalarWhereInput[]
-  OR?: Prisma.CapeUserScalarWhereInput[]
-  NOT?: Prisma.CapeUserScalarWhereInput | Prisma.CapeUserScalarWhereInput[]
-  id?: Prisma.IntFilter<"CapeUser"> | number
-  userId?: Prisma.StringFilter<"CapeUser"> | string
-  learnworldId?: Prisma.StringNullableFilter<"CapeUser"> | string | null
-  email?: Prisma.StringFilter<"CapeUser"> | string
-  passwordHash?: Prisma.StringFilter<"CapeUser"> | string
-  firstName?: Prisma.StringFilter<"CapeUser"> | string
-  lastName?: Prisma.StringFilter<"CapeUser"> | string
-  userName?: Prisma.StringFilter<"CapeUser"> | string
-  roleId?: Prisma.StringFilter<"CapeUser"> | string
-  isActive?: Prisma.BoolFilter<"CapeUser"> | boolean
-  isAdmin?: Prisma.BoolFilter<"CapeUser"> | boolean
-  isFirstTimeLogin?: Prisma.BoolFilter<"CapeUser"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"CapeUser"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"CapeUser"> | Date | string
-  createdBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
-  updatedBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
-  deletedAt?: Prisma.DateTimeNullableFilter<"CapeUser"> | Date | string | null
-  deletedBy?: Prisma.StringNullableFilter<"CapeUser"> | string | null
+export type CapeUserUncheckedUpdateWithoutUserRolesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  learnworldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.capeLearnerProfilesUncheckedUpdateOneWithoutUserNestedInput
+  userProfile?: Prisma.CapeUserProfilesUncheckedUpdateOneWithoutUserNestedInput
+  learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
+  programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateWithoutProfileInput = {
@@ -941,12 +904,12 @@ export type CapeUserCreateWithoutProfileInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   userProfile?: Prisma.CapeUserProfilesCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateWithoutProfileInput = {
@@ -958,7 +921,6 @@ export type CapeUserUncheckedCreateWithoutProfileInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -973,6 +935,7 @@ export type CapeUserUncheckedCreateWithoutProfileInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserCreateOrConnectWithoutProfileInput = {
@@ -1008,12 +971,12 @@ export type CapeUserUpdateWithoutProfileInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateWithoutProfileInput = {
@@ -1025,7 +988,6 @@ export type CapeUserUncheckedUpdateWithoutProfileInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1040,6 +1002,7 @@ export type CapeUserUncheckedUpdateWithoutProfileInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateWithoutUserProfileInput = {
@@ -1059,12 +1022,12 @@ export type CapeUserCreateWithoutUserProfileInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   profile?: Prisma.capeLearnerProfilesCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateWithoutUserProfileInput = {
@@ -1076,7 +1039,6 @@ export type CapeUserUncheckedCreateWithoutUserProfileInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1091,6 +1053,7 @@ export type CapeUserUncheckedCreateWithoutUserProfileInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserCreateOrConnectWithoutUserProfileInput = {
@@ -1126,12 +1089,12 @@ export type CapeUserUpdateWithoutUserProfileInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateWithoutUserProfileInput = {
@@ -1143,7 +1106,6 @@ export type CapeUserUncheckedUpdateWithoutUserProfileInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1158,6 +1120,7 @@ export type CapeUserUncheckedUpdateWithoutUserProfileInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateWithoutRefreshTokensInput = {
@@ -1177,12 +1140,12 @@ export type CapeUserCreateWithoutRefreshTokensInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   profile?: Prisma.capeLearnerProfilesCreateNestedOneWithoutUserInput
   userProfile?: Prisma.CapeUserProfilesCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateWithoutRefreshTokensInput = {
@@ -1194,7 +1157,6 @@ export type CapeUserUncheckedCreateWithoutRefreshTokensInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1209,6 +1171,7 @@ export type CapeUserUncheckedCreateWithoutRefreshTokensInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserCreateOrConnectWithoutRefreshTokensInput = {
@@ -1244,12 +1207,12 @@ export type CapeUserUpdateWithoutRefreshTokensInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
   userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -1261,7 +1224,6 @@ export type CapeUserUncheckedUpdateWithoutRefreshTokensInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1276,6 +1238,7 @@ export type CapeUserUncheckedUpdateWithoutRefreshTokensInput = {
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateWithoutLearnworldsEnrollmentsInput = {
@@ -1295,12 +1258,12 @@ export type CapeUserCreateWithoutLearnworldsEnrollmentsInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   profile?: Prisma.capeLearnerProfilesCreateNestedOneWithoutUserInput
   userProfile?: Prisma.CapeUserProfilesCreateNestedOneWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateWithoutLearnworldsEnrollmentsInput = {
@@ -1312,7 +1275,6 @@ export type CapeUserUncheckedCreateWithoutLearnworldsEnrollmentsInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1327,6 +1289,7 @@ export type CapeUserUncheckedCreateWithoutLearnworldsEnrollmentsInput = {
   userProfile?: Prisma.CapeUserProfilesUncheckedCreateNestedOneWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserCreateOrConnectWithoutLearnworldsEnrollmentsInput = {
@@ -1362,12 +1325,12 @@ export type CapeUserUpdateWithoutLearnworldsEnrollmentsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
   userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateWithoutLearnworldsEnrollmentsInput = {
@@ -1379,7 +1342,6 @@ export type CapeUserUncheckedUpdateWithoutLearnworldsEnrollmentsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1394,6 +1356,7 @@ export type CapeUserUncheckedUpdateWithoutLearnworldsEnrollmentsInput = {
   userProfile?: Prisma.CapeUserProfilesUncheckedUpdateOneWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateWithoutProgramEnrollmentsInput = {
@@ -1413,12 +1376,12 @@ export type CapeUserCreateWithoutProgramEnrollmentsInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   profile?: Prisma.capeLearnerProfilesCreateNestedOneWithoutUserInput
   userProfile?: Prisma.CapeUserProfilesCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateWithoutProgramEnrollmentsInput = {
@@ -1430,7 +1393,6 @@ export type CapeUserUncheckedCreateWithoutProgramEnrollmentsInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1445,6 +1407,7 @@ export type CapeUserUncheckedCreateWithoutProgramEnrollmentsInput = {
   userProfile?: Prisma.CapeUserProfilesUncheckedCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedCreateNestedManyWithoutUserInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserCreateOrConnectWithoutProgramEnrollmentsInput = {
@@ -1480,12 +1443,12 @@ export type CapeUserUpdateWithoutProgramEnrollmentsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
   userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateWithoutProgramEnrollmentsInput = {
@@ -1497,7 +1460,6 @@ export type CapeUserUncheckedUpdateWithoutProgramEnrollmentsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1512,6 +1474,7 @@ export type CapeUserUncheckedUpdateWithoutProgramEnrollmentsInput = {
   userProfile?: Prisma.CapeUserProfilesUncheckedUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
   programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserCreateWithoutProgramUserFacilitatorsInput = {
@@ -1531,12 +1494,12 @@ export type CapeUserCreateWithoutProgramUserFacilitatorsInput = {
   updatedBy?: string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
-  role: Prisma.CapeRoleCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   profile?: Prisma.capeLearnerProfilesCreateNestedOneWithoutUserInput
   userProfile?: Prisma.CapeUserProfilesCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserUncheckedCreateWithoutProgramUserFacilitatorsInput = {
@@ -1548,7 +1511,6 @@ export type CapeUserUncheckedCreateWithoutProgramUserFacilitatorsInput = {
   firstName: string
   lastName: string
   userName: string
-  roleId: string
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1563,6 +1525,7 @@ export type CapeUserUncheckedCreateWithoutProgramUserFacilitatorsInput = {
   userProfile?: Prisma.CapeUserProfilesUncheckedCreateNestedOneWithoutUserInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedCreateNestedManyWithoutUserInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type CapeUserCreateOrConnectWithoutProgramUserFacilitatorsInput = {
@@ -1598,12 +1561,12 @@ export type CapeUserUpdateWithoutProgramUserFacilitatorsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.CapeRoleUpdateOneRequiredWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
   userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutUserNestedInput
 }
 
 export type CapeUserUncheckedUpdateWithoutProgramUserFacilitatorsInput = {
@@ -1615,7 +1578,6 @@ export type CapeUserUncheckedUpdateWithoutProgramUserFacilitatorsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   userName?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1630,96 +1592,7 @@ export type CapeUserUncheckedUpdateWithoutProgramUserFacilitatorsInput = {
   userProfile?: Prisma.CapeUserProfilesUncheckedUpdateOneWithoutUserNestedInput
   learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
   programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type CapeUserCreateManyRoleInput = {
-  userId?: string
-  learnworldId?: string | null
-  email: string
-  passwordHash: string
-  firstName: string
-  lastName: string
-  userName: string
-  isActive?: boolean
-  isAdmin?: boolean
-  isFirstTimeLogin?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  createdBy?: string | null
-  updatedBy?: string | null
-  deletedAt?: Date | string | null
-  deletedBy?: string | null
-}
-
-export type CapeUserUpdateWithoutRoleInput = {
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  learnworldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  userName?: Prisma.StringFieldUpdateOperationsInput | string
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  profile?: Prisma.capeLearnerProfilesUpdateOneWithoutUserNestedInput
-  userProfile?: Prisma.CapeUserProfilesUpdateOneWithoutUserNestedInput
-  learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUpdateManyWithoutUserNestedInput
-  programEnrollments?: Prisma.ProgramCapeUserEnrollmentUpdateManyWithoutUserNestedInput
-  programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUpdateManyWithoutUserNestedInput
-}
-
-export type CapeUserUncheckedUpdateWithoutRoleInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  learnworldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  userName?: Prisma.StringFieldUpdateOperationsInput | string
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.capeLearnerProfilesUncheckedUpdateOneWithoutUserNestedInput
-  userProfile?: Prisma.CapeUserProfilesUncheckedUpdateOneWithoutUserNestedInput
-  learnworldsEnrollments?: Prisma.LearnWorldsUserEnrollmentProgramUncheckedUpdateManyWithoutUserNestedInput
-  programEnrollments?: Prisma.ProgramCapeUserEnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  programUserFacilitators?: Prisma.ProgramCapeUserFacilitatorUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type CapeUserUncheckedUpdateManyWithoutRoleInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  learnworldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  userName?: Prisma.StringFieldUpdateOperationsInput | string
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isFirstTimeLogin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1732,6 +1605,7 @@ export type CapeUserCountOutputType = {
   learnworldsEnrollments: number
   programEnrollments: number
   programUserFacilitators: number
+  userRoles: number
 }
 
 export type CapeUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1739,6 +1613,7 @@ export type CapeUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   learnworldsEnrollments?: boolean | CapeUserCountOutputTypeCountLearnworldsEnrollmentsArgs
   programEnrollments?: boolean | CapeUserCountOutputTypeCountProgramEnrollmentsArgs
   programUserFacilitators?: boolean | CapeUserCountOutputTypeCountProgramUserFacilitatorsArgs
+  userRoles?: boolean | CapeUserCountOutputTypeCountUserRolesArgs
 }
 
 /**
@@ -1779,6 +1654,13 @@ export type CapeUserCountOutputTypeCountProgramUserFacilitatorsArgs<ExtArgs exte
   where?: Prisma.ProgramCapeUserFacilitatorWhereInput
 }
 
+/**
+ * CapeUserCountOutputType without action
+ */
+export type CapeUserCountOutputTypeCountUserRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapeUserRoleWhereInput
+}
+
 
 export type CapeUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1789,7 +1671,6 @@ export type CapeUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   firstName?: boolean
   lastName?: boolean
   userName?: boolean
-  roleId?: boolean
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1799,13 +1680,13 @@ export type CapeUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedBy?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
-  role?: boolean | Prisma.CapeRoleDefaultArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.CapeUser$refreshTokensArgs<ExtArgs>
   profile?: boolean | Prisma.CapeUser$profileArgs<ExtArgs>
   userProfile?: boolean | Prisma.CapeUser$userProfileArgs<ExtArgs>
   learnworldsEnrollments?: boolean | Prisma.CapeUser$learnworldsEnrollmentsArgs<ExtArgs>
   programEnrollments?: boolean | Prisma.CapeUser$programEnrollmentsArgs<ExtArgs>
   programUserFacilitators?: boolean | Prisma.CapeUser$programUserFacilitatorsArgs<ExtArgs>
+  userRoles?: boolean | Prisma.CapeUser$userRolesArgs<ExtArgs>
   _count?: boolean | Prisma.CapeUserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["capeUser"]>
 
@@ -1820,7 +1701,6 @@ export type CapeUserSelectScalar = {
   firstName?: boolean
   lastName?: boolean
   userName?: boolean
-  roleId?: boolean
   isActive?: boolean
   isAdmin?: boolean
   isFirstTimeLogin?: boolean
@@ -1832,28 +1712,28 @@ export type CapeUserSelectScalar = {
   deletedBy?: boolean
 }
 
-export type CapeUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "learnworldId" | "email" | "passwordHash" | "firstName" | "lastName" | "userName" | "roleId" | "isActive" | "isAdmin" | "isFirstTimeLogin" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["capeUser"]>
+export type CapeUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "learnworldId" | "email" | "passwordHash" | "firstName" | "lastName" | "userName" | "isActive" | "isAdmin" | "isFirstTimeLogin" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "deletedAt" | "deletedBy", ExtArgs["result"]["capeUser"]>
 export type CapeUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  role?: boolean | Prisma.CapeRoleDefaultArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.CapeUser$refreshTokensArgs<ExtArgs>
   profile?: boolean | Prisma.CapeUser$profileArgs<ExtArgs>
   userProfile?: boolean | Prisma.CapeUser$userProfileArgs<ExtArgs>
   learnworldsEnrollments?: boolean | Prisma.CapeUser$learnworldsEnrollmentsArgs<ExtArgs>
   programEnrollments?: boolean | Prisma.CapeUser$programEnrollmentsArgs<ExtArgs>
   programUserFacilitators?: boolean | Prisma.CapeUser$programUserFacilitatorsArgs<ExtArgs>
+  userRoles?: boolean | Prisma.CapeUser$userRolesArgs<ExtArgs>
   _count?: boolean | Prisma.CapeUserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $CapeUserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CapeUser"
   objects: {
-    role: Prisma.$CapeRolePayload<ExtArgs>
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     profile: Prisma.$capeLearnerProfilesPayload<ExtArgs> | null
     userProfile: Prisma.$CapeUserProfilesPayload<ExtArgs> | null
     learnworldsEnrollments: Prisma.$LearnWorldsUserEnrollmentProgramPayload<ExtArgs>[]
     programEnrollments: Prisma.$ProgramCapeUserEnrollmentPayload<ExtArgs>[]
     programUserFacilitators: Prisma.$ProgramCapeUserFacilitatorPayload<ExtArgs>[]
+    userRoles: Prisma.$CapeUserRolePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1864,7 +1744,6 @@ export type $CapeUserPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     firstName: string
     lastName: string
     userName: string
-    roleId: string
     isActive: boolean
     isAdmin: boolean
     isFirstTimeLogin: boolean
@@ -2214,13 +2093,13 @@ readonly fields: CapeUserFieldRefs;
  */
 export interface Prisma__CapeUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  role<T extends Prisma.CapeRoleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeRoleDefaultArgs<ExtArgs>>): Prisma.Prisma__CapeRoleClient<runtime.Types.Result.GetResult<Prisma.$CapeRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   refreshTokens<T extends Prisma.CapeUser$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   profile<T extends Prisma.CapeUser$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$profileArgs<ExtArgs>>): Prisma.Prisma__capeLearnerProfilesClient<runtime.Types.Result.GetResult<Prisma.$capeLearnerProfilesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   userProfile<T extends Prisma.CapeUser$userProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$userProfileArgs<ExtArgs>>): Prisma.Prisma__CapeUserProfilesClient<runtime.Types.Result.GetResult<Prisma.$CapeUserProfilesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   learnworldsEnrollments<T extends Prisma.CapeUser$learnworldsEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$learnworldsEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LearnWorldsUserEnrollmentProgramPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programEnrollments<T extends Prisma.CapeUser$programEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$programEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCapeUserEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programUserFacilitators<T extends Prisma.CapeUser$programUserFacilitatorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$programUserFacilitatorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCapeUserFacilitatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userRoles<T extends Prisma.CapeUser$userRolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeUser$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapeUserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2258,7 +2137,6 @@ export interface CapeUserFieldRefs {
   readonly firstName: Prisma.FieldRef<"CapeUser", 'String'>
   readonly lastName: Prisma.FieldRef<"CapeUser", 'String'>
   readonly userName: Prisma.FieldRef<"CapeUser", 'String'>
-  readonly roleId: Prisma.FieldRef<"CapeUser", 'String'>
   readonly isActive: Prisma.FieldRef<"CapeUser", 'Boolean'>
   readonly isAdmin: Prisma.FieldRef<"CapeUser", 'Boolean'>
   readonly isFirstTimeLogin: Prisma.FieldRef<"CapeUser", 'Boolean'>
@@ -2741,6 +2619,30 @@ export type CapeUser$programUserFacilitatorsArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.ProgramCapeUserFacilitatorScalarFieldEnum | Prisma.ProgramCapeUserFacilitatorScalarFieldEnum[]
+}
+
+/**
+ * CapeUser.userRoles
+ */
+export type CapeUser$userRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapeUserRole
+   */
+  select?: Prisma.CapeUserRoleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapeUserRole
+   */
+  omit?: Prisma.CapeUserRoleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapeUserRoleInclude<ExtArgs> | null
+  where?: Prisma.CapeUserRoleWhereInput
+  orderBy?: Prisma.CapeUserRoleOrderByWithRelationInput | Prisma.CapeUserRoleOrderByWithRelationInput[]
+  cursor?: Prisma.CapeUserRoleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CapeUserRoleScalarFieldEnum | Prisma.CapeUserRoleScalarFieldEnum[]
 }
 
 /**

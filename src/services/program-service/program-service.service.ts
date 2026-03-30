@@ -181,14 +181,14 @@ export class ProgramServiceService {
     }
 
     // Get role id based on CLASSROOM_LEARNER role
-    const role = await this.prisma.capeRole.findUnique({
+    const classroomRole = await this.prisma.capeRole.findUnique({
       where: {
         roleCode: 'CLASSROOM_LEARNER',
       },
     });
 
     // if not role found throw error
-    if (!role) {
+    if (!classroomRole) {
       throw new NotFoundException(
         errorResponseBuilder(
           NO_ROLE_FOUND,
@@ -216,6 +216,7 @@ export class ProgramServiceService {
     // Check existing learner
     const learnerEmails = dataRows.map((x) => x.email);
 
+    // Existing users + their roles
     const existingUsers = await this.prisma.capeUser.findMany({
       where: {
         email: {
@@ -229,10 +230,22 @@ export class ProgramServiceService {
         userName: true,
         firstName: true,
         lastName: true,
-        roleId: true,
-        role: {
+        isAdmin: true,
+        userRoles: {
           select: {
-            roleCode: true,
+            role: {
+              select: {
+                roleId: true,
+                roleCode: true,
+                roleName: true,
+              },
+            },
+          },
+        },
+        profile: {
+          select: {
+            userId: true,
+            cfCompany: true,
           },
         },
       },
@@ -242,17 +255,18 @@ export class ProgramServiceService {
       existingUsers.map((user) => [user.email.toLowerCase(), user]),
     );
 
-    const invalidExistingUsers = existingUsers.filter(
-      (user) => user.role.roleCode !== 'CLASSROOM_LEARNER',
-    );
+    const invalidExistingUsers = existingUsers.filter((user) => user.isAdmin);
 
     if (invalidExistingUsers.length > 0) {
       const existingRoleErrors: LearnerRowError[] = [
         {
-          errors: invalidExistingUsers.map(
-            (user) =>
-              `Email ${user.email} already exists with role ${user.role.roleCode}. Only CLASSROOM_LEARNER can be onboarded here.`,
-          ),
+          errors: invalidExistingUsers.map((user) => {
+            const currentRoles =
+              user.userRoles.map((x) => x.role.roleCode).join(', ') ||
+              'NO_ROLE';
+
+            return `Email ${user.email} already exists with role(s) ${currentRoles} and is marked as admin. Admin accounts cannot be onboarded as classroom learners.`;
+          }),
         },
       ];
 
@@ -260,12 +274,11 @@ export class ProgramServiceService {
         errorResponseBuilder(
           'INVALID_EXISTING_USER_ROLE',
           undefined,
-          'Some existing users are not classroom learners',
+          'Some existing users are admin accounts and cannot be onboarded as classroom learners',
           existingRoleErrors,
         ),
       );
     }
-
     const newRows = dataRows.filter(
       (row) => !existingUserMap.has(row.email.toLowerCase()),
     );
@@ -298,9 +311,6 @@ export class ProgramServiceService {
         })),
       });
 
-      // Get role id
-      const roleId = role.roleId;
-
       if (newRows.length > 0) {
         const usersToCreate = await Promise.all(
           newRows.map(async (row) => {
@@ -313,7 +323,6 @@ export class ProgramServiceService {
               firstName: row.firstname,
               lastName: row.lastname,
               passwordHash,
-              roleId,
               isActive: false,
               isAdmin: false,
               isFirstTimeLogin: true,
@@ -326,60 +335,12 @@ export class ProgramServiceService {
         await tx.capeUser.createMany({
           data: usersToCreate,
         });
-
-        // fetch newly created users back using newRows emails
-        const createdNewUsers = await tx.capeUser.findMany({
-          where: {
-            email: {
-              in: newRows.map((row) => row.email),
-            },
-            deletedAt: null,
-          },
-          select: {
-            userId: true,
-            email: true,
-          },
-        });
-
-        const createdNewUserMap = new Map(
-          createdNewUsers.map((user) => [user.email.toLowerCase(), user]),
-        );
-
-        const profilesToCreate = newRows
-          .map((row) => {
-            const createdUser = createdNewUserMap.get(row.email.toLowerCase());
-
-            if (!createdUser) {
-              return null;
-            }
-
-            return {
-              userId: createdUser.userId,
-              cfCompany: row.organization
-                ? this.capitalizeWords(row.organization.trim())
-                : 'Nil',
-            };
-          })
-          .filter(
-            (item): item is { userId: string; cfCompany: string } => !!item,
-          );
-
-        if (profilesToCreate.length !== newRows.length) {
-          this.logger.error(
-            `Mismatch detected while creating learner profiles. Expected ${newRows.length}, found ${profilesToCreate.length}.`,
-          );
-
-          throw new BadRequestException(
-            'Mismatch detected while creating learner profile records.',
-          );
-        }
-
-        await tx.capeLearnerProfiles.createMany({
-          data: profilesToCreate,
-        });
       }
 
-      const allUsers = await tx.capeUser.findMany({
+      // =========================================================
+      // 4) Resolve all users again after creation
+      // =========================================================
+      const allUsersWithRoles = await tx.capeUser.findMany({
         where: {
           email: {
             in: learnerEmails,
@@ -390,18 +351,97 @@ export class ProgramServiceService {
           userId: true,
           email: true,
           userName: true,
+          profile: {
+            select: {
+              userId: true,
+              cfCompany: true,
+            },
+          },
+          userRoles: {
+            select: {
+              role: {
+                select: {
+                  roleId: true,
+                  roleCode: true,
+                },
+              },
+            },
+          },
         },
       });
 
-      if (allUsers.length !== dataRows.length) {
+      if (allUsersWithRoles.length !== dataRows.length) {
         this.logger.error(
-          `Mismatch detected. Expected ${dataRows.length} learners, found ${allUsers.length} users after onboarding.`,
+          `Mismatch detected. Expected ${dataRows.length} learners, found ${allUsersWithRoles.length} users after onboarding.`,
         );
 
         throw new BadRequestException(
           'Mismatch detected while resolving learner records.',
         );
       }
+
+      const allUserMap = new Map(
+        allUsersWithRoles.map((user) => [user.email.toLowerCase(), user]),
+      );
+
+      // =========================================================
+      // 5) Attach CLASSROOM_LEARNER role to any user missing it
+      //    This includes existing HYBRID / INDIVIDUAL users
+      // =========================================================
+      const usersMissingClassroomRole = allUsersWithRoles.filter((user) => {
+        const hasClassroomRole = user.userRoles.some(
+          (userRole) => userRole.role.roleCode === 'CLASSROOM_LEARNER',
+        );
+
+        return !hasClassroomRole;
+      });
+
+      if (usersMissingClassroomRole.length > 0) {
+        await tx.capeUserRole.createMany({
+          data: usersMissingClassroomRole.map((user) => ({
+            userId: user.userId,
+            roleId: classroomRole.roleId,
+            assignedBy: 'SYSTEM',
+          })),
+        });
+      }
+
+      // =========================================================
+      // 6) Create learner profile only for users who do not have one
+      //    Do not overwrite profile if it already exists
+      // =========================================================
+      const profilesToCreate = dataRows
+        .map((row) => {
+          const resolvedUser = allUserMap.get(row.email.toLowerCase());
+
+          if (!resolvedUser) return null;
+          if (resolvedUser.profile) return null;
+
+          return {
+            userId: resolvedUser.userId,
+            cfCompany: row.organization
+              ? this.capitalizeWords(row.organization.trim())
+              : 'Nil',
+          };
+        })
+        .filter(
+          (item): item is { userId: string; cfCompany: string } => !!item,
+        );
+
+      if (profilesToCreate.length > 0) {
+        await tx.capeLearnerProfiles.createMany({
+          data: profilesToCreate,
+        });
+      }
+
+      // =========================================================
+      // 7) Resolve plain users for enrollment and facilitator mapping
+      // =========================================================
+      const allUsers = allUsersWithRoles.map((user) => ({
+        userId: user.userId,
+        email: user.email,
+        userName: user.userName,
+      }));
 
       await tx.programCapeUserEnrollment.createMany({
         data: allUsers.map((user) => ({

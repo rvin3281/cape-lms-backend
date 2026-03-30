@@ -4,4 +4,7 @@ export interface IRefreshToken {
   userAgent?: string | null;
   ipAddress?: string | null;
   expiresAt: Date;
+  selectedRoleId?: string;
+  selectedRoleCode?: string;
+  authScope?: 'admin' | 'learner';
 }

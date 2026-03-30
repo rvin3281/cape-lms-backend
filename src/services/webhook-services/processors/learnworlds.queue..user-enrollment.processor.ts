@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { PrismaService } from '@app/database';
@@ -7,6 +6,7 @@ import { BadRequestException, Logger, NotFoundException } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { LW_QUEUE } from '../learnworlds.queue';
 import { errorResponseBuilder } from 'utils/errorResponseBuilder';
+import { Prisma } from 'src/generated/client';
 
 @Processor(LW_QUEUE.name)
 export class LearnWorldsQueueProcessor extends WorkerHost {
@@ -39,18 +39,24 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
       throw new BadRequestException('Missing product fields (id/title/type)');
     }
 
-    const email = dto.user.email.trim().toLowerCase();
-    const lwUserId = dto.user.id;
-    const username = dto.user.username;
-    const productId = dto.product.id;
+    const email = String(dto.user.email).trim().toLowerCase();
+    const lwUserId = String(dto.user.id).trim();
+    const username = String(dto.user.username).trim();
+    const productId = String(dto.product.id).trim();
+    const firstName = dto?.user?.first_name
+      ? String(dto.user.first_name).trim()
+      : '';
+    const lastName = dto?.user?.last_name
+      ? String(dto.user.last_name).trim()
+      : '';
 
-    // ✅ transaction: user + program + enrollment
+    // transaction: user + program + enrollment
     await this.prisma.$transaction(async (tx) => {
       // 1) role
-      const role = await tx.capeRole.findFirst({
+      const hybridLearnerRole = await tx.capeRole.findFirst({
         where: { roleCode: 'HYBRID_LEARNER' },
       });
-      if (!role)
+      if (!hybridLearnerRole)
         throw new NotFoundException(
           errorResponseBuilder(
             'HYBRID_LEARNER_ROLE_NOT_FOUND',
@@ -60,7 +66,16 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
         );
 
       // 2) upsert user (by email)
-      let user = await tx.capeUser.findUnique({ where: { email } });
+      let user = await tx.capeUser.findUnique({
+        where: { email },
+        include: {
+          userRoles: {
+            include: {
+              role: true,
+            },
+          },
+        },
+      });
 
       if (!user) {
         user = await tx.capeUser.create({
@@ -69,23 +84,78 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
             email,
             userName: username,
             passwordHash: '',
-            firstName: dto?.user?.first_name,
-            lastName: dto?.user?.last_name,
-            roleId: role.roleId,
+            firstName,
+            lastName,
             isActive: false,
             isAdmin: false,
             isFirstTimeLogin: true,
+            createdBy: 'LEARNWORLDS_WEBHOOK',
+            updatedBy: 'LEARNWORLDS_WEBHOOK',
+          },
+          include: {
+            userRoles: {
+              include: {
+                role: true,
+              },
+            },
           },
         });
+
+        this.logger.log(`New user created from LearnWorlds webhook: ${email}`);
       } else {
-        // optional sync
-        await tx.capeUser.update({
-          where: { email },
-          data: {
-            learnworldId: user.learnworldId ?? lwUserId,
-          },
-        });
+        // Existing user found
+        // DO NOT overwrite firstName / lastName / userName / passwordHash / isActive / isFirstTimeLogin
+        // Only enrich safe fields if currently empty/null
+        const updateData: Prisma.CapeUserUpdateInput = {
+          updatedBy: 'LEARNWORLDS_WEBHOOK',
+        };
+
+        let shouldUpdate = false;
+
+        if (!user.learnworldId && lwUserId) {
+          updateData.learnworldId = lwUserId;
+          shouldUpdate = true;
+        }
+
+        if (shouldUpdate) {
+          user = await tx.capeUser.update({
+            where: { userId: user.userId },
+            data: updateData,
+            include: {
+              userRoles: {
+                include: {
+                  role: true,
+                },
+              },
+            },
+          });
+
+          this.logger.log(
+            `Existing user enriched from LearnWorlds webhook: ${email}`,
+          );
+        } else {
+          this.logger.log(
+            `Existing user found. Core data preserved for: ${email}`,
+          );
+        }
       }
+
+      await tx.capeUserRole.upsert({
+        where: {
+          userId_roleId: {
+            userId: user.userId,
+            roleId: hybridLearnerRole.roleId,
+          },
+        },
+        update: {
+          assignedBy: 'LEARNWORLDS_WEBHOOK',
+        },
+        create: {
+          userId: user.userId,
+          roleId: hybridLearnerRole.roleId,
+          assignedBy: 'LEARNWORLDS_WEBHOOK',
+        },
+      });
 
       // 3) upsert program
       await tx.learnWorldsProgram.upsert({

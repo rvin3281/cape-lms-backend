@@ -15,7 +15,9 @@ export class RefreshTokenRepository {
         userAgent: data.userAgent ?? null,
         ipAddress: data.ipAddress ?? null,
         expiresAt: data.expiresAt,
-        // isRevoked, createdAt handled by DB defaults
+        selectedRoleId: data.selectedRoleId,
+        selectedRoleCode: data.selectedRoleCode,
+        authScope: data.authScope,
       },
     });
   }

@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   CapeRole: 'CapeRole',
   CapeUser: 'CapeUser',
+  CapeUserRole: 'CapeUserRole',
   capeLearnerProfiles: 'capeLearnerProfiles',
   CapeUserProfiles: 'CapeUserProfiles',
   RefreshToken: 'RefreshToken',
@@ -106,7 +107,6 @@ export const CapeUserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   userName: 'userName',
-  roleId: 'roleId',
   isActive: 'isActive',
   isAdmin: 'isAdmin',
   isFirstTimeLogin: 'isFirstTimeLogin',
@@ -119,6 +119,18 @@ export const CapeUserScalarFieldEnum = {
 } as const
 
 export type CapeUserScalarFieldEnum = (typeof CapeUserScalarFieldEnum)[keyof typeof CapeUserScalarFieldEnum]
+
+
+export const CapeUserRoleScalarFieldEnum = {
+  id: 'id',
+  userRoleId: 'userRoleId',
+  userId: 'userId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt',
+  assignedBy: 'assignedBy'
+} as const
+
+export type CapeUserRoleScalarFieldEnum = (typeof CapeUserRoleScalarFieldEnum)[keyof typeof CapeUserRoleScalarFieldEnum]
 
 
 export const CapeLearnerProfilesScalarFieldEnum = {
@@ -164,13 +176,17 @@ export type CapeUserProfilesScalarFieldEnum = (typeof CapeUserProfilesScalarFiel
 
 export const RefreshTokenScalarFieldEnum = {
   id: 'id',
+  refreshTokenId: 'refreshTokenId',
   userId: 'userId',
   tokenHash: 'tokenHash',
-  userAgent: 'userAgent',
+  expiresAt: 'expiresAt',
   ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
   isRevoked: 'isRevoked',
-  createdAt: 'createdAt',
-  expiresAt: 'expiresAt'
+  selectedRoleId: 'selectedRoleId',
+  selectedRoleCode: 'selectedRoleCode',
+  authScope: 'authScope',
+  createdAt: 'createdAt'
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]

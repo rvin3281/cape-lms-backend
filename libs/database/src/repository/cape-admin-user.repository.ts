@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common';
-import {
-  capeLearnerProfiles,
-  CapeRole,
-  CapeUser,
-  Prisma,
-} from 'src/generated/client';
+import { capeLearnerProfiles, CapeUser, Prisma } from 'src/generated/client';
 import { PrismaService } from '../prisma.service';
-import { CapeUserWithRole } from '@app/shared';
+import { CapeUserWithRoles } from '@app/shared';
 
 type PrismaTx = Prisma.TransactionClient;
 
@@ -21,14 +16,20 @@ export class CapeUserRepository {
     return user;
   }
 
-  findUserByEmailAndRole(email: string): Promise<CapeUserWithRole | null> {
-    const user = this.prisma.capeUser.findUnique({
-      where: { email, deletedAt: null },
+  findUserByEmailAndRole(email: string): Promise<CapeUserWithRoles | null> {
+    return this.prisma.capeUser.findFirst({
+      where: {
+        email,
+        deletedAt: null,
+      },
       include: {
-        role: true,
+        userRoles: {
+          include: {
+            role: true,
+          },
+        },
       },
     });
-    return user;
   }
 
   findUserByUserId(userId: string): Promise<CapeUser | null> {
@@ -68,14 +69,20 @@ export class CapeUserRepository {
     return client.capeUser.create(data);
   }
 
-  findUserRole(roleId: string): Promise<CapeRole | null> {
-    return this.prisma.capeRole.findUnique({ where: { roleId: roleId } });
+  findUserByUserIdWithProfileAndRoles(userId: string) {
+    return this.prisma.capeUser.findUnique({
+      where: { userId },
+      include: {
+        profile: true,
+        userRoles: {
+          include: {
+            role: true,
+          },
+        },
+      },
+    });
   }
 
-  /**
-   * ✅ Update user data during onboarding
-   * ❗ learnworldId is intentionally NOT updated
-   */
   updateUserFromLearnWorlds(
     email: string,
     payload: {
@@ -95,7 +102,7 @@ export class CapeUserRepository {
         firstName: payload.firstName ?? undefined,
         lastName: payload.lastName ?? undefined,
         userName: payload.userName ?? undefined,
-        roleId: payload.roleId,
+        // roleId: payload.roleId,
         updatedAt: new Date(),
         updatedBy: payload.updatedBy,
       },
@@ -145,7 +152,7 @@ export class CapeUserRepository {
 
     const data: any = {};
 
-    // ✅ Parent table updates (only if present)
+    // Parent table updates (only if present)
     if (payload.firstName) {
       data.firstName = payload.firstName;
     }

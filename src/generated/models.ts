@@ -10,6 +10,7 @@
  */
 export type * from './models/CapeRole'
 export type * from './models/CapeUser'
+export type * from './models/CapeUserRole'
 export type * from './models/capeLearnerProfiles'
 export type * from './models/CapeUserProfiles'
 export type * from './models/RefreshToken'

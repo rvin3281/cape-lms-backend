@@ -23,6 +23,8 @@ export async function signAccessToken(params: {
   return new SignJWT({
     email: payload.email,
     roleId: payload.roleId,
+    roleCode: payload.roleCode,
+    authScope: payload.authScope,
   })
     .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
     .setSubject(subject)
@@ -34,7 +36,7 @@ export async function signAccessToken(params: {
 export async function verifyAccessToken(params: {
   token: string;
   secret: string;
-}): Promise<{ sub: string; email: string; roleId: string } | null> {
+}): Promise<AccessTokenPayload | null> {
   try {
     const secretKey = new TextEncoder().encode(params.secret);
     const { payload } = await jwtVerify(params.token, secretKey);
@@ -42,9 +44,24 @@ export async function verifyAccessToken(params: {
     const sub = typeof payload.sub === 'string' ? payload.sub : null;
     const email = typeof payload.email === 'string' ? payload.email : null;
     const roleId = typeof payload.roleId === 'string' ? payload.roleId : null;
+    const roleCode =
+      typeof payload.roleCode === 'string' ? payload.roleCode : null;
+    const authScope =
+      payload.authScope === 'admin' || payload.authScope === 'learner'
+        ? payload.authScope
+        : null;
 
-    if (!sub || !email || !roleId) return null;
-    return { sub, email, roleId };
+    if (!sub || !email || !roleId || !roleCode || !authScope) {
+      return null;
+    }
+
+    return {
+      sub,
+      email,
+      roleId,
+      roleCode,
+      authScope,
+    };
   } catch {
     return null;
   }

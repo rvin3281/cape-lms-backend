@@ -28,6 +28,11 @@ export type CapeRole = Prisma.CapeRoleModel
  */
 export type CapeUser = Prisma.CapeUserModel
 /**
+ * Model CapeUserRole
+ * 
+ */
+export type CapeUserRole = Prisma.CapeUserRoleModel
+/**
  * Model capeLearnerProfiles
  * 
  */

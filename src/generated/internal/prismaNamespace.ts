@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   CapeRole: 'CapeRole',
   CapeUser: 'CapeUser',
+  CapeUserRole: 'CapeUserRole',
   capeLearnerProfiles: 'capeLearnerProfiles',
   CapeUserProfiles: 'CapeUserProfiles',
   RefreshToken: 'RefreshToken',
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "capeRole" | "capeUser" | "capeLearnerProfiles" | "capeUserProfiles" | "refreshToken" | "passwordSetupToken" | "learnWorldsProgram" | "learnWorldsUserEnrollmentProgram" | "facilitator" | "program" | "programFacilitator" | "programCapeUserEnrollment" | "programCapeUserFacilitator" | "azureRedisTestRecord"
+    modelProps: "capeRole" | "capeUser" | "capeUserRole" | "capeLearnerProfiles" | "capeUserProfiles" | "refreshToken" | "passwordSetupToken" | "learnWorldsProgram" | "learnWorldsUserEnrollmentProgram" | "facilitator" | "program" | "programFacilitator" | "programCapeUserEnrollment" | "programCapeUserFacilitator" | "azureRedisTestRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -546,6 +547,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CapeUserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CapeUserCountAggregateOutputType> | number
+        }
+      }
+    }
+    CapeUserRole: {
+      payload: Prisma.$CapeUserRolePayload<ExtArgs>
+      fields: Prisma.CapeUserRoleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CapeUserRoleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CapeUserRoleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>
+        }
+        findFirst: {
+          args: Prisma.CapeUserRoleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CapeUserRoleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>
+        }
+        findMany: {
+          args: Prisma.CapeUserRoleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>[]
+        }
+        create: {
+          args: Prisma.CapeUserRoleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>
+        }
+        createMany: {
+          args: Prisma.CapeUserRoleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.CapeUserRoleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>
+        }
+        update: {
+          args: Prisma.CapeUserRoleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>
+        }
+        deleteMany: {
+          args: Prisma.CapeUserRoleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CapeUserRoleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.CapeUserRoleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapeUserRolePayload>
+        }
+        aggregate: {
+          args: Prisma.CapeUserRoleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCapeUserRole>
+        }
+        groupBy: {
+          args: Prisma.CapeUserRoleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapeUserRoleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CapeUserRoleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapeUserRoleCountAggregateOutputType> | number
         }
       }
     }
@@ -1403,7 +1470,6 @@ export const CapeUserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   userName: 'userName',
-  roleId: 'roleId',
   isActive: 'isActive',
   isAdmin: 'isAdmin',
   isFirstTimeLogin: 'isFirstTimeLogin',
@@ -1416,6 +1482,18 @@ export const CapeUserScalarFieldEnum = {
 } as const
 
 export type CapeUserScalarFieldEnum = (typeof CapeUserScalarFieldEnum)[keyof typeof CapeUserScalarFieldEnum]
+
+
+export const CapeUserRoleScalarFieldEnum = {
+  id: 'id',
+  userRoleId: 'userRoleId',
+  userId: 'userId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt',
+  assignedBy: 'assignedBy'
+} as const
+
+export type CapeUserRoleScalarFieldEnum = (typeof CapeUserRoleScalarFieldEnum)[keyof typeof CapeUserRoleScalarFieldEnum]
 
 
 export const CapeLearnerProfilesScalarFieldEnum = {
@@ -1461,13 +1539,17 @@ export type CapeUserProfilesScalarFieldEnum = (typeof CapeUserProfilesScalarFiel
 
 export const RefreshTokenScalarFieldEnum = {
   id: 'id',
+  refreshTokenId: 'refreshTokenId',
   userId: 'userId',
   tokenHash: 'tokenHash',
-  userAgent: 'userAgent',
+  expiresAt: 'expiresAt',
   ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
   isRevoked: 'isRevoked',
-  createdAt: 'createdAt',
-  expiresAt: 'expiresAt'
+  selectedRoleId: 'selectedRoleId',
+  selectedRoleCode: 'selectedRoleCode',
+  authScope: 'authScope',
+  createdAt: 'createdAt'
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
@@ -1758,6 +1840,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   capeRole?: Prisma.CapeRoleOmit
   capeUser?: Prisma.CapeUserOmit
+  capeUserRole?: Prisma.CapeUserRoleOmit
   capeLearnerProfiles?: Prisma.capeLearnerProfilesOmit
   capeUserProfiles?: Prisma.CapeUserProfilesOmit
   refreshToken?: Prisma.RefreshTokenOmit

@@ -232,7 +232,7 @@ export type CapeRoleWhereInput = {
   level?: Prisma.StringFilter<"CapeRole"> | string
   createdAt?: Prisma.DateTimeFilter<"CapeRole"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"CapeRole"> | string | null
-  users?: Prisma.CapeUserListRelationFilter
+  userRoles?: Prisma.CapeUserRoleListRelationFilter
 }
 
 export type CapeRoleOrderByWithRelationInput = {
@@ -243,7 +243,7 @@ export type CapeRoleOrderByWithRelationInput = {
   level?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  users?: Prisma.CapeUserOrderByRelationAggregateInput
+  userRoles?: Prisma.CapeUserRoleOrderByRelationAggregateInput
 }
 
 export type CapeRoleWhereUniqueInput = Prisma.AtLeast<{
@@ -257,7 +257,7 @@ export type CapeRoleWhereUniqueInput = Prisma.AtLeast<{
   level?: Prisma.StringFilter<"CapeRole"> | string
   createdAt?: Prisma.DateTimeFilter<"CapeRole"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"CapeRole"> | string | null
-  users?: Prisma.CapeUserListRelationFilter
+  userRoles?: Prisma.CapeUserRoleListRelationFilter
 }, "id" | "roleId" | "roleName" | "roleCode">
 
 export type CapeRoleOrderByWithAggregationInput = {
@@ -295,7 +295,7 @@ export type CapeRoleCreateInput = {
   level: string
   createdAt?: Date | string
   createdBy?: string | null
-  users?: Prisma.CapeUserCreateNestedManyWithoutRoleInput
+  userRoles?: Prisma.CapeUserRoleCreateNestedManyWithoutRoleInput
 }
 
 export type CapeRoleUncheckedCreateInput = {
@@ -306,7 +306,7 @@ export type CapeRoleUncheckedCreateInput = {
   level: string
   createdAt?: Date | string
   createdBy?: string | null
-  users?: Prisma.CapeUserUncheckedCreateNestedManyWithoutRoleInput
+  userRoles?: Prisma.CapeUserRoleUncheckedCreateNestedManyWithoutRoleInput
 }
 
 export type CapeRoleUpdateInput = {
@@ -316,7 +316,7 @@ export type CapeRoleUpdateInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  users?: Prisma.CapeUserUpdateManyWithoutRoleNestedInput
+  userRoles?: Prisma.CapeUserRoleUpdateManyWithoutRoleNestedInput
 }
 
 export type CapeRoleUncheckedUpdateInput = {
@@ -327,7 +327,7 @@ export type CapeRoleUncheckedUpdateInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  users?: Prisma.CapeUserUncheckedUpdateManyWithoutRoleNestedInput
+  userRoles?: Prisma.CapeUserRoleUncheckedUpdateManyWithoutRoleNestedInput
 }
 
 export type CapeRoleCreateManyInput = {
@@ -421,21 +421,21 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type CapeRoleCreateNestedOneWithoutUsersInput = {
-  create?: Prisma.XOR<Prisma.CapeRoleCreateWithoutUsersInput, Prisma.CapeRoleUncheckedCreateWithoutUsersInput>
-  connectOrCreate?: Prisma.CapeRoleCreateOrConnectWithoutUsersInput
+export type CapeRoleCreateNestedOneWithoutUserRolesInput = {
+  create?: Prisma.XOR<Prisma.CapeRoleCreateWithoutUserRolesInput, Prisma.CapeRoleUncheckedCreateWithoutUserRolesInput>
+  connectOrCreate?: Prisma.CapeRoleCreateOrConnectWithoutUserRolesInput
   connect?: Prisma.CapeRoleWhereUniqueInput
 }
 
-export type CapeRoleUpdateOneRequiredWithoutUsersNestedInput = {
-  create?: Prisma.XOR<Prisma.CapeRoleCreateWithoutUsersInput, Prisma.CapeRoleUncheckedCreateWithoutUsersInput>
-  connectOrCreate?: Prisma.CapeRoleCreateOrConnectWithoutUsersInput
-  upsert?: Prisma.CapeRoleUpsertWithoutUsersInput
+export type CapeRoleUpdateOneRequiredWithoutUserRolesNestedInput = {
+  create?: Prisma.XOR<Prisma.CapeRoleCreateWithoutUserRolesInput, Prisma.CapeRoleUncheckedCreateWithoutUserRolesInput>
+  connectOrCreate?: Prisma.CapeRoleCreateOrConnectWithoutUserRolesInput
+  upsert?: Prisma.CapeRoleUpsertWithoutUserRolesInput
   connect?: Prisma.CapeRoleWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.CapeRoleUpdateToOneWithWhereWithoutUsersInput, Prisma.CapeRoleUpdateWithoutUsersInput>, Prisma.CapeRoleUncheckedUpdateWithoutUsersInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapeRoleUpdateToOneWithWhereWithoutUserRolesInput, Prisma.CapeRoleUpdateWithoutUserRolesInput>, Prisma.CapeRoleUncheckedUpdateWithoutUserRolesInput>
 }
 
-export type CapeRoleCreateWithoutUsersInput = {
+export type CapeRoleCreateWithoutUserRolesInput = {
   roleId?: string
   roleName: string
   roleCode: string
@@ -444,7 +444,7 @@ export type CapeRoleCreateWithoutUsersInput = {
   createdBy?: string | null
 }
 
-export type CapeRoleUncheckedCreateWithoutUsersInput = {
+export type CapeRoleUncheckedCreateWithoutUserRolesInput = {
   id?: number
   roleId?: string
   roleName: string
@@ -454,23 +454,23 @@ export type CapeRoleUncheckedCreateWithoutUsersInput = {
   createdBy?: string | null
 }
 
-export type CapeRoleCreateOrConnectWithoutUsersInput = {
+export type CapeRoleCreateOrConnectWithoutUserRolesInput = {
   where: Prisma.CapeRoleWhereUniqueInput
-  create: Prisma.XOR<Prisma.CapeRoleCreateWithoutUsersInput, Prisma.CapeRoleUncheckedCreateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.CapeRoleCreateWithoutUserRolesInput, Prisma.CapeRoleUncheckedCreateWithoutUserRolesInput>
 }
 
-export type CapeRoleUpsertWithoutUsersInput = {
-  update: Prisma.XOR<Prisma.CapeRoleUpdateWithoutUsersInput, Prisma.CapeRoleUncheckedUpdateWithoutUsersInput>
-  create: Prisma.XOR<Prisma.CapeRoleCreateWithoutUsersInput, Prisma.CapeRoleUncheckedCreateWithoutUsersInput>
+export type CapeRoleUpsertWithoutUserRolesInput = {
+  update: Prisma.XOR<Prisma.CapeRoleUpdateWithoutUserRolesInput, Prisma.CapeRoleUncheckedUpdateWithoutUserRolesInput>
+  create: Prisma.XOR<Prisma.CapeRoleCreateWithoutUserRolesInput, Prisma.CapeRoleUncheckedCreateWithoutUserRolesInput>
   where?: Prisma.CapeRoleWhereInput
 }
 
-export type CapeRoleUpdateToOneWithWhereWithoutUsersInput = {
+export type CapeRoleUpdateToOneWithWhereWithoutUserRolesInput = {
   where?: Prisma.CapeRoleWhereInput
-  data: Prisma.XOR<Prisma.CapeRoleUpdateWithoutUsersInput, Prisma.CapeRoleUncheckedUpdateWithoutUsersInput>
+  data: Prisma.XOR<Prisma.CapeRoleUpdateWithoutUserRolesInput, Prisma.CapeRoleUncheckedUpdateWithoutUserRolesInput>
 }
 
-export type CapeRoleUpdateWithoutUsersInput = {
+export type CapeRoleUpdateWithoutUserRolesInput = {
   roleId?: Prisma.StringFieldUpdateOperationsInput | string
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   roleCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -479,7 +479,7 @@ export type CapeRoleUpdateWithoutUsersInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type CapeRoleUncheckedUpdateWithoutUsersInput = {
+export type CapeRoleUncheckedUpdateWithoutUserRolesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   roleId?: Prisma.StringFieldUpdateOperationsInput | string
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -495,11 +495,11 @@ export type CapeRoleUncheckedUpdateWithoutUsersInput = {
  */
 
 export type CapeRoleCountOutputType = {
-  users: number
+  userRoles: number
 }
 
 export type CapeRoleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  users?: boolean | CapeRoleCountOutputTypeCountUsersArgs
+  userRoles?: boolean | CapeRoleCountOutputTypeCountUserRolesArgs
 }
 
 /**
@@ -515,8 +515,8 @@ export type CapeRoleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
 /**
  * CapeRoleCountOutputType without action
  */
-export type CapeRoleCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CapeUserWhereInput
+export type CapeRoleCountOutputTypeCountUserRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapeUserRoleWhereInput
 }
 
 
@@ -528,7 +528,7 @@ export type CapeRoleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   level?: boolean
   createdAt?: boolean
   createdBy?: boolean
-  users?: boolean | Prisma.CapeRole$usersArgs<ExtArgs>
+  userRoles?: boolean | Prisma.CapeRole$userRolesArgs<ExtArgs>
   _count?: boolean | Prisma.CapeRoleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["capeRole"]>
 
@@ -546,14 +546,14 @@ export type CapeRoleSelectScalar = {
 
 export type CapeRoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roleId" | "roleName" | "roleCode" | "level" | "createdAt" | "createdBy", ExtArgs["result"]["capeRole"]>
 export type CapeRoleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  users?: boolean | Prisma.CapeRole$usersArgs<ExtArgs>
+  userRoles?: boolean | Prisma.CapeRole$userRolesArgs<ExtArgs>
   _count?: boolean | Prisma.CapeRoleCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $CapeRolePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CapeRole"
   objects: {
-    users: Prisma.$CapeUserPayload<ExtArgs>[]
+    userRoles: Prisma.$CapeUserRolePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -903,7 +903,7 @@ readonly fields: CapeRoleFieldRefs;
  */
 export interface Prisma__CapeRoleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  users<T extends Prisma.CapeRole$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeRole$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapeUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userRoles<T extends Prisma.CapeRole$userRolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapeRole$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapeUserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1282,27 +1282,27 @@ export type CapeRoleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * CapeRole.users
+ * CapeRole.userRoles
  */
-export type CapeRole$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CapeRole$userRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the CapeUser
+   * Select specific fields to fetch from the CapeUserRole
    */
-  select?: Prisma.CapeUserSelect<ExtArgs> | null
+  select?: Prisma.CapeUserRoleSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the CapeUser
+   * Omit specific fields from the CapeUserRole
    */
-  omit?: Prisma.CapeUserOmit<ExtArgs> | null
+  omit?: Prisma.CapeUserRoleOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CapeUserInclude<ExtArgs> | null
-  where?: Prisma.CapeUserWhereInput
-  orderBy?: Prisma.CapeUserOrderByWithRelationInput | Prisma.CapeUserOrderByWithRelationInput[]
-  cursor?: Prisma.CapeUserWhereUniqueInput
+  include?: Prisma.CapeUserRoleInclude<ExtArgs> | null
+  where?: Prisma.CapeUserRoleWhereInput
+  orderBy?: Prisma.CapeUserRoleOrderByWithRelationInput | Prisma.CapeUserRoleOrderByWithRelationInput[]
+  cursor?: Prisma.CapeUserRoleWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CapeUserScalarFieldEnum | Prisma.CapeUserScalarFieldEnum[]
+  distinct?: Prisma.CapeUserRoleScalarFieldEnum | Prisma.CapeUserRoleScalarFieldEnum[]
 }
 
 /**

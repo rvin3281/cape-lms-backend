@@ -19,13 +19,13 @@ model CapeRole {
   id        Int      @id @default(autoincrement())
   roleId    String   @unique @default(cuid()) @map("role_id") @db.NVarChar(50)
   roleName  String   @unique @map("role_name") @db.NVarChar(100)
-  roleCode String  @unique @map("role_code") @db.NVarChar(50)
-  level String @map("level") @db.NVarChar(50)
+  roleCode  String   @unique @map("role_code") @db.NVarChar(50)
+  level     String   @map("level") @db.NVarChar(50)
   createdAt DateTime @default(now()) @map("created_at")
   createdBy String?  @map("created_by") @db.NVarChar(100)
 
-  // relations
-  users     CapeUser[]
+  // many-to-many via join table
+  userRoles  CapeUserRole[]
 
   @@map("cape_roles")
 }
@@ -40,11 +40,6 @@ model CapeUser {
   firstName   String @db.NVarChar(200) @map("first_name")
   lastName    String @db.NVarChar(200) @map("last_name")
   userName    String @unique @db.NVarChar(150) @map("user_name")
-
-
-  // relation (many users -> one role)
-  roleId       String   @map("role_id") @db.NVarChar(50)
-  role         CapeRole @relation(fields: [roleId], references: [roleId], onUpdate: Cascade,onDelete: NoAction)
 
   isActive     Boolean  @default(true) @map("is_active")
   isAdmin      Boolean  @default(false) @map("is_admin")
@@ -63,8 +58,29 @@ model CapeUser {
   programEnrollments     ProgramCapeUserEnrollment[]
   programUserFacilitators ProgramCapeUserFacilitator[]
 
-  @@index([roleId])
+ // many-to-many via join table
+  userRoles CapeUserRole[]
+
   @@map("cape_users")
+}
+
+model CapeUserRole {
+  id         Int      @id @default(autoincrement())
+  userRoleId String   @unique @default(cuid()) @map("user_role_id") @db.NVarChar(100)
+
+  userId     String   @map("user_id") @db.NVarChar(100)
+  roleId     String   @map("role_id") @db.NVarChar(50)
+
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String?  @map("assigned_by") @db.NVarChar(100)
+
+  user       CapeUser @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: NoAction)
+  role       CapeRole @relation(fields: [roleId], references: [roleId], onUpdate: Cascade, onDelete: NoAction)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("cape_user_roles")
 }
 
 model capeLearnerProfiles {
@@ -120,13 +136,21 @@ model CapeUserProfiles {
 
 model RefreshToken {
   id          String   @id @default(uuid())
+  refreshTokenId  String   @unique @default(cuid()) @map("refresh_token_id")
   userId String @map("user_id") @db.NVarChar(100)
   tokenHash   String    @map("token_hash") @db.VarChar(255)
-  userAgent   String?   @map("user_agent")@db.Text
-  ipAddress   String?   @map("ip_address")@db.Text
-  isRevoked   Boolean   @map("is_revoked")@default(false)
-  createdAt   DateTime  @map("created_at")@default(now())
   expiresAt   DateTime @map("expires_at")
+  ipAddress   String?   @map("ip_address")@db.Text
+  userAgent   String?   @map("user_agent")@db.Text
+
+  isRevoked   Boolean   @map("is_revoked")@default(false)
+
+  selectedRoleId   String? @map("selected_role_id") @db.NVarChar(50)
+  selectedRoleCode String? @map("selected_role_code") @db.NVarChar(50)
+  authScope        String? @map("auth_scope") @db.NVarChar(50)
+
+  createdAt   DateTime  @map("created_at")@default(now())
+
 
   user CapeUser @relation(fields: [userId], references: [userId]) // (1 to many relation)
 

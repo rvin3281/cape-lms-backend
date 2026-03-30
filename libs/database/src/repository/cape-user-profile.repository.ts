@@ -20,4 +20,12 @@ export class CapeUserProfileRepository {
     const client = tx ?? this.prisma;
     return client.capeLearnerProfiles.findUnique({ where: { userId: id } });
   }
+
+  upsertUserProfile(
+    args: Prisma.capeLearnerProfilesUpsertArgs,
+    tx?: PrismaTx,
+  ): Promise<capeLearnerProfiles> {
+    const client = tx ?? this.prisma;
+    return client.capeLearnerProfiles.upsert(args);
+  }
 }

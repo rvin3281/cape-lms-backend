@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ApiSuccess } from '@app/shared/decorator/api-success.decorator';
 
@@ -175,32 +176,35 @@ export class AuthServiceController {
       (process.env.COOKIE_SAMESITE as 'none' | 'lax' | 'strict' | undefined) ??
       'none';
     const domain = process.env.COOKIE_DOMAIN || undefined;
+    try {
+      await this.authService.logout(refreshTokenRaw);
+    } catch (error) {
+      this.logger.warn('Logout revoke failed, clearing cookies anyway');
+    } finally {
+      res.cookie(AUTH_COOKIES.access, '', {
+        httpOnly: true,
+        secure,
+        sameSite,
+        domain,
+        maxAge: 0,
+      });
 
-    // const base = buildCookieOptions({ secure, sameSite, domain });
+      res.cookie(AUTH_COOKIES.refresh, '', {
+        httpOnly: true,
+        secure,
+        sameSite,
+        domain,
+        maxAge: 0,
+      });
 
-    // Clear cookies (httpOnly cookies must be cleared server-side)
-    res.cookie(AUTH_COOKIES.access, '', {
-      httpOnly: true,
-      secure,
-      sameSite,
-      domain,
-      maxAge: 0,
-    });
-    res.cookie(AUTH_COOKIES.refresh, '', {
-      httpOnly: true,
-      secure,
-      sameSite,
-      domain,
-      maxAge: 0,
-    });
-
-    res.cookie(AUTH_COOKIES.authScope, '', {
-      httpOnly: true,
-      secure,
-      sameSite,
-      domain,
-      maxAge: 0,
-    });
+      res.cookie(AUTH_COOKIES.authScope, '', {
+        httpOnly: true,
+        secure,
+        sameSite,
+        domain,
+        maxAge: 0,
+      });
+    }
 
     return { ok: true };
   }
