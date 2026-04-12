@@ -31,6 +31,11 @@ export class LearnWorldsQueueProcessor extends WorkerHost {
   private async handleUserEnrollment(job: Job<any>) {
     const dto = job.data;
 
+    // console.log(
+    //   'Received USER_ENROLLMENT job with data:',
+    //   JSON.stringify(dto, null, 2),
+    // );
+
     // full validation inside worker (safe)
     if (!dto?.user?.email || !dto?.user?.id || !dto?.user?.username) {
       throw new BadRequestException('Missing user fields (email/id/username)');

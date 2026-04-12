@@ -3,4 +3,5 @@ export type RedisConfig = {
   port: number;
   password?: string;
   db: number;
+  tls: boolean;
 };

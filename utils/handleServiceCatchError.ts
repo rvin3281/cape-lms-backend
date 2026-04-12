@@ -11,7 +11,6 @@ export function handleServiceCatchError(error: unknown, logger: any): never {
   if (error instanceof AxiosError) {
     const status = error.response?.status;
 
-    // ✅ Any LearnWorlds rejection becomes ONE business error
     if (status === 400 || status === 404 || status === 401 || status === 403) {
       throw new ForbiddenException(
         errorResponseBuilder(

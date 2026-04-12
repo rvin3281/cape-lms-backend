@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { HttpExceptionFilter, SuccessResponseInterceptor } from '@app/shared';
 
 import {
@@ -15,7 +18,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Inject Config Service
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
+
   const configService = app.get(ConfigService);
 
   // ✅ COOKIE PARSER — MUST BE EARLY
@@ -103,7 +108,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const port = configService.get<number>('port') ?? 4000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 }
 
 // helper

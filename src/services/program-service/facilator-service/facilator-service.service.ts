@@ -69,30 +69,31 @@ export class FacilatorServiceService {
           skip,
           take,
           orderBy: {
-            createdAt: 'desc', // change this if your model uses another field
+            createdAt: 'desc',
           },
         }),
         this.prismaService.facilitator.count(),
       ]);
 
-      const totalPages = Math.ceil(total / pageSize);
-
       return {
-        items,
+        items: items ?? [], // safety (optional but clean)
         meta: {
           page,
           pageSize,
           total,
-          totalPages,
+          totalPages: total === 0 ? 0 : Math.ceil(total / pageSize),
         },
       };
     } catch (error: any) {
       if (error instanceof HttpException) throw error;
+
       const message = error instanceof Error ? error.message : 'Unknown error';
+
       this.logger.error(
         message,
         error instanceof Error ? error.stack : undefined,
       );
+
       throw new InternalServerErrorException('An unexpected error occurs');
     }
   }

@@ -34,13 +34,18 @@ export class WebhookServicesService {
   }
 
   async enqueueUserEnrollment(dto: LearnWorldsUserProgramEnrollmentDto) {
-    const email = dto?.user?.email?.trim()?.toLowerCase() || 'unknown';
-    const productId = dto?.product?.id || 'unknown';
-
-    const jobId = `lw-enroll-${email}-${productId}`;
-
-    await this.lwQueue.add(LW_QUEUE.jobs.USER_ENROLLMENT, dto, {
-      jobId,
+    const job = await this.lwQueue.add(LW_QUEUE.jobs.USER_ENROLLMENT, dto, {
+      removeOnComplete: 1000,
+      removeOnFail: 1000,
+      attempts: 3,
+      backoff: {
+        type: 'exponential',
+        delay: 2000,
+      },
     });
+
+    this.logger.log(
+      `Enqueued USER_ENROLLMENT job: id=${job.id} email=${dto.user.email} productId=${dto.product.id}`,
+    );
   }
 }

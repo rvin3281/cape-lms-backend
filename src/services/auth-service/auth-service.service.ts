@@ -21,7 +21,7 @@ import {
   LoginDto,
   LoginResult,
   LogoutResult,
-  LW_GET_USER,
+  LW_USER,
   PASSWORD_HASH_MISSING,
   PASSWORD_INVALID,
   REFRESH_TOKEN_INVALID,
@@ -155,7 +155,7 @@ export class AuthServiceService {
 
       if (nameOrOrgChanged) {
         const encoded = encodeURIComponent(dto.email);
-        const url = `${LW_GET_USER}/${encoded}`;
+        const url = `${LW_USER}/${encoded}`;
 
         const updateData = {
           first_name: dto.firstName,
@@ -432,7 +432,7 @@ export class AuthServiceService {
     email: string,
   ): Promise<{ email: string; token?: string }> {
     const encoded = encodeURIComponent(email);
-    const url = `${LW_GET_USER}/${encoded}`;
+    const url = `${LW_USER}/${encoded}`;
 
     try {
       // 0) Normalize & validate input
@@ -1056,8 +1056,6 @@ export class AuthServiceService {
         (userRole) => userRole.role.roleCode === roleCode,
       );
 
-      console.log('Matched User Role:', matchedUserRole);
-
       if (!matchedUserRole) {
         throw new UnauthorizedException(
           errorResponseBuilder('ROLE_NOT_MATCH', [
@@ -1073,7 +1071,6 @@ export class AuthServiceService {
 
       const selectedRole = matchedUserRole.role;
 
-      console.log('Selected Role:', selectedRole);
       // =========================================================
       // STEP 2) Verify password (bcrypt compare)
       // =========================================================

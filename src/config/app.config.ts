@@ -1,6 +1,7 @@
 // src/config/app.config.ts
 export default () => ({
-  env: process.env.NODE_ENV || 'development',
+  nodeEnv: process.env.NODE_ENV || 'development',
+  appEnv: process.env.APP_ENV || 'local',
 
   /** App Port (not database port) */
   port: parseInt(process.env.PORT ?? '3000', 10),
@@ -27,6 +28,7 @@ export default () => ({
     port: parseInt(process.env.REDIS_PORT ?? '6379', 10),
     password: process.env.REDIS_PASSWORD || undefined,
     db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB, 10) : 0,
+    tls: process.env.REDIS_TLS === 'true',
   },
 
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,

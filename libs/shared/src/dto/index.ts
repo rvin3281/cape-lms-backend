@@ -11,3 +11,7 @@ export * from './user-program-onboarding.dto';
 export * from './facilitator.dto';
 export * from './pagination-query.dto';
 export * from './update-facilitator-dto';
+export * from './update-cape-user.dto';
+export * from './unenroll-learner.dto';
+export * from './update-classroom-program.dto';
+export * from './update-learnworlds-program.dto';

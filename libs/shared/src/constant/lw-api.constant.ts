@@ -1,1 +1,2 @@
-export const LW_GET_USER = '/users';
+export const LW_USER = '/users';
+export const LW_BUNDLE = '/bundles';

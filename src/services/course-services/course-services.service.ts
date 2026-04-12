@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { LW_GET_USER } from '@app/shared';
+import { LW_USER } from '@app/shared';
 import { HttpService } from '@nestjs/axios';
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -18,7 +18,7 @@ export class CourseServicesService {
   ) {}
 
   async getOverallCourseProgram(id: string): Promise<{ totalCourse: number }> {
-    const url = `${LW_GET_USER}/${id}/courses`;
+    const url = `${LW_USER}/${id}/courses`;
 
     try {
       const lwConfig = this.config.get<any>('learnworls');

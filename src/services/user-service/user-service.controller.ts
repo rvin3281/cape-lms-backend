@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import {
   IUpdateAccountProfile,
   IUpdateCareerProfile,
+  PaginationQueryDto,
+  UnenrollUserProgramsDto,
   UpdateOnboardingUserDto,
   UserIdParamDto,
 } from '@app/shared';
@@ -9,6 +13,7 @@ import { LearnWorldsSsoDto } from '@app/shared/dto/learnworlds-sso.dto';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -17,10 +22,25 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserServiceService } from './user-service.service';
+import {
+  UpdateCapeUserDto,
+  UpdateCapeUserLearnworldsDto,
+} from '@app/shared/dto/update-cape-user.dto';
 
 @Controller('user')
 export class UserServiceController {
   constructor(private readonly userService: UserServiceService) {}
+
+  @Get('classroom-program/:id')
+  @HttpCode(200)
+  @ApiSuccess({
+    code: 'GET_ALL_PROGRAM_BY_USER',
+    message: 'success',
+    dataKey: 'items',
+  })
+  getAllClassroomProgramByUser(@Param() param: UserIdParamDto) {
+    return this.userService.getAllClassroomProgramByUser(param.id);
+  }
 
   @Get('all-program/:id')
   @HttpCode(200)
@@ -79,5 +99,75 @@ export class UserServiceController {
   ) {
     const { email } = query;
     return this.userService.updateUserProfileAccountData(email, body);
+  }
+
+  @Get('/cape')
+  @HttpCode(200)
+  @ApiSuccess({
+    code: 'GET_ALL_CAPE_USER_DATA',
+    message: 'success',
+    dataKey: 'items',
+    meta: (result) => result.meta,
+  })
+  async getCaperUserData(@Query() query: PaginationQueryDto) {
+    return this.userService.getCaperUserData(query);
+  }
+
+  @Get('/cape/:id')
+  @HttpCode(200)
+  @ApiSuccess({
+    code: 'UPDATE_CAPE_USER_DATA',
+    message: 'success',
+  })
+  async updateCapeUserData(
+    @Param() param: { id: string },
+    @Body() dto: UpdateCapeUserLearnworldsDto,
+  ) {
+    return this.userService.updateCapeUserData(param.id, dto);
+  }
+
+  @Patch('/cape/:id')
+  @HttpCode(200)
+  @ApiSuccess({
+    code: 'UPDATE_CAPE_USER_DATA',
+    message: 'success',
+  })
+  async updateCapeUser(
+    @Param() param: { id: string },
+    @Body() dto: UpdateCapeUserDto,
+  ) {
+    return this.userService.updateCapeUser(param.id, dto);
+  }
+
+  @Delete('/cape/:id')
+  @HttpCode(204)
+  @ApiSuccess({
+    code: 'DELETE_CAPE_USER_DATA',
+    message: 'success',
+  })
+  async deleteCapeUser(@Param() param: { id: string }) {
+    return this.userService.deleteCapeUser(param.id);
+  }
+
+  @Get('/cape/:id/programs')
+  @HttpCode(200)
+  @ApiSuccess({
+    code: 'GET_ALL_PROGRAM_BY_USER',
+    message: 'success',
+    dataKey: 'items',
+    meta: (result) => result.meta,
+  })
+  async getAllProgramOfUser(@Param() param: { id: string }) {
+    return this.userService.getAllProgramOfUser(param.id);
+  }
+
+  @Delete('/cape/programs/unenroll')
+  @HttpCode(200)
+  @ApiSuccess({
+    code: 'USER_UNENROLLED_FROM_PROGRAMS',
+    message: 'success',
+  })
+  async unenrollUserFromPrograms(@Body() dto: UnenrollUserProgramsDto) {
+    return this.userService.unenrollUserFromPrograms(dto);
   }
 }

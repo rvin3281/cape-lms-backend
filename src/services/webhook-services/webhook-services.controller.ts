@@ -20,6 +20,18 @@ export class WebhookServicesController {
     return { ok: true };
   }
 
+  @Post('learworlds-user')
+  async bulkImportLearnworldsUser(
+    @Body() body: any,
+    @Headers() headers: any,
+  ): Promise<any> {
+    console.log('LearnWorlds headers:', headers);
+    console.log('LearnWorlds payload:', body);
+
+    // IMPORTANT: respond 200 fast
+    return { ok: true };
+  }
+
   @Post('user-program-enrollment')
   @HttpCode(200)
   async userProgramEnrollment(

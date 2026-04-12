@@ -30,8 +30,6 @@ import { ProgramServiceModule } from './services/program-service/program-service
           throw new Error('Missing redis config');
         }
 
-        const isProduction = process.env.NODE_ENV === 'production';
-
         const res = {
           prefix: 'bull:{cape}', // works in dev + required in prod
           connection: {
@@ -39,8 +37,9 @@ import { ProgramServiceModule } from './services/program-service/program-service
             port: redis.port,
             password: redis.password,
             db: redis.db,
-            tls: isProduction ? { rejectUnauthorized: false } : undefined,
+            tls: redis.tls ? {} : undefined,
             maxRetriesPerRequest: null,
+            enableReadyCheck: false,
           },
           defaultJobOptions: {
             attempts: 5,
@@ -50,8 +49,10 @@ import { ProgramServiceModule } from './services/program-service/program-service
           },
         };
 
-        if (!res) throw new Error('redix not connected');
-        console.log('No connection');
+        if (!res) {
+          console.log('Redis config is invalid:', redis);
+          throw new Error('redix not connected');
+        }
         return res;
       },
     }),

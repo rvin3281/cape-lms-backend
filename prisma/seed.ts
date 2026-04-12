@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import 'dotenv/config';
 import { PrismaClient } from 'src/generated/client';
 import { ROLE_CODE } from '@app/shared';
@@ -20,17 +18,6 @@ async function main() {
   // 1) Upsert roles
   // =========================
   const superAdminRole = await prisma.capeRole.upsert({
-    where: { roleName: 'Super Admin' },
-    update: {},
-    create: {
-      roleName: 'Super Admin',
-      level: 'super_admin',
-      roleCode: 'SUPER_ADMIN',
-      createdBy: 'seed',
-    },
-  });
-
-  const adminRole = await prisma.capeRole.upsert({
     where: { roleName: 'CAPE Admin' },
     update: {},
     create: {
@@ -96,6 +83,7 @@ async function main() {
     isAdmin?: boolean;
     isActive?: boolean;
     learnworldId?: string | null;
+    isFirstTimeLogin: boolean;
   }) => {
     const {
       email,
@@ -105,6 +93,7 @@ async function main() {
       isAdmin = false,
       isActive = true,
       learnworldId = null,
+      isFirstTimeLogin,
     } = args;
 
     return prisma.capeUser.upsert({
@@ -118,6 +107,7 @@ async function main() {
         passwordHash: PASSWORD_HASH,
         isAdmin,
         isActive,
+        isFirstTimeLogin,
         updatedBy: 'seed',
       },
       create: {
@@ -129,6 +119,7 @@ async function main() {
         passwordHash: PASSWORD_HASH,
         isAdmin,
         isActive,
+        isFirstTimeLogin,
         createdBy: 'seed',
       },
     });
@@ -160,35 +151,30 @@ async function main() {
   // 4) Seed users
   // =========================
   const superAdminUser = await upsertUser({
-    email: 'super-admin@utp.edu.my',
-    firstName: 'Nur',
-    lastName: 'Aisyah',
-    userName: 'nur.aisyah.superadmin',
-    isAdmin: true,
-  });
-
-  const adminUser = await upsertUser({
     email: 'admin@utp.edu.my',
-    firstName: 'Muhammad',
-    lastName: 'Haziq',
-    userName: 'muhammad.haziq.admin',
+    firstName: 'Super',
+    lastName: 'Admin',
+    userName: 'superadmin',
     isAdmin: true,
+    isFirstTimeLogin: false,
   });
 
   const hrFocalUser = await upsertUser({
     email: 'hr-focal@petronas.com',
-    firstName: 'Siti',
-    lastName: 'Nurul',
-    userName: 'siti.nurul.hrfocal',
+    firstName: 'hr',
+    lastName: 'focal',
+    userName: 'hrfocal',
     isAdmin: true,
+    isFirstTimeLogin: false,
   });
 
   const individualLearnerUser = await upsertUser({
     email: 'individual_learner@gmail.com',
-    firstName: 'Arif',
-    lastName: 'Hakim',
-    userName: 'arif.hakim',
+    firstName: 'individual',
+    lastName: 'learner',
+    userName: 'individual.learner',
     isAdmin: false,
+    isFirstTimeLogin: true,
   });
 
   const hybridLearnerUser = await upsertUser({
@@ -197,6 +183,7 @@ async function main() {
     lastName: 'Learner',
     userName: 'hybrid.learner',
     isAdmin: false,
+    isFirstTimeLogin: true,
   });
 
   const classroomLearnerUser = await upsertUser({
@@ -205,6 +192,7 @@ async function main() {
     lastName: 'Learner',
     userName: 'classroom.learner',
     isAdmin: false,
+    isFirstTimeLogin: true,
   });
 
   // optional: one user with multiple roles example
@@ -214,13 +202,14 @@ async function main() {
     lastName: 'Dev',
     userName: 'student.dev',
     isAdmin: false,
+    isFirstTimeLogin: true,
   });
 
   // =========================
   // 5) Assign roles
   // =========================
   await assignRoleToUser(superAdminUser.userId, superAdminRole.roleId);
-  await assignRoleToUser(adminUser.userId, adminRole.roleId);
+  // await assignRoleToUser(adminUser.userId, adminRole.roleId);
   await assignRoleToUser(hrFocalUser.userId, hrFocalRole.roleId);
   await assignRoleToUser(
     individualLearnerUser.userId,
@@ -313,14 +302,12 @@ async function main() {
   console.log('✅ Seed complete:', {
     roles: [
       superAdminRole.roleName,
-      adminRole.roleName,
       hrFocalRole.roleName,
       individualLearnerRole.roleName,
       hybridLearnerRole.roleName,
       classroomLearnerRole.roleName,
     ],
     users: [
-      'super-admin@utp.edu.my',
       'admin@utp.edu.my',
       'hr-focal@petronas.com',
       'individual_learner@gmail.com',
