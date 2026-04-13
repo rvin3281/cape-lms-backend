@@ -568,35 +568,18 @@ export class UserServiceService {
   }
 
   async updateCapeUser(userId: string, dto: UpdateCapeUserDto): Promise<any> {
-    let lwUpdated = false;
-    let shouldSyncToLearnWorlds = false;
-    let previousLwPayload: {
-      first_name: string;
-      last_name: string;
-      username: string;
-      fields: {
-        cf_organization: string;
-      };
-    } | null = null;
-    let currentUserEmail = '';
+    const warnings: string[] = [];
 
     try {
       const normalizedDto = this.normalizeUpdateCapeUserDto(dto);
 
-      const updatedUser = await this.prismaService.$transaction(async (tx) => {
+      const result = await this.prismaService.$transaction(async (tx) => {
         const existingUser = await this.findUserForUpdate(userId, tx);
-
-        currentUserEmail = existingUser.email;
 
         await this.ensureUsernameUnique(normalizedDto.userName, userId, tx);
 
-        shouldSyncToLearnWorlds =
+        const shouldSyncToLearnWorlds =
           this.shouldUpdateLearnWorldsForUser(existingUser);
-
-        if (shouldSyncToLearnWorlds) {
-          previousLwPayload =
-            this.buildLearnWorldsPayloadFromCurrentState(existingUser);
-        }
 
         await tx.capeUser.update({
           where: { userId },
@@ -619,23 +602,6 @@ export class UserServiceService {
           },
         });
 
-        if (shouldSyncToLearnWorlds) {
-          this.logger.log(
-            'Updating LearnWorlds user due to account changes for userId: ' +
-              userId,
-          );
-          await this.updateLearnWorldsUser(existingUser.email, {
-            first_name: normalizedDto.firstName,
-            last_name: normalizedDto.lastName,
-            username: normalizedDto.userName,
-            fields: {
-              cf_organization: normalizedDto.cfCompany,
-            },
-          });
-
-          lwUpdated = true;
-        }
-
         const latestUser = await tx.capeUser.findUnique({
           where: { userId },
           include: {
@@ -648,8 +614,35 @@ export class UserServiceService {
           },
         });
 
-        return latestUser;
+        return {
+          updatedUser: latestUser,
+          shouldSyncToLearnWorlds,
+          learnworldsEmail: existingUser.email,
+          learnworldsPayload: {
+            first_name: normalizedDto.firstName,
+            last_name: normalizedDto.lastName,
+            username: normalizedDto.userName,
+            fields: {
+              cf_organization: normalizedDto.cfCompany,
+            },
+          },
+        };
       });
+
+      if (result.shouldSyncToLearnWorlds) {
+        const learnworldsUpdated = await this.safeUpdateLearnWorldsUser(
+          result.learnworldsEmail,
+          result.learnworldsPayload,
+        );
+
+        if (!learnworldsUpdated) {
+          warnings.push(
+            `This learner's details were updated successfully in CAPE LMS. However, we were unable to sync the latest changes to LearnWorlds due to a technical issue. Please manually review and update the learner details in LearnWorlds if needed.`,
+          );
+        }
+      }
+
+      const updatedUser = result.updatedUser;
 
       return {
         userId: updatedUser?.userId,
@@ -682,30 +675,9 @@ export class UserServiceService {
               roleCode: userRole.role.roleCode,
             },
           })) ?? [],
+        warnings,
       };
     } catch (error: any) {
-      /**
-       * Compensation only applies if LearnWorlds was actually updated.
-       */
-      if (
-        shouldSyncToLearnWorlds &&
-        lwUpdated &&
-        previousLwPayload &&
-        currentUserEmail
-      ) {
-        try {
-          await this.updateLearnWorldsUser(currentUserEmail, previousLwPayload);
-          this.logger.warn(
-            `Compensation succeeded for LearnWorlds user: ${currentUserEmail}`,
-          );
-        } catch (compensationError: any) {
-          this.logger.error(
-            `Compensation failed for LearnWorlds user: ${currentUserEmail}`,
-            compensationError?.stack || compensationError,
-          );
-        }
-      }
-
       handleServiceCatchError(error, this.logger);
     }
   }
@@ -1285,6 +1257,29 @@ export class UserServiceService {
     }
   }
 
+  private async safeUpdateLearnWorldsUser(
+    email: string,
+    payload: {
+      first_name: string;
+      last_name: string;
+      username: string;
+      fields: {
+        cf_organization: string;
+      };
+    },
+  ): Promise<boolean> {
+    try {
+      await this.updateLearnWorldsUser(email, payload);
+      return true;
+    } catch (error: any) {
+      this.logger.warn(
+        `Best-effort LearnWorlds user update failed. email=${email}`,
+        error?.stack || error,
+      );
+      return false;
+    }
+  }
+
   private async unenrollUserFromLearnWorlds(
     learnworldUserId: string,
     payload: {
@@ -1324,7 +1319,7 @@ export class UserServiceService {
             'Content-Type': 'application/json',
           },
           data: payload,
-          timeout: 10000,
+          timeout: 20000,
         }),
       );
     } catch (error: any) {
@@ -1475,7 +1470,7 @@ export class UserServiceService {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          timeout: 10000,
+          timeout: 20000,
         }),
       );
 
@@ -1489,14 +1484,13 @@ export class UserServiceService {
         JSON.stringify(lwData ?? error?.message ?? error),
       );
 
-      throw new BadRequestException({
-        code: 'LW_UPDATE_USER_FAILED',
-        message: 'Failed to update user in LearnWorlds.',
-        meta: {
-          status: lwStatus,
-          provider: 'LearnWorlds',
-        },
-      });
+      throw new ServiceUnavailableException(
+        errorResponseBuilder(
+          'LW_UPDATE_USER_FAILED',
+          undefined,
+          'Failed to update user in LearnWorlds.',
+        ),
+      );
     }
   }
 
