@@ -1,8 +1,10 @@
 import {
   ArrayMinSize,
   IsArray,
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -63,4 +65,8 @@ export class CapeOnboardingProfileDto {
     message: 'Each skill must be a valid text value.',
   })
   skills: string[];
+
+  @IsOptional()
+  @IsBoolean({ message: 'isAlumni must be a boolean value.' })
+  isAlumni?: boolean;
 }

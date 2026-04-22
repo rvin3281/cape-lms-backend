@@ -4,4 +4,5 @@ export interface IUpdateCareerProfile {
   industry?: string;
   careerGoals?: string;
   skills?: string[];
+  isAlumni?: boolean;
 }

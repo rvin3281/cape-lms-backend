@@ -4,4 +4,5 @@ export type RedisConfig = {
   password?: string;
   db: number;
   tls: boolean;
+  isCluster: boolean;
 };

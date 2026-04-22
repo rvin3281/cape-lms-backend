@@ -241,7 +241,7 @@ export type ProgramCapeUserEnrollmentGroupByOutputType = {
   _max: ProgramCapeUserEnrollmentMaxAggregateOutputType | null
 }
 
-type GetProgramCapeUserEnrollmentGroupByPayload<T extends ProgramCapeUserEnrollmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetProgramCapeUserEnrollmentGroupByPayload<T extends ProgramCapeUserEnrollmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ProgramCapeUserEnrollmentGroupByOutputType, T['by']> &
       {
@@ -1473,6 +1473,11 @@ export type ProgramCapeUserEnrollmentFindManyArgs<ExtArgs extends runtime.Types.
    * Skip the first `n` ProgramCapeUserEnrollments.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ProgramCapeUserEnrollments.
+   */
   distinct?: Prisma.ProgramCapeUserEnrollmentScalarFieldEnum | Prisma.ProgramCapeUserEnrollmentScalarFieldEnum[]
 }
 

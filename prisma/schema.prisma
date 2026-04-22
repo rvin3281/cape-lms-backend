@@ -127,6 +127,7 @@ model CapeUserProfiles {
 
   careerGoals String @map("career_goals") @db.NVarChar(Max)
   skillsJson String @map("skills_json") @db.NVarChar(Max)
+   isAlumni     Boolean? @map("is_alumni")
 
   user        CapeUser @relation(fields: [userId], references: [userId])
 

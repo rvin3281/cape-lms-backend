@@ -276,7 +276,7 @@ export type CapeUserGroupByOutputType = {
   _max: CapeUserMaxAggregateOutputType | null
 }
 
-type GetCapeUserGroupByPayload<T extends CapeUserGroupByArgs> = Prisma.PrismaPromise<
+export type GetCapeUserGroupByPayload<T extends CapeUserGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CapeUserGroupByOutputType, T['by']> &
       {
@@ -2342,6 +2342,11 @@ export type CapeUserFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` CapeUsers.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CapeUsers.
+   */
   distinct?: Prisma.CapeUserScalarFieldEnum | Prisma.CapeUserScalarFieldEnum[]
 }
 

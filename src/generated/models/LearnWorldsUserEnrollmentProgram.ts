@@ -203,7 +203,7 @@ export type LearnWorldsUserEnrollmentProgramGroupByOutputType = {
   _max: LearnWorldsUserEnrollmentProgramMaxAggregateOutputType | null
 }
 
-type GetLearnWorldsUserEnrollmentProgramGroupByPayload<T extends LearnWorldsUserEnrollmentProgramGroupByArgs> = Prisma.PrismaPromise<
+export type GetLearnWorldsUserEnrollmentProgramGroupByPayload<T extends LearnWorldsUserEnrollmentProgramGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<LearnWorldsUserEnrollmentProgramGroupByOutputType, T['by']> &
       {
@@ -1245,6 +1245,11 @@ export type LearnWorldsUserEnrollmentProgramFindManyArgs<ExtArgs extends runtime
    * Skip the first `n` LearnWorldsUserEnrollmentPrograms.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of LearnWorldsUserEnrollmentPrograms.
+   */
   distinct?: Prisma.LearnWorldsUserEnrollmentProgramScalarFieldEnum | Prisma.LearnWorldsUserEnrollmentProgramScalarFieldEnum[]
 }
 

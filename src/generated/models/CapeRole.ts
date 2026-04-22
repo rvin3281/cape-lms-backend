@@ -206,7 +206,7 @@ export type CapeRoleGroupByOutputType = {
   _max: CapeRoleMaxAggregateOutputType | null
 }
 
-type GetCapeRoleGroupByPayload<T extends CapeRoleGroupByArgs> = Prisma.PrismaPromise<
+export type GetCapeRoleGroupByPayload<T extends CapeRoleGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CapeRoleGroupByOutputType, T['by']> &
       {
@@ -1136,6 +1136,11 @@ export type CapeRoleFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` CapeRoles.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CapeRoles.
+   */
   distinct?: Prisma.CapeRoleScalarFieldEnum | Prisma.CapeRoleScalarFieldEnum[]
 }
 

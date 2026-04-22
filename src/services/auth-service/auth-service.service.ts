@@ -260,6 +260,7 @@ export class AuthServiceService {
               industry: dto.industry,
               careerGoals: dto.careerGoals,
               skillsJson,
+              ...(dto.isAlumni !== undefined ? { isAlumni: dto.isAlumni } : {}),
             },
             create: {
               userId: user.userId,
@@ -270,6 +271,7 @@ export class AuthServiceService {
               industry: dto.industry,
               careerGoals: dto.careerGoals,
               skillsJson,
+              isAlumni: dto.isAlumni ?? null,
             },
           });
 

@@ -220,7 +220,7 @@ export type FacilitatorGroupByOutputType = {
   _max: FacilitatorMaxAggregateOutputType | null
 }
 
-type GetFacilitatorGroupByPayload<T extends FacilitatorGroupByArgs> = Prisma.PrismaPromise<
+export type GetFacilitatorGroupByPayload<T extends FacilitatorGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<FacilitatorGroupByOutputType, T['by']> &
       {
@@ -1280,6 +1280,11 @@ export type FacilitatorFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` Facilitators.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Facilitators.
+   */
   distinct?: Prisma.FacilitatorScalarFieldEnum | Prisma.FacilitatorScalarFieldEnum[]
 }
 

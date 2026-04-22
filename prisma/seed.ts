@@ -159,6 +159,15 @@ async function main() {
     isFirstTimeLogin: false,
   });
 
+  const opsAdminUser = await upsertUser({
+    email: 'opex.admin@utp.edu.my',
+    firstName: 'Opex',
+    lastName: 'Admin',
+    userName: 'opex.admin',
+    isAdmin: true,
+    isFirstTimeLogin: false,
+  });
+
   const hrFocalUser = await upsertUser({
     email: 'hr-focal@petronas.com',
     firstName: 'hr',
@@ -209,6 +218,9 @@ async function main() {
   // 5) Assign roles
   // =========================
   await assignRoleToUser(superAdminUser.userId, superAdminRole.roleId);
+
+  await assignRoleToUser(opsAdminUser.userId, superAdminRole.roleId);
+
   // await assignRoleToUser(adminUser.userId, adminRole.roleId);
   await assignRoleToUser(hrFocalUser.userId, hrFocalRole.roleId);
   await assignRoleToUser(

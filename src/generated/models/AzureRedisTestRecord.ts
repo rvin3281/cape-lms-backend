@@ -227,7 +227,7 @@ export type AzureRedisTestRecordGroupByOutputType = {
   _max: AzureRedisTestRecordMaxAggregateOutputType | null
 }
 
-type GetAzureRedisTestRecordGroupByPayload<T extends AzureRedisTestRecordGroupByArgs> = Prisma.PrismaPromise<
+export type GetAzureRedisTestRecordGroupByPayload<T extends AzureRedisTestRecordGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AzureRedisTestRecordGroupByOutputType, T['by']> &
       {
@@ -1060,6 +1060,11 @@ export type AzureRedisTestRecordFindManyArgs<ExtArgs extends runtime.Types.Exten
    * Skip the first `n` AzureRedisTestRecords.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of AzureRedisTestRecords.
+   */
   distinct?: Prisma.AzureRedisTestRecordScalarFieldEnum | Prisma.AzureRedisTestRecordScalarFieldEnum[]
 }
 

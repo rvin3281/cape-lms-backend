@@ -26,6 +26,8 @@ import { ProgramServiceModule } from './services/program-service/program-service
       useFactory: (config: ConfigService) => {
         const redis = config.get<RedisConfig>('redis');
 
+        console.log('Redis config being used for BullMQ:', redis);
+
         if (!redis) {
           throw new Error('Missing redis config');
         }
@@ -37,7 +39,11 @@ import { ProgramServiceModule } from './services/program-service/program-service
             port: redis.port,
             password: redis.password,
             db: redis.db,
-            tls: redis.tls ? {} : undefined,
+            tls: redis.tls
+              ? {
+                  servername: redis.host,
+                }
+              : undefined,
             maxRetriesPerRequest: null,
             enableReadyCheck: false,
           },

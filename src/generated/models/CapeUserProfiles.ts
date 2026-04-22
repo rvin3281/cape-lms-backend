@@ -44,6 +44,7 @@ export type CapeUserProfilesMinAggregateOutputType = {
   industry: string | null
   careerGoals: string | null
   skillsJson: string | null
+  isAlumni: boolean | null
 }
 
 export type CapeUserProfilesMaxAggregateOutputType = {
@@ -56,6 +57,7 @@ export type CapeUserProfilesMaxAggregateOutputType = {
   industry: string | null
   careerGoals: string | null
   skillsJson: string | null
+  isAlumni: boolean | null
 }
 
 export type CapeUserProfilesCountAggregateOutputType = {
@@ -68,6 +70,7 @@ export type CapeUserProfilesCountAggregateOutputType = {
   industry: number
   careerGoals: number
   skillsJson: number
+  isAlumni: number
   _all: number
 }
 
@@ -90,6 +93,7 @@ export type CapeUserProfilesMinAggregateInputType = {
   industry?: true
   careerGoals?: true
   skillsJson?: true
+  isAlumni?: true
 }
 
 export type CapeUserProfilesMaxAggregateInputType = {
@@ -102,6 +106,7 @@ export type CapeUserProfilesMaxAggregateInputType = {
   industry?: true
   careerGoals?: true
   skillsJson?: true
+  isAlumni?: true
 }
 
 export type CapeUserProfilesCountAggregateInputType = {
@@ -114,6 +119,7 @@ export type CapeUserProfilesCountAggregateInputType = {
   industry?: true
   careerGoals?: true
   skillsJson?: true
+  isAlumni?: true
   _all?: true
 }
 
@@ -213,6 +219,7 @@ export type CapeUserProfilesGroupByOutputType = {
   industry: string
   careerGoals: string
   skillsJson: string
+  isAlumni: boolean | null
   _count: CapeUserProfilesCountAggregateOutputType | null
   _avg: CapeUserProfilesAvgAggregateOutputType | null
   _sum: CapeUserProfilesSumAggregateOutputType | null
@@ -220,7 +227,7 @@ export type CapeUserProfilesGroupByOutputType = {
   _max: CapeUserProfilesMaxAggregateOutputType | null
 }
 
-type GetCapeUserProfilesGroupByPayload<T extends CapeUserProfilesGroupByArgs> = Prisma.PrismaPromise<
+export type GetCapeUserProfilesGroupByPayload<T extends CapeUserProfilesGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CapeUserProfilesGroupByOutputType, T['by']> &
       {
@@ -248,6 +255,7 @@ export type CapeUserProfilesWhereInput = {
   industry?: Prisma.StringFilter<"CapeUserProfiles"> | string
   careerGoals?: Prisma.StringFilter<"CapeUserProfiles"> | string
   skillsJson?: Prisma.StringFilter<"CapeUserProfiles"> | string
+  isAlumni?: Prisma.BoolNullableFilter<"CapeUserProfiles"> | boolean | null
   user?: Prisma.XOR<Prisma.CapeUserScalarRelationFilter, Prisma.CapeUserWhereInput>
 }
 
@@ -261,6 +269,7 @@ export type CapeUserProfilesOrderByWithRelationInput = {
   industry?: Prisma.SortOrder
   careerGoals?: Prisma.SortOrder
   skillsJson?: Prisma.SortOrder
+  isAlumni?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.CapeUserOrderByWithRelationInput
 }
 
@@ -277,6 +286,7 @@ export type CapeUserProfilesWhereUniqueInput = Prisma.AtLeast<{
   industry?: Prisma.StringFilter<"CapeUserProfiles"> | string
   careerGoals?: Prisma.StringFilter<"CapeUserProfiles"> | string
   skillsJson?: Prisma.StringFilter<"CapeUserProfiles"> | string
+  isAlumni?: Prisma.BoolNullableFilter<"CapeUserProfiles"> | boolean | null
   user?: Prisma.XOR<Prisma.CapeUserScalarRelationFilter, Prisma.CapeUserWhereInput>
 }, "id" | "userId">
 
@@ -290,6 +300,7 @@ export type CapeUserProfilesOrderByWithAggregationInput = {
   industry?: Prisma.SortOrder
   careerGoals?: Prisma.SortOrder
   skillsJson?: Prisma.SortOrder
+  isAlumni?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CapeUserProfilesCountOrderByAggregateInput
   _avg?: Prisma.CapeUserProfilesAvgOrderByAggregateInput
   _max?: Prisma.CapeUserProfilesMaxOrderByAggregateInput
@@ -310,6 +321,7 @@ export type CapeUserProfilesScalarWhereWithAggregatesInput = {
   industry?: Prisma.StringWithAggregatesFilter<"CapeUserProfiles"> | string
   careerGoals?: Prisma.StringWithAggregatesFilter<"CapeUserProfiles"> | string
   skillsJson?: Prisma.StringWithAggregatesFilter<"CapeUserProfiles"> | string
+  isAlumni?: Prisma.BoolNullableWithAggregatesFilter<"CapeUserProfiles"> | boolean | null
 }
 
 export type CapeUserProfilesCreateInput = {
@@ -320,6 +332,7 @@ export type CapeUserProfilesCreateInput = {
   industry: string
   careerGoals: string
   skillsJson: string
+  isAlumni?: boolean | null
   user: Prisma.CapeUserCreateNestedOneWithoutUserProfileInput
 }
 
@@ -333,6 +346,7 @@ export type CapeUserProfilesUncheckedCreateInput = {
   industry: string
   careerGoals: string
   skillsJson: string
+  isAlumni?: boolean | null
 }
 
 export type CapeUserProfilesUpdateInput = {
@@ -343,6 +357,7 @@ export type CapeUserProfilesUpdateInput = {
   industry?: Prisma.StringFieldUpdateOperationsInput | string
   careerGoals?: Prisma.StringFieldUpdateOperationsInput | string
   skillsJson?: Prisma.StringFieldUpdateOperationsInput | string
+  isAlumni?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   user?: Prisma.CapeUserUpdateOneRequiredWithoutUserProfileNestedInput
 }
 
@@ -356,6 +371,7 @@ export type CapeUserProfilesUncheckedUpdateInput = {
   industry?: Prisma.StringFieldUpdateOperationsInput | string
   careerGoals?: Prisma.StringFieldUpdateOperationsInput | string
   skillsJson?: Prisma.StringFieldUpdateOperationsInput | string
+  isAlumni?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type CapeUserProfilesCreateManyInput = {
@@ -367,6 +383,7 @@ export type CapeUserProfilesCreateManyInput = {
   industry: string
   careerGoals: string
   skillsJson: string
+  isAlumni?: boolean | null
 }
 
 export type CapeUserProfilesUpdateManyMutationInput = {
@@ -377,6 +394,7 @@ export type CapeUserProfilesUpdateManyMutationInput = {
   industry?: Prisma.StringFieldUpdateOperationsInput | string
   careerGoals?: Prisma.StringFieldUpdateOperationsInput | string
   skillsJson?: Prisma.StringFieldUpdateOperationsInput | string
+  isAlumni?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type CapeUserProfilesUncheckedUpdateManyInput = {
@@ -389,6 +407,7 @@ export type CapeUserProfilesUncheckedUpdateManyInput = {
   industry?: Prisma.StringFieldUpdateOperationsInput | string
   careerGoals?: Prisma.StringFieldUpdateOperationsInput | string
   skillsJson?: Prisma.StringFieldUpdateOperationsInput | string
+  isAlumni?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type CapeUserProfilesNullableScalarRelationFilter = {
@@ -406,6 +425,7 @@ export type CapeUserProfilesCountOrderByAggregateInput = {
   industry?: Prisma.SortOrder
   careerGoals?: Prisma.SortOrder
   skillsJson?: Prisma.SortOrder
+  isAlumni?: Prisma.SortOrder
 }
 
 export type CapeUserProfilesAvgOrderByAggregateInput = {
@@ -422,6 +442,7 @@ export type CapeUserProfilesMaxOrderByAggregateInput = {
   industry?: Prisma.SortOrder
   careerGoals?: Prisma.SortOrder
   skillsJson?: Prisma.SortOrder
+  isAlumni?: Prisma.SortOrder
 }
 
 export type CapeUserProfilesMinOrderByAggregateInput = {
@@ -434,6 +455,7 @@ export type CapeUserProfilesMinOrderByAggregateInput = {
   industry?: Prisma.SortOrder
   careerGoals?: Prisma.SortOrder
   skillsJson?: Prisma.SortOrder
+  isAlumni?: Prisma.SortOrder
 }
 
 export type CapeUserProfilesSumOrderByAggregateInput = {
@@ -472,6 +494,10 @@ export type CapeUserProfilesUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CapeUserProfilesUpdateToOneWithWhereWithoutUserInput, Prisma.CapeUserProfilesUpdateWithoutUserInput>, Prisma.CapeUserProfilesUncheckedUpdateWithoutUserInput>
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
 export type CapeUserProfilesCreateWithoutUserInput = {
   phoneNumber: string
   jobTitle: string
@@ -480,6 +506,7 @@ export type CapeUserProfilesCreateWithoutUserInput = {
   industry: string
   careerGoals: string
   skillsJson: string
+  isAlumni?: boolean | null
 }
 
 export type CapeUserProfilesUncheckedCreateWithoutUserInput = {
@@ -491,6 +518,7 @@ export type CapeUserProfilesUncheckedCreateWithoutUserInput = {
   industry: string
   careerGoals: string
   skillsJson: string
+  isAlumni?: boolean | null
 }
 
 export type CapeUserProfilesCreateOrConnectWithoutUserInput = {
@@ -517,6 +545,7 @@ export type CapeUserProfilesUpdateWithoutUserInput = {
   industry?: Prisma.StringFieldUpdateOperationsInput | string
   careerGoals?: Prisma.StringFieldUpdateOperationsInput | string
   skillsJson?: Prisma.StringFieldUpdateOperationsInput | string
+  isAlumni?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type CapeUserProfilesUncheckedUpdateWithoutUserInput = {
@@ -528,6 +557,7 @@ export type CapeUserProfilesUncheckedUpdateWithoutUserInput = {
   industry?: Prisma.StringFieldUpdateOperationsInput | string
   careerGoals?: Prisma.StringFieldUpdateOperationsInput | string
   skillsJson?: Prisma.StringFieldUpdateOperationsInput | string
+  isAlumni?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 
@@ -542,6 +572,7 @@ export type CapeUserProfilesSelect<ExtArgs extends runtime.Types.Extensions.Inte
   industry?: boolean
   careerGoals?: boolean
   skillsJson?: boolean
+  isAlumni?: boolean
   user?: boolean | Prisma.CapeUserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["capeUserProfiles"]>
 
@@ -557,9 +588,10 @@ export type CapeUserProfilesSelectScalar = {
   industry?: boolean
   careerGoals?: boolean
   skillsJson?: boolean
+  isAlumni?: boolean
 }
 
-export type CapeUserProfilesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "phoneNumber" | "jobTitle" | "currentRole" | "targetRole" | "industry" | "careerGoals" | "skillsJson", ExtArgs["result"]["capeUserProfiles"]>
+export type CapeUserProfilesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "phoneNumber" | "jobTitle" | "currentRole" | "targetRole" | "industry" | "careerGoals" | "skillsJson" | "isAlumni", ExtArgs["result"]["capeUserProfiles"]>
 export type CapeUserProfilesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CapeUserDefaultArgs<ExtArgs>
 }
@@ -579,6 +611,7 @@ export type $CapeUserProfilesPayload<ExtArgs extends runtime.Types.Extensions.In
     industry: string
     careerGoals: string
     skillsJson: string
+    isAlumni: boolean | null
   }, ExtArgs["result"]["capeUserProfiles"]>
   composites: {}
 }
@@ -958,6 +991,7 @@ export interface CapeUserProfilesFieldRefs {
   readonly industry: Prisma.FieldRef<"CapeUserProfiles", 'String'>
   readonly careerGoals: Prisma.FieldRef<"CapeUserProfiles", 'String'>
   readonly skillsJson: Prisma.FieldRef<"CapeUserProfiles", 'String'>
+  readonly isAlumni: Prisma.FieldRef<"CapeUserProfiles", 'Boolean'>
 }
     
 
@@ -1154,6 +1188,11 @@ export type CapeUserProfilesFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` CapeUserProfiles.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CapeUserProfiles.
+   */
   distinct?: Prisma.CapeUserProfilesScalarFieldEnum | Prisma.CapeUserProfilesScalarFieldEnum[]
 }
 

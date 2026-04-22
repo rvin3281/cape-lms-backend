@@ -29,6 +29,7 @@ export default () => ({
     password: process.env.REDIS_PASSWORD || undefined,
     db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB, 10) : 0,
     tls: process.env.REDIS_TLS === 'true',
+    isCluster: process.env.REDIS_IS_CLUSTER === 'true',
   },
 
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,

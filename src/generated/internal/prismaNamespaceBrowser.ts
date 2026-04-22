@@ -168,7 +168,8 @@ export const CapeUserProfilesScalarFieldEnum = {
   targetRole: 'targetRole',
   industry: 'industry',
   careerGoals: 'careerGoals',
-  skillsJson: 'skillsJson'
+  skillsJson: 'skillsJson',
+  isAlumni: 'isAlumni'
 } as const
 
 export type CapeUserProfilesScalarFieldEnum = (typeof CapeUserProfilesScalarFieldEnum)[keyof typeof CapeUserProfilesScalarFieldEnum]

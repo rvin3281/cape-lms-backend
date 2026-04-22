@@ -90,7 +90,7 @@ export class UserServiceController {
 
   @Patch('/user-profile/account')
   @ApiSuccess({
-    code: 'UPDATE_USER_PROFILE_CAREER_DATA',
+    code: 'UPDATE_USER_PROFILE_ACCOUNT_DATA',
     message: 'success',
   })
   async updateUserProfileAccountData(

@@ -306,6 +306,7 @@ export class UserServiceService {
               return [];
             }
           })(),
+          isAlumni: user.userProfile?.isAlumni ?? false,
         },
       };
 
@@ -317,26 +318,16 @@ export class UserServiceService {
 
   async updateUserProfileCareerData(email: string, dto: IUpdateCareerProfile) {
     try {
-      // Find User exist or not an get user id
       const user = await this.capeUserRepo.getUserProfileData(email);
 
-      // UPDATE USER ACCOUNT PROILE
-      // if (type === 'ACCOUNT') {
-
-      // }
-
-      // get userId
       const userId =
         user?.userId ?? user?.profile?.userId ?? user?.userProfile?.userId;
 
-      // If not exist throw error
       if (!user || !userId) {
         throw new NotFoundException(errorResponseBuilder('USER_NOT_FOUND'));
       }
 
-      // Ensure profile row exists if your system requires it
-      // If profile might not exist, consider upsert instead of update.
-      const profileExists = !!user?.profile || !!user?.userProfile; // adapt to your return structure
+      const profileExists = !!user?.profile || !!user?.userProfile;
 
       if (!profileExists) {
         throw new NotFoundException(
@@ -344,7 +335,6 @@ export class UserServiceService {
         );
       }
 
-      // Map DTO to Prisma update input
       const updateData: Prisma.CapeUserProfilesUpdateInput = {};
 
       if (dto.currentRole !== undefined)
@@ -356,20 +346,21 @@ export class UserServiceService {
       if (dto.skills !== undefined) {
         updateData.skillsJson = JSON.stringify(dto.skills);
       }
+      if (dto.isAlumni !== undefined) {
+        updateData.isAlumni = dto.isAlumni;
+      }
 
-      // If client sends nothing return success
       if (Object.keys(updateData).length === 0) {
         return {
-          code: 'UPDATE_USER_PROFILE_DATA',
+          code: 'UPDATE_USER_PROFILE_CAREER_DATA',
           message: 'success',
           data: user,
         };
       }
 
-      // Update user career profile
-      const updateProfile = await this.capeUserRepo['prisma'].$transaction(
+      await this.capeUserRepo['prisma'].$transaction(
         async (tx: Prisma.TransactionClient) => {
-          return this.capeUserProfileRepo.updateUserProfile(
+          await this.capeUserProfileRepo.updateUserProfile(
             {
               where: { userId },
               data: updateData,
@@ -379,10 +370,12 @@ export class UserServiceService {
         },
       );
 
+      const updatedUser = await this.capeUserRepo.getUserProfileData(email);
+
       return {
-        code: 'UPDATE_USER_PROFILE_DATA',
+        code: 'UPDATE_USER_PROFILE_CAREER_DATA',
         message: 'success',
-        data: updateProfile,
+        data: updatedUser,
       };
     } catch (error) {
       handleServiceCatchError(error, this.logger);

@@ -301,7 +301,7 @@ export type CapeLearnerProfilesGroupByOutputType = {
   _max: CapeLearnerProfilesMaxAggregateOutputType | null
 }
 
-type GetCapeLearnerProfilesGroupByPayload<T extends capeLearnerProfilesGroupByArgs> = Prisma.PrismaPromise<
+export type GetCapeLearnerProfilesGroupByPayload<T extends capeLearnerProfilesGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CapeLearnerProfilesGroupByOutputType, T['by']> &
       {
@@ -1498,6 +1498,11 @@ export type capeLearnerProfilesFindManyArgs<ExtArgs extends runtime.Types.Extens
    * Skip the first `n` capeLearnerProfiles.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of capeLearnerProfiles.
+   */
   distinct?: Prisma.CapeLearnerProfilesScalarFieldEnum | Prisma.CapeLearnerProfilesScalarFieldEnum[]
 }
 

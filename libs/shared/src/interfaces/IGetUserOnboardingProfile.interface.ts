@@ -14,5 +14,6 @@ export interface IGetUserOnBoardingProfile {
     industry: string;
     careerGoals: string;
     skills: string[];
+    isAlumni: boolean;
   };
 }

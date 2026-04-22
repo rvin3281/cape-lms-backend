@@ -234,7 +234,7 @@ export type ProgramCapeUserFacilitatorGroupByOutputType = {
   _max: ProgramCapeUserFacilitatorMaxAggregateOutputType | null
 }
 
-type GetProgramCapeUserFacilitatorGroupByPayload<T extends ProgramCapeUserFacilitatorGroupByArgs> = Prisma.PrismaPromise<
+export type GetProgramCapeUserFacilitatorGroupByPayload<T extends ProgramCapeUserFacilitatorGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ProgramCapeUserFacilitatorGroupByOutputType, T['by']> &
       {
@@ -1583,6 +1583,11 @@ export type ProgramCapeUserFacilitatorFindManyArgs<ExtArgs extends runtime.Types
    * Skip the first `n` ProgramCapeUserFacilitators.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ProgramCapeUserFacilitators.
+   */
   distinct?: Prisma.ProgramCapeUserFacilitatorScalarFieldEnum | Prisma.ProgramCapeUserFacilitatorScalarFieldEnum[]
 }
 

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { PrismaService } from '@app/database';
 import { AzureTestRow } from '@app/shared';
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
